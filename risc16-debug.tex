@@ -1,0 +1,37 @@
+\documentclass[12pt,a4paper]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[breaklinks=true,hidelinks]{hyperref}
+
+% \def\labelitemi{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}
+\def\labelitemii{$\rightarrow$}
+
+\newcommand{\done}{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}%Note: the argument of \makebox is the width of the box as seen by the rest of the text. If set to 0pt, the content of the box (here a \square) will overlap with the text (here a \checkmark).
+\newcommand{\notdone}{\makebox[1em][l]{$\square$}}
+
+
+% \author{Quentin Delhaye}
+% \date{October 25th, 2015}
+\title{RISC16 Simulator Debugging}
+
+\begin{document}
+\maketitle
+
+
+\begin{itemize}
+  \item[\notdone] In the sequential version, writting instructions in the program memory is not enough.
+  It must first be saved in ROM, then imported back and only then can be executed.
+  \begin{itemize}
+    \item See what happens when we try to run the simulation. Where does it take the information from ?
+    \item See what happens when we import the ROM. Is it loaded somewhere?
+  \end{itemize}
+
+\end{itemize}
+
+
+\end{document}
