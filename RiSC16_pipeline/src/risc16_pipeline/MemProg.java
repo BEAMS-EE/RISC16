@@ -1,0 +1,597 @@
+package risc16_pipeline;
+import java.awt.*;
+
+import java.awt.event.*;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+
+
+import javax.swing.JOptionPane;
+
+
+
+
+public class MemProg extends Memoire {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -781133839929335937L;
+
+	private static final String opcode = null;
+	
+	private Hashtable<String, Integer> labelTable;
+
+	//  private JButton assemblage;
+	//  private Bus address;
+
+	//================================================================================================
+	//   INITIALISATION
+	//================================================================================================
+	public MemProg(String title, int x, int y, int lg, int ht, String[] columnNames, Bus output) {
+		super(title, x, y, lg, ht, Color.cyan/*new Color(252,111,26)*/, columnNames, output);
+		super.getJButtonAss().addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				assembler();			
+			}});
+		super.getJButtonRM().addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				resetMemory();			
+			}});
+	}
+	/////////////////////////////////////////////////////////////////////SEQ c comme ci dessous qu'on init la ROM
+	public MemProg(String title, int x, int y, int lg, int ht,String[] columnNames, Bus output,Bus address) {
+		this(title, x, y, lg, ht, columnNames, output);
+		super.setBusAddr(address);
+	}
+	/////////////////////////////////////////////////////////////////////
+
+
+	//================================================================================================
+	//   CHIP
+	//================================================================================================
+	public void latch(){
+		if (getCurrentAddr()>=0) {
+			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ça, on doit même plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
+			String instr = getCase(super.getCurrentAddr(),1);
+
+			if (instr.indexOf("error") != -1)  // si c est une erreur >> nop
+				instr = "0000000000000000";
+			else {
+				instr=Integer.toBinaryString(Integer.decode(instr));//hextobin
+				while (instr.length()<16) instr="0"+instr;
+			}
+			//system.out.println("MEM >   writing word (sur le bus de sortie) =    "+instr);
+			super.getOutput().receive(instr);
+		}}
+
+
+	//================================================================================================
+	//   MEMORY
+	//================================================================================================
+	public void assembler() {
+
+
+		for (int i = 0;i < super.getAddressMax() ; i++) {
+			String instruction = getIns(i,true);
+			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
+				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
+				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
+			}
+
+			if ( instruction.indexOf("error") == -1){
+				instruction=Integer.toHexString(Integer.parseInt(instruction,2)).toUpperCase();
+				while(instruction.length()<4) instruction="0"+instruction;
+				instruction="0x"+instruction;}//bintohex
+			super.setCase(instruction, i, 1);}  
+	}
+	public void resetMemory(){
+		for(int i=0;i < super.getAddressMax() ; i++) {
+			super.setCase(Integer.toString(i),i,0);
+			super.setCase("nop",i,2);
+			super.setCase("0x0000", i, 1);
+			super.setCaseB(false,i,3);
+		}
+		labelTable=null;
+	}
+	// ////////////////////////////////////////////////////////////////////////////
+	
+	// ////////////////////////////////////////////////////////////////////////////
+	public String getIns(int a, boolean assemb) {//assemb => true si on est en train d'assembler
+		//renvoie le string equivalent de l'instruction en bit a l'adresse int a
+		//et trouve le format de l'instruction
+		// String asm= new String(super.getCase(a, 2));
+		if ( super.getCase(a, 2)==null){  //on decompose la chaine en sous chaine contenu ds un vect
+			super.setCase("nop",a,2);
+			return "0000000000000000";
+		}
+		else {
+			String asm= new String(super.getCase(a, 2));
+			if ( asm.length()<3)  //on decompose la chaine en sous chaine contenu ds un vect
+				return "0000000000000000";
+
+			String[] sTab = new String[3];
+			String sol = new String();		
+			int format=0;  // 0=RRR 1=RRI 2=RI
+
+			//-------------------------------------------------------------------------------------
+			// INSTRUCTION !
+			//-------------------------------------------------------------------------------------
+			StringTokenizer st = new StringTokenizer(asm,", \t\n\r\f");
+			
+			String opcode=st.nextToken().toLowerCase();	// on passe l'opcode
+			
+			if (opcode.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
+				sol = "001";
+				format = 1;
+			}
+			else if (opcode.indexOf("add") != -1) {
+				sol = "000";
+				format = 0;
+			}
+			else if (opcode.indexOf("nand") != -1) {
+				sol = "010";
+				format = 0;
+			}
+			else if (opcode.indexOf("lui") != -1) {
+				sol = "011";
+				format = 2;		
+			}
+			else if (opcode.indexOf("sw") != -1) {
+				sol = "101";
+				format = 1;			
+			}
+			else if (opcode.indexOf("lw") != -1) {
+				sol = "100";
+				format = 1;			
+			}
+			else if (opcode.indexOf("beq") != -1) {
+				sol = "110";
+				format = 1;				
+			}
+			else if (opcode.indexOf("jalr") != -1) {
+				sol = "111";
+				format = 1;
+			}
+			else // == pseudo instruction ==
+				if (opcode.indexOf("nop") != -1) {
+					return "0000000000000000";
+				}
+				else if (opcode.indexOf("reset") != -1) {
+					return "1110000000000000";    // = JALR 0,0,0
+				}
+				else if (opcode.indexOf("halt") != -1){
+					return "1110000001111111";
+				}
+				else if(opcode.indexOf("movi") != -1){
+					return asm;
+				}
+				else {
+					warning("error : bad instruction", a, assemb);
+					return "error : bad instruction";
+				}
+
+			//-------------------------------------------------------------------------------------
+			//  décomposition du format  -> sTab[0,1,2]
+			//-------------------------------------------------------------------------------------
+			
+			for(int i=0;i<3;i++){
+				if (st.hasMoreTokens())	{
+					sTab[i]=st.nextToken();
+				}
+			}
+		
+			///////////////////////////////////////////////
+			String RegA = new String();
+			String RegB = new String();
+			String RegC = new String();
+
+			if (sTab[0] == null || sTab[1] == null){
+				warning("error : format error",a, assemb);   
+				return "error : format error";
+			}
+
+
+
+			RegA = Integer.toBinaryString(Integer.parseInt(sTab[0]));
+
+			if (RegA.length() > 3){
+				warning("error : format error (rA)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+				return "error : format error (rA)";
+			}
+			while (RegA.length() < 3)     RegA = "0" + RegA;
+
+			if (assemb) {
+				if (!sol.equals("100") && !sol.equals("110")
+						&& RegA.equals("000")) {
+					warning1("Warning : R0 is put as destination!",a, assemb);
+				}
+
+
+			}
+
+			switch (format) {
+			//-------------------------------------------------------------------------------------
+			//  RRR
+			//-------------------------------------------------------------------------------------
+			case 0: {
+				if (sTab[2] == null){
+					warning("error : data missing (RRR type)",a,assemb);
+					return "error : data missing (RRR type)";
+				}
+				RegB = Integer.toBinaryString( Integer.parseInt(sTab[1]));
+				if (RegB.length() > 3){
+					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					return "error : format error (rB)";
+				}
+				while (RegB.length() < 3)     RegB = "0" + RegB;
+				RegC = Integer.toBinaryString( Integer.parseInt(sTab[2]));
+				if (RegC.length() > 3){
+					warning("error : format error (rC)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					return "error : format error (rC)";
+				}
+				while (RegC.length() < 3)     RegC = "0" + RegC;
+				sol = sol + RegA + RegB + "0000" + RegC;
+				break;
+			}
+			//-------------------------------------------------------------------------------------
+			//  RRI  (63 > -64)
+			//-------------------------------------------------------------------------------------
+			case 1: { //format RRI-type
+				if (sTab[2] == null && opcode.indexOf("jalr") == -1){
+					warning("error : data missing (RRI type)",a,assemb);
+					return "error : data missing (RRI type)";
+				}
+
+
+				RegB = Integer.toBinaryString( Integer.parseInt(sTab[1]));
+				if (RegB.length() > 3){
+					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					return "error : format error (rB)";
+				}
+				while (RegB.length() < 3)     RegB = "0" + RegB;
+
+				if (opcode.indexOf("jalr") == -1) {
+					
+					int imm;
+					try {
+						imm=Integer.decode(sTab[2]);
+					} catch (NumberFormatException e) {	// si il s'agit d'un label
+						try {
+							imm=labelTable.get(sTab[2])-(a+1);
+						} catch (Exception e1) {
+							warning("error : Unknown label or format error",a,assemb);
+							return "error : Unknown label or format error arg0";
+						}
+					}
+					
+					//int imm=Integer.parseInt(sTab[2], 10);
+
+					if (imm>63){
+						warning("error : Imm too big (RRI type)",a,assemb);
+						return "error : Imm too big (RRI type)";
+					}
+					if (imm<-64){
+						warning("error : Imm too big (RRI type)",a,assemb);
+						return "error : Imm too big (RRI type)";
+					}
+					if (imm<0) imm = 128+imm;  // si negatif !
+					RegC = Integer.toBinaryString(imm);  //10  > decimal
+					
+					if (RegC.length() > 7)   {
+						warning("error : Imm too big (RRI type)",a,assemb);
+						return "error : Imm too big (RRI type)";
+					}
+					while (RegC.length() < 7)  RegC = "0" + RegC;
+				}else{
+					RegC="0000000";
+				}
+
+				sol = sol + RegA + RegB +  RegC;
+				break;
+			}
+			//-------------------------------------------------------------------------------------
+			//  RI   0 1023 no limit en asm ! imm = (imm > 6) & 0x3FF
+			//-------------------------------------------------------------------------------------
+			case 2: { //format RI-type
+				//int imm=Integer.parseInt(sTab[1], 10);
+				
+				int imm;
+				try {
+					imm=Integer.decode(sTab[1]);
+				} catch (NumberFormatException e) {
+					warning("error : format error",a,assemb);   
+					return "error : format error arg1";
+				}
+				
+				if(imm>65472) {
+					int newimm=((imm/64)& 0x3FF)*64;
+					warning1("Imm too big (RI type)\nMax Value is : 65472 (0xFFC0)\nValue was remplaced by : "+newimm,a,assemb);
+					setCase("lui "+sTab[0]+","+newimm, a, 2);
+				}
+				else if(imm>0 && imm%64!=0){
+					int newimm=(imm/64)*64;
+					warning1("The accuracy of the value is limited to "+newimm,a,assemb);
+					setCase("lui "+sTab[0]+","+newimm, a, 2);
+				}
+				imm=Integer.rotateRight(imm, 6);
+				imm = imm & 0x3FF;
+				RegC = Integer.toBinaryString(imm);
+				//if (RegC.length() > 10){
+				//  warning("error : Imm too big (RI type)",a,assemb);
+				// return "error : Imm too big (RI type)";
+				//}
+				while (RegC.length() < 10)     RegC = "0" + RegC;
+				sol = sol + RegA + RegC;
+				break;
+			}
+			} // END switch
+
+			if (sol.length() > 16) {
+				warning("error : registers values too big",a,assemb);
+				return "error : registers values too big";
+			}
+			////system.out.println(sol);
+			return sol;
+		}} //  END if !null +  END getIns()
+
+	public void warning(String text, int a, boolean assemb){
+		if(assemb){
+			String text2 = new String();
+			text2 = "\nLine "
+				+ a
+				+ " :\n"+text+"\n"
+				//+"The instruction is replaced with NOP \n\n"
+				;
+			JOptionPane.showMessageDialog(null, text2, "Warning : Program Memory",
+					JOptionPane.WARNING_MESSAGE);
+		}
+
+		//	laMemoire.changeSelection(a, 1, false, false);
+	}
+
+	public void warning1(String text, int a, boolean assemb){
+		if(assemb){
+			String text2 = new String();
+			text2 = "\nLine "
+				+ a
+				+ " :\n"+text+"\n";
+			JOptionPane.showMessageDialog(null, text2, "Warning : Program Memory",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+
+		//	laMemoire.changeSelection(a, 1, false, false);
+	}
+
+
+	public void movi(String s, int i){
+		String movi;
+		String rx="0";
+		String intermediaire="0";
+
+		StringTokenizer st= new StringTokenizer(s,", \t\n\r\f");
+		if (st.hasMoreTokens()) movi=st.nextToken();
+		if (st.hasMoreTokens()) rx=st.nextToken();
+		if (st.hasMoreTokens()) intermediaire=st.nextToken();
+
+
+		int immhi=Integer.decode(intermediaire);
+		int immlo=immhi%64;
+		immhi=(immhi/64)*64;
+		String immH = Integer.toString(immhi);
+		String imml=Integer.toString(immlo);
+		s="lui "+rx+","+immH;
+		setCase(s, i, 2);
+		++i;
+		s="addi "+rx+","+rx+","+imml;
+		setCase(s, i, 2);
+
+	}
+
+
+	//================================================================================================
+	//   FILE ACCESS
+	//================================================================================================
+
+	public void fileopen() {
+		String p= new String("");
+		this.fileopen(p);
+	}
+
+	public void fileopen(String path) {
+		int i = 0;
+		String s = "";
+		//Fich fi;
+
+
+		if (path.length()>3)    
+			fi = new Fich(path);
+		else  {
+			fi=new Fich();
+			fi.open();
+		}
+
+
+
+		if (fi.isOpen()) {
+			s = fi.getLine();
+
+			int address=0; 
+			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
+			labelTable=new Hashtable<String, Integer>();
+
+			while (s!=null){
+				StringTokenizer st=new StringTokenizer(s);
+				if (st.hasMoreTokens()){
+					String firsttoken = st.nextToken();
+					if (firsttoken.indexOf("//")==0 || firsttoken.indexOf("#")==0){
+						label="";
+						opcode="";
+						s = fi.getLine();
+						continue;
+					}
+					else if(firsttoken.indexOf("@")==0){
+						s = firsttoken.substring(1, firsttoken.length());
+						address = Integer.decode(s)-1;
+						label="";
+						opcode="";
+						continue;
+					}
+					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
+						label = firsttoken.substring(0, firsttoken.length()-1);
+						/*if (st.hasMoreTokens())*/ opcode=st.nextToken();				
+					}
+					else {
+						label="";
+						opcode = firsttoken;
+					}
+					if (label!=""){
+						if(labelTable.get(label)!=null){
+							setCase(String.valueOf(address),address,0);
+						}
+						else{
+							labelTable.put(label.toLowerCase(),address);
+							setCase(label,address,0);
+						}
+					} else {
+						setCase(String.valueOf(address),address,0);
+					}
+					if(opcode.toLowerCase().indexOf("movi") != -1) {
+						address+=2;
+						System.out.println("if movi boucle 1 fileopen");	
+					}
+					else address++;
+				}
+				s = fi.getLine();
+			}
+
+		
+			
+			fi = new Fich(fi.getPath());
+			s = fi.getLine();
+			while (s != null){
+				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+					int j=0;
+					s = s.substring(1, s.length());
+					i = Integer.decode(s);
+					s="nop";
+					while(j<i){
+						if(getCase(j,2) == null){
+							setCase(s, j, 2);
+						}
+						++j;
+					}	   
+				}else{
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
+					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+
+						s = s.trim();
+						if(s.length() != 0){
+
+							StringTokenizer st=new StringTokenizer(s);
+							if (st.hasMoreTokens()){
+								String firsttoken = st.nextToken();
+								System.out.println(firsttoken);
+
+								if(firsttoken.charAt(firsttoken.length()-1)==':'){
+									label = firsttoken.substring(0, firsttoken.length()-1);
+									if (st.hasMoreTokens()) opcode=st.nextToken();				
+								}
+								else {
+									label="";
+									opcode = firsttoken;
+								}
+								instructionwhitoutlabel=opcode;
+								if (st.hasMoreTokens()) {
+									arg0=st.nextToken(", \t\n\r\f");
+									instructionwhitoutlabel+=" "+arg0;
+								}
+								if (st.hasMoreTokens()) {
+									arg1=st.nextToken(", \t\n\r\f");
+									instructionwhitoutlabel+=", "+arg1;
+								}
+								if (st.hasMoreTokens()) {
+									arg2=st.nextToken(", \t\n\r\f");
+									instructionwhitoutlabel+=", "+arg2;
+								}
+								if (st.hasMoreTokens()) {
+									arg3=st.nextToken(", \t\n\r\f");
+									instructionwhitoutlabel+=", "+arg3;
+								}
+								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi 
+									movi(instructionwhitoutlabel.trim(),i);
+									++i;
+								}else{//si ce n'est pas un movi
+									setCase(instructionwhitoutlabel.trim(), i, 2);
+								}
+							}
+							i++;
+						}
+					}
+				}
+				s = fi.getLine();
+			}
+			fi.openclose(); // ferme le stream
+		}
+		
+		this.assembler(); // assemblage a la fin du chargement
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	public void filesave() {
+		fi = new Fich();
+		if(fi.save()){
+			int i = 0;
+			boolean adressWrite=false;
+			String adress;
+
+			while(i<addressMax){
+			
+					adress = Integer.toString(i);
+				
+					if(super.getCase(i,2).indexOf("nop")== -1){
+						if(adressWrite){
+							fi.setLine("@"+adress);
+							
+							try {
+								Integer.decode(super.getCase(i,0));
+								fi.setLine(super.getCase(i, 2));
+							} catch (Exception e) {
+								fi.setLine(super.getCase(i,0)+": "+super.getCase(i, 2));
+							}
+							
+							adressWrite=false;
+						}else{
+							try {
+								Integer.decode(super.getCase(i,0));
+								fi.setLine(super.getCase(i, 2));
+							} catch (Exception e) {
+								fi.setLine(super.getCase(i,0)+": "+super.getCase(i, 2));
+							}
+						}
+
+					}else{
+					adressWrite=true;
+				}
+				++i;
+			}
+
+			////system.out.println("last get case"+super.getCase(i, 2));
+			fi.saveclose();
+		}
+	}
+
+	//================================================================================================
+	//   GRAPHICs
+	//================================================================================================
+	public void dessine(Graphics g) {
+		super.dessine(g);
+		printText(g,18,"PROG",X()+getLg()/2-27,Y()+getHt()/2-5,Color.black);
+		printText(g,18,"MEM",X()+getLg()/2-10,Y()+getHt()/2+15,Color.black);
+		//     g.drawString("ADDR",   X() + 3,          Y() + getHt()/2 );
+		//     g.drawString("OUT", X() + getLg()/2+10,Y() + getHt()-3);
+	}
+}

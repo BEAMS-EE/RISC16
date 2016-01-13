@@ -1,0 +1,56 @@
+<html>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p> <a href="index.html"><strong>Help Index</strong></a><br> 
+<strong>RiSC16 Instruction Set Simulator</strong>
+  <br>
+  &#9500 <a href="debug_archi.html"><strong>Enhanced Architectures</strong></a>
+  <br>  
+  &#9492 <a href="debug_interface.html"><font color="green"><strong>Interface Description</strong></font></a></p>
+  
+<p>As shown in the next figure, the simulator  is made up of:</p>
+<ul>
+  <li>A syntax-aware editor with  different colors for labels, opcodes and comments,</li>
+  <li>A program memory window,</li>
+  <li>A data memory window,</li>
+  <li>A registers window and</li>
+  <li>A debug window.</li>
+</ul>
+<p>The last four windows appear only after a  click on the run button. This action also assembles the code in the editor. After  a change of the architecture, it is necessary to click on this button so that  the modification will be taken into account.</p>
+<p>  The other buttons are:</p>
+<ul>
+  <li>  ASM: a click on it assembles  the code in the editor.</li>
+  <li>SIM: it starts the sequential  simulator with the code in the editor.</li>
+  <li>SIM P: it starts the pipeline  simulator with the code in the editor.</li>
+</ul>
+<p><img src="images/IS simulator.jpg" width="978" height="571"></p>
+<p>The menu of the debug window is composed  of:</p>
+<ul>
+  <li>Play: execute the program until  a breakpoint or a halt instruction.</li>
+  <li>Stop: stop the execution of the  program.</li>
+  <li>Next: instruction by instruction  mode.</li>
+  <li>Reset: reset the PC but it  don&rsquo;t reset the contents of the registers and the data memory.</li>
+  <li>Save: allows saving the trace  of the execution in a file.</li>
+</ul>
+<p>This widow contains some statistics on the  execution:</p>
+<ul>
+  <li>CPI: cycles per Instruction</li>
+  <li>RAW Stall: number of resource  conflict hazards</li>
+  <li>Branch Stall: number of branch  executed.</li>
+  <li>Speedup: pipeline speedup index  which indicates by which factor the pipeline version is faster compared to a  hypothetical sequential version using the same sequencing of each stage as the  pipelined RiSC16, that is to say 70 half clock cycles (5 stages x 14 half clock  cycle) per instruction.<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pipeline depth<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Seepdup</em> = ------------------<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI </li>
+  <li>Speedup (clock): this index is  the real gain taking the actual cycle length of the sequential RiSC16 (10 clock  cycles) into account. <br>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T<SUB>SEQ</SUB> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Seepdup (Clock)</em> = ------------------ = -------------<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T<SUB>PIPE</SUB> &middot; CPI &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 &middot; CPI </li>
+</ul>
+<p> <a href="index.html"><strong>Help Index</strong></a><br> 
+<strong>RiSC16 Instruction Set Simulator</strong>
+  <br>
+  &#9500 <a href="debug_archi.html"><strong>Enhanced Architectures</strong></a>
+  <br>  
+  &#9492 <a href="debug_interface.html"><font color="green"><strong>Interface Description</strong></font></a></p>
+</body>
+</html>
