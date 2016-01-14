@@ -46,6 +46,9 @@
     Hence, when we input something like \texttt{loop: beq 2,0,end}, the label \texttt{loop} stays in the same column as the opcode even though it should be considered as an address.
     To work around that, we can export and import back the code; the labels are then moved away from the ASM column to the Address column.
     \item When using the \texttt{Assembly} function (through the dedicated button), the labels shouldbe parsed and moved to the Address column.
+    \item The problem comes from \texttt{MemProg::getIns}, the function parsing the ASM instruction upon assembly.
+    It supposes that the first token of the assembly line is always an instruction, otherwise it throws an ``error : bad instruction" at the face of the poor user.
+    We should probably first check if there is no label before the instruction.
   \end{itemize}
 
 \end{itemize}
