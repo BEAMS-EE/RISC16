@@ -7,6 +7,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage[breaklinks=true,hidelinks]{hyperref}
+\usepackage{fullpage}
 
 % \def\labelitemi{\makebox[0pt][l]{$\square$}\raisebox{.15ex}{\hspace{0.1em}$\checkmark$}}
 \def\labelitemii{$\rightarrow$}
@@ -22,6 +23,7 @@
 \begin{document}
 \maketitle
 
+\section{Bugs}
 
 \begin{itemize}
   \item[\notdone] In the sequential version, writting instructions in the program memory is not enough.
@@ -30,8 +32,22 @@
     \item See what happens when we try to run the simulation. Where does it take the information from ?
     \item See what happens when we import the ROM. Is it loaded somewhere?
   \end{itemize}
+    \item[\done] If there are multiple comment symbols after an instruction, the whole line is ignored all together.
+    \begin{itemize}
+      \item e.g. When importing \texttt{addi 1,1,0//double//comment}, the line does not appear in the program memory.
+      \item The problem probably comes from the comment parsing when importing the file in \texttt{MemProg::fileopen()}.
+    \end{itemize}
 
 \end{itemize}
+
+\section{Performance improvements}
+
+\begin{itemize}
+  \item[\notdone] When loading a ROM, the file is opened twice in a row.
+    \begin{itemize}
+      \item See \texttt{Memprog::fileopen(String path)}.
+    \end{itemize}
+  \end{itemize}
 
 
 \end{document}

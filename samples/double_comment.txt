@@ -1,0 +1,8 @@
+addi 2,0,1
+sw 2,1,0
+// This a simple comment
+addi 1,1,1 // This is a comment // With a comment inside.
+sw 2,1,0 // Simple comment
+addi 1,1,1
+add 3,2,2
+halt

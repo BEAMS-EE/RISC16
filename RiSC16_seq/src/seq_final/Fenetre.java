@@ -25,7 +25,11 @@ import javax.swing.JTabbedPane;
 
 
 
-
+/**
+ * Initialize the main window of the application.
+ * It sets all the Jpannels, buttons, etc.
+ *
+ */
 public class Fenetre  extends JFrame {
 
 	/**
@@ -56,24 +60,24 @@ public class Fenetre  extends JFrame {
 
 		
 
-		int scrx = 850, scry = 990;
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		scry = screenSize.height-55;
-		scrx = screenSize.width;
-
 		Toolkit toolkit = Toolkit.getDefaultToolkit(); 
+		
+		Dimension screenSize = toolkit.getScreenSize();
+		int scry = screenSize.height-55;
+		int scrx = screenSize.width;
 
-		//    On récupère la taille de l'écran par défaut :
+
+		//    On rï¿½cupï¿½re la taille de l'ï¿½cran par dï¿½faut :
 		Dimension dim = toolkit.getScreenSize();
-		//    On récupère la configuration par défaut de l'écran par défaut :
+		//    On rï¿½cupï¿½re la configuration par dï¿½faut de l'ï¿½cran par dï¿½faut :
 		GraphicsConfiguration gconf = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
-		//    On récupère les 'marges' de l'écran :
+		//    On rï¿½cupï¿½re les 'marges' de l'ï¿½cran :
 		Insets insets = toolkit.getScreenInsets(gconf); //variables publiques!
 		setSize(scrx, scry);
 		scry = dim.height-insets.bottom;
 		scrx = dim.width;
-		slider = new Slider(0,19,0);//au lieu de transférer le slider partout on aurait pu le prendre de d directement
+		slider = new Slider(0,19,0);//au lieu de transfï¿½rer le slider partout on aurait pu le prendre de d directement
 		d = new DessinSeq(path, slider);
 		d.setPreferredSize (new Dimension(720,610));
 		JScrollPane scrollpaneD = new JScrollPane(d);
@@ -87,7 +91,7 @@ public class Fenetre  extends JFrame {
 		this.setIconImage(img);
 		//------------------------------------------------------------
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("RiSC 16 Simulator   ---   Sequential Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un µP RISC-16
+		setTitle("RiSC 16 Simulator   ---   Sequential Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un ï¿½P RISC-16
 
 
 
@@ -117,8 +121,8 @@ public class Fenetre  extends JFrame {
 		//======== South Sub-Panel
 
 		JButton button1 = new JButton("RESET");
-		JButton button2 = new JButton("½ Clock");
-		JButton button3 = new JButton("-½  Clock");
+		JButton button2 = new JButton("ï¿½ Clock");
+		JButton button3 = new JButton("-ï¿½  Clock");
 		JButton button4 = new JButton("Instruction");
 		JButton button5=  new JButton("RUN");
 
@@ -265,7 +269,14 @@ add(southpannel,"South");
 	//        } catch (Exception e) { }
 	//     Create and show the GUI...
 	///////////////////////////////////////////////////////////////////////////////////////////
-	public class Traitement implements ActionListener { //classe interne qui gère les action des boutons
+	
+	/**
+	 * Action listener of the application, handles all the actions performed by clicking on the buttons.
+	 * This class is associated to each and every element and assigned a "mode".
+	 * When invoked, the proper action is selected based on this mode.
+	 *
+	 */
+	public class Traitement implements ActionListener { //classe interne qui gï¿½re les action des boutons
 
 		private int mode;
 		JFrame frame;
@@ -296,7 +307,7 @@ add(southpannel,"South");
 			case 2:
 				splitPane.setDividerLocation(750+splitPane.getInsets().left);
 				d.reset();           //le reset
-				d.step(true,true);//permet au reset de revenir au même état que celui de départ
+				d.step(true,true);//permet au reset de revenir au mï¿½me ï¿½tat que celui de dï¿½part
 				break;
 			case 3:
 				splitPane.setDividerLocation(750+splitPane.getInsets().left);
@@ -337,7 +348,6 @@ add(southpannel,"South");
 						frameInstructions.toFront();
 						instructionVisible=true;
 					} catch (MalformedURLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
@@ -361,7 +371,7 @@ add(southpannel,"South");
 				" (http://beams.ulb.ac.be/)</html>"+
 				"\nDavid CROSS" +
 				"\nLaurent ENGLEBIN" +
-				"\nMichaël HUYSMAN"+
+				"\nMichaï¿½l HUYSMAN"+
 				"\nMarc JAUMAIN" +
 				"\nPierre MATHYS" +
 				"\nQuentin MONNEAUX" +

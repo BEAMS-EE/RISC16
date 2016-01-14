@@ -50,7 +50,7 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	public void latch(){
 		if (getCurrentAddr()>=0) {
-			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ça, on doit même plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
+			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ï¿½a, on doit mï¿½me plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
 			String instr = getCase(super.getCurrentAddr(),1);
 
 			if (instr.indexOf("error") != -1)  // si c est une erreur >> nop
@@ -73,7 +73,7 @@ public class MemProg extends Memoire {
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
-				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
+				this.movi(instruction, i);//permet de dï¿½composer en "lui" et "addi" mais il faut encore assembler
 				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
 			}
 
@@ -170,7 +170,7 @@ public class MemProg extends Memoire {
 				}
 
 			//-------------------------------------------------------------------------------------
-			//  décomposition du format  -> sTab[0,1,2]
+			//  dï¿½composition du format  -> sTab[0,1,2]
 			//-------------------------------------------------------------------------------------
 			
 			for(int i=0;i<3;i++){
@@ -417,16 +417,19 @@ public class MemProg extends Memoire {
 			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
 			labelTable=new Hashtable<String, Integer>();
 
+			// Will be null when fi.getLine() returns null, that is the end of the file.
 			while (s!=null){
 				StringTokenizer st=new StringTokenizer(s);
 				if (st.hasMoreTokens()){
 					String firsttoken = st.nextToken();
+					// If comment line, ignore it.
 					if (firsttoken.indexOf("//")==0 || firsttoken.indexOf("#")==0){
 						label="";
 						opcode="";
 						s = fi.getLine();
 						continue;
 					}
+					// Instruction to be placed at a specific address. Extract the address, omitting the "@".
 					else if(firsttoken.indexOf("@")==0){
 						s = firsttoken.substring(1, firsttoken.length());
 						address = Integer.decode(s)-1;
@@ -434,6 +437,7 @@ public class MemProg extends Memoire {
 						opcode="";
 						continue;
 					}
+					// Ending with ":" => label.
 					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
 						label = firsttoken.substring(0, firsttoken.length()-1);
 						/*if (st.hasMoreTokens())*/ opcode=st.nextToken();				
@@ -442,6 +446,7 @@ public class MemProg extends Memoire {
 						label="";
 						opcode = firsttoken;
 					}
+					// If it was a label
 					if (label!=""){
 						if(labelTable.get(label)!=null){
 							setCase(String.valueOf(address),address,0);
@@ -453,6 +458,7 @@ public class MemProg extends Memoire {
 					} else {
 						setCase(String.valueOf(address),address,0);
 					}
+					// If it is a "movi" opcode, skip an address, as it is an alias for two operations: LUI, then ADDI.
 					if(opcode.toLowerCase().indexOf("movi") != -1) {
 						address+=2;
 						System.out.println("if movi boucle 1 fileopen");	
@@ -463,14 +469,15 @@ public class MemProg extends Memoire {
 			}
 
 		
-			
+			// Open the file a second time.
+			//TODO This is not good performance-wise. Do not open the same file twice in a row.
 			fi = new Fich(fi.getPath());
 			s = fi.getLine();
 			while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller ï¿½ l'adresse @XXXX
 					int j=0;
-					s = s.substring(1, s.length());
-					i = Integer.decode(s);
+					s = s.substring(1, s.length());// Address to go to.
+					i = Integer.decode(s);// Integer version of the address
 					s="nop";
 					while(j<i){
 						if(getCase(j,2) == null){
@@ -479,9 +486,9 @@ public class MemProg extends Memoire {
 						++j;
 					}	   
 				}else{
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
-					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//"));// Comment after the instruction.
+					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#"));
+					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){// No more comments
 
 						s = s.trim();
 						if(s.length() != 0){
