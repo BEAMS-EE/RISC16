@@ -31,11 +31,15 @@
   \begin{itemize}
     \item SYou just need to press the ``Assembly" button, you moron.
   \end{itemize}
-    \item[\done] If there are multiple comment symbols after an instruction, the whole line is ignored all together.
-    \begin{itemize}
-      \item e.g. When importing \texttt{addi 1,1,0//double//comment}, the line does not appear in the program memory.
-      \item The problem probably comes from the comment parsing when importing the file in \texttt{MemProg::fileopen()}.
-    \end{itemize}
+
+  \item[\done] If there are multiple comment symbols after an instruction, the whole line is ignored all together.
+  \begin{itemize}
+    \item e.g. When importing \texttt{addi 1,1,0//double//comment}, the line does not appear in the program memory.
+    \item The problem probably comes from the comment parsing when importing the file in \texttt{MemProg::fileopen()}.
+  \end{itemize}
+
+  \item[\notdone] When coding a label in the program memory, the said label is not recognized as an address and generates errors.
+  The code needs to be exported and imported back again so that the label is set in the address column correctly.
 
 \end{itemize}
 
