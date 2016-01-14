@@ -40,6 +40,13 @@
 
   \item[\notdone] When coding a label in the program memory, the said label is not recognized as an address and generates errors.
   The code needs to be exported and imported back again so that the label is set in the address column correctly.
+  \begin{itemize}
+    \item We can only code using the ASM column, the others are read-only.
+    However, the label needs to be in the Address column.
+    Hence, when we input something like \texttt{loop: beq 2,0,end}, the label \texttt{loop} stays in the same column as the opcode even though it should be considered as an address.
+    To work around that, we can export and import back the code; the labels are then moved away from the ASM column to the Address column.
+    \item When using the \texttt{Assembly} function (through the dedicated button), the labels shouldbe parsed and moved to the Address column.
+  \end{itemize}
 
 \end{itemize}
 
