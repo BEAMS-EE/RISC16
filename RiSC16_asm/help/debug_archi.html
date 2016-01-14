@@ -1,0 +1,86 @@
+<html>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p> <a href="index.html"><strong>Help Index</strong></a><br> 
+<strong>RiSC16 Instruction Set Simulator</strong>
+  <br>
+  &#9500 <a href="debug_archi.html"><font color="green"><strong>Enhanced Architectures</strong></font></a>
+  <br>  
+  &#9492 <a href="debug_interface.html"><strong>Interface Description</strong></a></p>
+<p>This simulator is a tool that emphasizes the  limits of the very reduced RiSC16 instructions set. It allows to define others  architectures that have news instructions and a different number of registers.</p>
+<p>There are four preset architectures. The  first is the original RiSC16 and has got the 8 instructions already presented.  The instructions set of the architecture &ldquo;Special IS[1]&rdquo; is made up of the 8  original instructions, plus 8 new instructions. It is presented in the next  table.</p>
+<p align="center"><img src="images/instru 17bits.jpg" width="640" height="302"></p>
+<p>An additional bit for the opcode is required  to code the 16 instructions. So, the instruction size grows from 16 to 17 bits.  The architecture &ldquo;Special IS[1] &ndash; 16 reg &ndash; Instruction 24 bits&rdquo; has got the  same instruction set but it has a bank of 16 registers and the instruction size  is increased to 24 bits. It allows lager immediate value as it shows in the  next table.</p>
+<p align="center"><img src="images/instru 24bits.jpg" width="642" height="235"></p>
+<p>These news instructions are presented  below.</p>
+<div>
+  <h3>Arithmetical instruction</h3>
+</div>
+<p><strong>SUB: </strong>R[regA] &larr; R[regB] &ndash;  R[regC]<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  contents of the regB and the regC are subtracted. The result is stored in regA.</p>
+<div>
+  <h3>Logical instructions</h3>
+</div>
+<p><strong>NOR:</strong> R[regA] &larr; NOT(R[regB] | R[regC])<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  result of the NOR operation between regB and regC is stored in regA.</p>
+<p><strong>XOR:</strong> R[regA] &larr;(R[regB] ^ R[regC])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  result of the XOR (exclusive OR) operation between regB and regC is stored in  regA.</p>
+<p>The next three instructions aren&rsquo;t included  in the architecture &ldquo;Special IS[1]&rdquo; but can be added in a new architecture as  it will be describe later.</p>
+<p><strong>OR:</strong> R[regA] &larr; (R[regB] | R[regC])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  result of the OR operation between regB and regC is stored in regA.</p>
+<p><strong>XNOR:</strong> R[regA] &larr;NOT(R[regB] ^ R[regC])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  result of the XNOR operation between regB and regC is stored in regA.</p>
+<p><strong>AND:</strong> R[regA] &larr; (R[regB] &amp; R[regC])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  result of the AND operation between regB and regC is stored in regA.</p>
+<div>
+  <h3>branch instructions</h3>
+</div>
+<p><strong>BL  (Branch if Lower): </strong>if(R[regA]&lt; R[regB]) {PC &larr; PC<SUB>BL</SUB>+1+immed}  else PC&larr;PC<SUB>BL</SUB>+1}<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The instruction compares the contents of the regA and the regB. If the content of  regA is lower to regB, the PC will be  loaded with PC<SUB>BL</SUB>+1+imm(extend), else, it will be loaded with PC<SUB>BL</SUB>+1.</p>
+<p><strong>BG  (Branch if Greater): </strong>if(R[regA]&gt; R[regB]) {PC &larr; PC<SUB>BG</SUB>+1+immed}  else PC&larr;PC<SUB>BG</SUB>+1}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The  instruction compares the contents of the regA and the regB. If the content of  regA is greater to regB, the PC will be loaded  with PC<SUB>BG</SUB>+1+imm(extend), else, it will be loaded with PC<SUB>BG</SUB>+1.</p>
+<div>
+  <h3>shift instructions</h3>
+</div>
+<p>The shift operations allow to multiply  (right shift) or to divide (left shift) a number by a power of two. These require  the implementation of a barrel shifter in the ALU.</p>
+<p><strong>SHL  (Logical SHIFT):</strong> R[regA] &larr; R[regB] &lt;&lt;  R[regC] or R[regB] &gt;&gt; R[regC] according to the sign of regC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This instruction shift regB by  the number of bits specified in regC. The result is stored in regA. If regC is positive, the shift will execute  to the left, otherwise, it will execute to the right.</p>
+<p align="center"><img src="images/left shift.jpg" width="153" height="105"><img src="images/right shift.jpg" width="154" height="105"></p>
+<p><strong>SHA  (Arithmetical SHIFT):</strong> R[regA]&larr; R[regB]  &lt;&lt; R[regC] or R[regB] &gt;&gt; R[regC] according to the sign of regC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This instruction shift regB by  the number of bits specified in regC. The result is stored in regA. If regC is positive, the shift will execute  to the left, otherwise, it will execute to the right with a preservation of the sign bit (see next picture).</p>
+<p align="center"><img src="images/SHA.jpg" width="154" height="124"></p>
+<p><strong>SHIFTI  (Immediate SHIFT):</strong> R[regA] &larr; R[regB]  &lt;&lt; immed or R[regB] &gt;&gt; immed <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This instruction  shift regB by the immediate constant. The result is stored in regA. The 7 bits  immediate value (for the 17 bits size instruction) is interpreted as follows: the  5 least significant bits give the signed shift amplitude (5 bits: -16 to +15).  The sixth bit specifies the mode (1 for arithmetical, 0 for logical). The  seventh bit isn&rsquo;t used.</p>
+<div>
+  <h3>Special instructions set 2</h3>
+</div>
+<p>This &ldquo;Special IS[2]&rdquo; differ from the  precedent instruction set by one instruction. The BG instruction is replaced by  a multiplication instruction.</p>
+<p><strong>MUL  regA, regB, regC:</strong> R[regA-1] &larr; (R[regB]  * R[regC]) &gt;&gt;16, R[regA] &not; (R[regB] * R[regC])%16<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This  instruction multiplies the content of regB and regC. The 16 low significant  bits of the result are &nbsp;&nbsp;&nbsp; stored in regA  and the 16 most significant bits are stored in the register previous regA. &nbsp;This  representation  is called &ldquo;big-endian&rdquo;: the most significant bits are at the smaller address.</p>
+<div>
+  <h3>carry and overflow management &ndash;  conditional instructions</h3>
+</div>
+<p>In the original architecture, there is no  overflow management. The overflow management mechanism in the new architectures  takes advantage of the unused bits in RRR type instructions to realize a branch  in the case of an overflow (bits from 6 to 3 for the add, sub, sha and shl instructions).  These four bits allow a relative jump in program memory from -8 to 7  (instruction size of 17 bits).</p>
+<p>  In assembler code, the relative jump must  be placed at the end of the instruction. Like the branch instructions, labels  can be used.<br>
+  Example:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add  3,1,2, [immed]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add  3,1,2, -8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the case of overflow,  the PC will be loaded with PCadd+1-8<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; add  3,1,2, label In the case of overflow, the  PC will be loaded with the address pointed by the label</p>
+<p>  The &ldquo;Architecture &ndash; Signed or Unsigned&rdquo;  menu allows to define if the branchs take place in case of an overflow (signed  arithmetic) or in case of a carry (unsigned arithmetic).</p>
+<div>
+  <h3>User defined architecture</h3>
+</div>
+<p>The user can configure architecture by:</p>
+<ul>
+  <li> Selecting the instructions set  (&ldquo;Architecture &ndash; Instructions set &ndash; Other&rdquo; menu)</li>
+  <li>Choosing the number of  registers (&ldquo;Architecture &ndash; Registers&rdquo; menu)</li>
+  <li>Changing the size of the  immediate values (&ldquo;Architecture &ndash; Imm &amp; Instru Sizes&rdquo; menu)</li>
+  <li>Defining  the type of arithmetic: Signed or Unsigned (&ldquo;Architecture &ndash; Signed or Unsigned&rdquo;  menu). This involves not only the overflow management, but also the branch  operation. </li>
+</ul>
+<p> <a href="index.html"><strong>Help Index</strong></a><br> 
+<strong>RiSC16 Instruction Set Simulator</strong>
+  <br>
+  &#9500 <a href="debug_archi.html"><font color="green"><strong>Enhanced Architectures</strong></font></a>
+  <br>  
+  &#9492 <a href="debug_interface.html"><strong>Interface Description</strong></a></p>
+</body>
+</html>

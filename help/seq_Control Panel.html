@@ -1,0 +1,36 @@
+<html>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p><a href="index.html"><strong>Help Index</strong></a><br>
+<strong>RiSC16 Visual Simulator (Sequential Implementation)</strong>
+  <br> 
+  &#9500 <a href="seq_cycle.html"><strong>Sequence of events</strong></a>
+  <br>
+  &#9500 <a href="seq_interface.html"><strong>Interface Description</strong></a>
+  <br>
+  &#9500 <a href="seq_Control Panel.html"><font color="green"><strong>Control Panel</strong></font>></a>
+  <br> 
+  &#9492 <a href="seq_Menu.html"><strong>Menu</strong></a>
+</p> 
+<p>The processor behavior can be simulated  with two time scales: </p>
+<ul>
+    <li><strong>by half clock cycle</strong> (<em>&quot;&frac12; Clock&quot; button </em>), which is the smaller  interval. This simulation mode enables the description of the internal  processor mechanism in its lower details. </li>
+    <li><strong>by instruction</strong> (<em>&quot;+1 Instruction&quot; button </em>). This corresponds to  traditional software simulators. It shows the state of the different registers  and the data memory at the end of each instruction. It is useful for the study  of the assembly language. </li>
+</ul>
+<p>  The <em>&quot;RUN&quot; button</em> allows executing  a program continuously. To stop program execution before a specific  instruction, toggle a breakpoint by clicking the button in the right column of <em>&quot;Program  Memory Window&quot;</em>. It is good practice to finish an assembly-program by  the pseudo-instruction <em>halt</em>. The halt pseudo-instruction means &ldquo;stop  executing instructions&rdquo; and is replaced by jalr 0,0 with a non-zero immediate  field.</p>
+<p>  The <em>&quot;-&frac12; Clock&quot; button</em> allow to move backward. </p>
+<p>  The <em>&quot;RESET&quot; button</em> reset  the processor's state. After a reset, PC=0 and the register bank is empty but  the data memory is preserved. </p>
+<p>The  right bottom area shows a <em>slider which indicates the actual </em>progression within  the machine cycle. Below the slider, the time is shown in half-cycle units.  Above the slider, you can see in which step the current instruction is. The  slider can be moved forward and backward with the mouse.</p>
+<p><a href="index.html"><strong>Help Index</strong></a><br>
+<strong>RiSC16 Visual Simulator (Sequential Implementation)</strong>
+  <br> 
+  &#9500 <a href="seq_cycle.html"><strong>Sequence of events</strong></a>
+  <br>
+  &#9500 <a href="seq_interface.html"><strong>Interface Description</strong></a>
+  <br>
+  &#9500 <a href="seq_Control Panel.html"><font color="green"><strong>Control Panel</strong></font>></a>
+  <br> 
+  &#9492 <a href="seq_Menu.html"><strong>Menu</strong></a>
+</p> 
+</body>
+</html>

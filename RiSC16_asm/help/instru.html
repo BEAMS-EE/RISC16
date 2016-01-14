@@ -1,0 +1,103 @@
+<html>
+<style type="text/css">
+<!--
+.style1 {font-size: x-small}
+-->
+</style>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p><br>
+<a href="index.html"><strong>Help Index</strong></a><br>
+<strong>General Information </strong><br>
+ &#9500 <a href="Intro.html"><strong>Introduction on the Simulator</strong></a>
+ <br>
+  &#9500 <a href="instru.html"><font color="green"><strong>The Original Instruction Set</strong></font></a><br> 
+  &#9500 <a href="Program.html"><strong>Assembly Language Syntax</strong></a>
+  <br> 
+  &#9492 <a href="Dynamic.html"><strong>Dynamic behavior of the simulation</strong></a>
+</p>
+  <p>There  are three machine-code instruction formats and a total of 8 instructions,  illustrated in the next figure. </p>
+  <p align="center"><img src="images/instru.jpg" width="580" height="563"></img></p>
+  <p>The next table describes  the operation of the 8 instructions.</p>
+  <table border="1" cellspacing="0" cellpadding="0" width="725">
+    <tr>
+      <td width="71" align="center" valign="middle"><strong>Mnemonic</strong><strong> </strong> </td>
+      <td width="130" align="center" valign="middle"><p><strong>Assembly    Format </strong><strong> </strong></p></td>
+      <td colspan="2" align="center" valign="middle"><p><strong>Action</strong><strong> </strong></p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>add</p></td>
+      <td width="130"><p align="left">add regA, regB, regC </p></td>
+      <td width="221"><p align="left">R[regA]&not; R[regB] + R[regC]</p></td>
+      <td width="293"><p align="left">Add contents of regB with regC,    store result in regA.</p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>addi</p></td>
+      <td width="130"><p align="left">addi regA, regB, Imm </p></td>
+      <td width="221"><p align="left">R[regA]&not; R[regB] + Imm</p></td>
+      <td width="293"><p align="left">Add contents of regB with Imm,    store result in regA. </p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>nand</p></td>
+      <td width="130"><p align="left">and regA, regB, regC</p></td>
+      <td width="221"><p align="left">R[regA]&not;!( R[regB] &amp;    R[regC] )</p></td>
+      <td width="293"><p align="left">Nand contents of regB with    regC, store results in regA. </p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>lui</p></td>
+      <td width="130"><p align="left">lui regA, Imm</p></td>
+      <td width="221"><p align="left">R[regA]&not; Imm &amp; 0xFFC0</p></td>
+      <td width="293"><p align="left">Place the 10 most significant    bits of the 16-bit Imm into the 10 most significant bits of regA, resetting    the bottom 6 least significant bits of regA.</p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>sw</p></td>
+      <td width="130"><p align="left">sw regA, regB, Imm </p></td>
+      <td width="221"><p align="left">R[regA]&reg;Mem[ R[regB] + Imm ]</p></td>
+      <td width="293"><p align="left">Store value from regA into    memory. Memory address is formed by adding Imm with contents of regB. </p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>lw</p></td>
+      <td width="130"><p align="left">lw regA, regB, Imm </p></td>
+      <td width="221"><p align="left">R[regA]&not;Mem[ R[regB] + Imm ]</p></td>
+      <td width="293"><p align="left">Load value from memory into    regA. Memory address is formed by adding Imm with contents of regB. </p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>beq</p></td>
+      <td width="130"><p align="left">beq regA, regB, Imm </p></td>
+      <td width="221"><p align="left">If(R[regA] == R[regB]){<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; PC&not;PC + 1 + Imm<br>
+        &nbsp;&nbsp;&nbsp;&nbsp; (or PC&not; label)<br>
+      }</p></td>
+      <td width="293"><p align="left">If the contents of regA and    regB are the same, branch to the address PC+1+Imm, where PC is the address of    the beq instruction. </p></td>
+    </tr>
+    <tr>
+      <td width="71"><p>jalr</p></td>
+      <td width="130"><p align="left">jalr regA, regB </p></td>
+      <td width="221"><p align="left">PC&not; R[regB], R[regA] &not; PC + 1</p></td>
+      <td width="293"><p align="left">Branch to the address in regB.    Store PC+1 into regA, where PC is the address of the jalr instruction. </p></td>
+    </tr>
+  </table>
+<p>Other  instructions called pseudo-instructions may be used: </p>
+  <ul><li><strong>NOP</strong> (= ADD 0,0,0) : this pseudo-instruction does  nothing </li>
+  <li><strong>RESET</strong> (=  JALR 0,0) : this pseudo-instruction reset the Program-Counter </li>
+  <li><strong>MOVI rx, Imm(16bits)</strong> (=  LUI rx ImmH(10bits) + ADDI rx,rx,ImmL(6bits)) : This pseudo-instruction is a  combination of a LUI and an ADDI instructions. It allows loading a 16bits  constant in a register.</li>
+</ul>
+<p>According to the number of  bit, the immediate values are extended to 16 bits in different manners:</p>
+<ul>
+  <li>7 bits  signed immediate value: the sign bit is copied on the 9 most significant bits so  as to keep a two&rsquo;s complement number.<br>
+    <img src="images/imm7.jpg" width="480" height="130"><br>
+  </li>
+  <li>10 bits unsigned  immediate value: this constant is left-shifted by 6 bits.  </li><br>
+<img src="images/imm10.jpg" width="490" height="140"></ul>
+
+<p>Each instruction is presented in the link below. Further information can be found in the "<a href="http://www.eng.umd.edu/~blj/RiSC/RiSC-isa.pdf">RiSC-isa</a>" document of <a href="http://www.eng.umd.edu/~blj/RiSC/">Prof Jacob</a></p>
+<p>
+<a href="index.html"><strong>Help Index</strong></a><br>
+<strong>General Information </strong><br>
+ &#9500 <a href="Intro.html"><strong>Introduction on the Simulator</strong></a>
+ <br>
+  &#9500 <a href="instru.html"><font color="green"><strong>The Original Instruction Set</strong></font></a><br> 
+  &#9500 <a href="Program.html"><strong>Assembly Language Syntax</strong></a>
+  <br> 
+  &#9492 <a href="Dynamic.html"><strong>Dynamic behavior of the simulation</strong></a>
+</p>

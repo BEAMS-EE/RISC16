@@ -1,0 +1,46 @@
+<html>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p>
+<a href="index.html"><strong>Help Index</strong></a><br>
+<strong>General Information </strong><br>
+ &#9500 <a href="Intro.html"><strong>Introduction on the Simulator</strong></a>
+ <br>
+  &#9500 <a href="instru.html"><strong>The Original Instruction Set</strong></a><br> 
+  &#9500 <a href="Program.html"><font color="green"><strong>Assembly Language Syntax</strong></font></a>
+  <br> 
+  &#9492 <a href="Dynamic.html"><strong>Dynamic behavior of the simulation</strong></a>
+</p>
+<p>There are two ways to write  assembly code for the simulator:</p>
+<ul>
+    <li>writing the instructions in the  &quot;ASM&quot; column of the &quot;Program Memory&quot; window. To transform  the instructions in binary code, it is necessary to click on the  &quot;Assembly&quot; button. The pseudo-instruction MOVI will be translate in two  instructions, so the next line must be empty.</li>
+    <li>importing from a text file via  the file menu. In this case, the code is assembled on-the-fly while it is  imported. Several text files can be imported. </li>
+</ul>
+
+<p>In text file, some functionalities  are available:</p>
+<ul>
+  <li>Comment : they must be preceded  by a &quot;//&quot; or &quot;#&quot; </li>
+  <li>Placement of instructions at  specified address : the address must be prefixed by &quot;@&quot; and placed  above instructions </li>
+  <li>Hexadecimal value: the prefix  &quot;0x&quot; indicate that the value is in hexadecimal format. This notation  can also be used in the &quot;Program Memory&quot; window. </li>
+  <li>Label: the labels are used to  point the branch target address. The label must be placed before the  instruction and followed by &quot;:&quot; (without any whitespace between label  and &quot;:&quot;). </li>
+</ul>
+<p>The instruction syntaxe can be resumed by :</p>
+<ul>
+  <font color="blue"><b>label:</b></font>&lt;tab&gt;<font color="red"><b>opcode</b></font>&lt;tab&gt;<font color="green"><b>field0</b>, field1, field2</font>&lt;tab&gt;<font color="blue">// comments</font> 
+</ul>
+
+<p>An example of text file is  shown in the next figure.</p>
+	<div align="center"><img src="images/Syntax.jpg"></img>
+    </div>
+	<p>
+<a href="index.html"><strong>Help Index</strong></a><br>
+<strong>General Information </strong><br>
+ &#9500 <a href="Intro.html"><strong>Introduction on the Simulator</strong></a>
+ <br>
+  &#9500 <a href="instru.html"><strong>The Original Instruction Set</strong></a><br> 
+  &#9500 <a href="Program.html"><font color="green"><strong>Assembly Language Syntax</strong></font></a>
+  <br> 
+  &#9492 <a href="Dynamic.html"><strong>Dynamic behavior of the simulation</strong></a>
+</p>
+</body>
+</html>

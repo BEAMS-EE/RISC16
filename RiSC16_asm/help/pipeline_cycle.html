@@ -1,0 +1,34 @@
+<html>
+<body>
+<div align="center"><strong>RiSC16 Simulators - Help</strong></div>
+<p> <a href="index.html"><strong>Help Index</strong></a>
+<strong>RiSC16 Visual Simulator (Pipelined  Implementation)</strong>
+  <br>
+  &#9500 <a href="pipeline_cycle.html"><font color="green"><strong>Sequence of events</strong></font></a>
+  <br>   
+  &#9500 <a href="pipeline_interface.html"><strong>Interface Description</strong></a>
+  <br>  
+&#9492 <a href="pipeline_hazards.html"><strong>Pipeline Hazards</strong></a></p>
+<p>The pipeline is composed of 5 stages:</p>
+<ul>
+  <li>  Instruction Fetch: The program  memory receives the address of the instruction from the program counter, and  the program counter is incremented.</li>
+  <li>Instruction Decode: The opcode  is decoded and the operands are fetched from the registers bank. </li>
+  <li>Instruction Execute: The  arithmetical-logical unit executes the operation.</li>
+  <li>Memory Access: This stage is  used for the data memory access.</li>
+  <li>Write-back: The result is  stored in the target register.</li>
+</ul>
+<p>Each machine cycle, which is the same as the  time to execute one stage of the pipeline, is made of 14 half clock cycles.</p>
+<p align="center"><img src="images/pipeline_cycle.jpg" width="670" height="130"></img></p>
+  <p>A description of the RiSC16 pipeline version can  be found in  the &quot;<a href="http://www.eng.umd.edu/~blj/RiSC/RiSC-pipe.pdf">RiSC-pipe</a>&quot;  document of <a href="http://www.eng.umd.edu/~blj/RiSC/">Prof Jacob</a>.
+</p>
+  <p> <a href="index.html"><strong>Help Index</strong></a>
+<strong>RiSC16 Visual Simulator (Pipelined  Implementation)</strong>
+  <br>
+  &#9500 <a href="pipeline_cycle.html"><font color="green"><strong>Sequence of events</strong></font></a>
+  <br>   
+  &#9500 <a href="pipeline_interface.html"><strong>Interface Description</strong></a>
+  <br>  
+  &#9492 <a href="pipeline_hazards.html"><strong>Pipeline Hazards</strong></a>
+</p>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<project name="RiSC16_asm" default="jar" basedir=".">
+	<target name="init">
+		<property name="sourceDir" value="./src/editor/" />
+		<property name="version" value="040909" />
+		<property name="outputDir" value="RiSC16_asm" />
+		<property name="helpClassesDir" value="./javahelp_classes" />
+		<property name="jarFile" value="RiSC16_asm-${version}.jar" />
+		<property name="tarbz2File" value="RiSC16_asm-${version}.tar.bz2" />
+
+	</target>
+
+	<target name="docs" depends="init">
+		<mkdir dir="${outputDir}/docs" />
+		<javadoc destdir="${outputDir}/docs" 
+				 author="true"
+				 version="true"
+				 use="true"
+				 sourcepath="./src/"
+				 classpath="${sourceDir}/.."
+				 packagenames="editor.*"/>
+	</target>
+
+	<target name="clean">
+		<delete file="${jarFile}" />
+	</target>
+
+
+    <target name="release" depends="init">
+        <mkdir dir="RiSC16_asm" />
+    	<mkdir dir="RiSC16_asm/src" />
+		<copy todir="RiSC16_asm/src/">
+			<fileset dir="src/">
+				<include name="**/*" />
+			</fileset>		
+		</copy>
+    	 <mkdir dir="RiSC16_asm/help" />
+    	<copy todir="RiSC16_asm/help/">
+    			<fileset dir="help/">
+    					<include name="**/*" />
+    				</fileset>		
+    			</copy>
+    	<copy todir="RiSC16_asm/">
+    	    			<fileset dir=".">
+    	    					<include name=".jar" />
+    	    				</fileset>		
+    	    			</copy>
+
+        <tar destfile="${tarbz2File}" basedir="." includes="RiSC16_asm/" compression="bzip2" />
+
+    	<delete dir="RiSC16_asm/" />
+    </target> 
+
+
+	<target name="jar" depends="init">
+		<mkdir dir="${outputDir}" />
+		<javac target="5" srcdir="${sourceDir}" classpath="${helpClassesDir}" destdir="${outputDir}" nowarn="yes"/>
+			<mkdir dir="${outputDir}/editor/icons" />
+					<copy todir="${outputDir}/editor/icons">
+						<fileset dir="${sourceDir}/icons">
+							<include name="**/*.png" />
+						</fileset>
+					</copy>
+		<jar destfile="${jarFile}" basedir="RiSC16_asm">
+			<manifest>
+				<attribute name="Main-Class" value="editor.Main"/>
+				 <attribute name="Class-Path" value="./"/>
+
+			</manifest>
+		</jar>
+		<delete dir="${outputDir}" /> 
+	</target>
+</project>
