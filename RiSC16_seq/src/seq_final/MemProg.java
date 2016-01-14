@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 //import java.lang.System;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -105,14 +107,15 @@ public class MemProg extends Memoire {
 	public String getIns(int a, boolean assemb) {//assemb => true si on est en train d'assembler
 		//renvoie le string equivalent de l'instruction en bit a l'adresse int a
 		//et trouve le format de l'instruction
-		// String asm= new String(super.getCase(a, 2));
+
+		// If the line is empty, this is a 'nop'.
 		if ( super.getCase(a, 2)==null){  //on decompose la chaine en sous chaine contenu ds un vect
 			super.setCase("nop",a,2);
 			return "0000000000000000";
 		}
 		else {
 			String asm= new String(super.getCase(a, 2));// Get shit from the third column at the line 'a'.
-			if ( asm.length()<3)  //on decompose la chaine en sous chaine contenu ds un vect
+			if ( asm.length()<3)
 				return "0000000000000000";
 
 			String[] sTab = new String[3];// Tokens of the ASM line.
@@ -123,8 +126,26 @@ public class MemProg extends Memoire {
 			// INSTRUCTION !
 			//-------------------------------------------------------------------------------------
 			StringTokenizer st = new StringTokenizer(asm,", \t\n\r\f");
+			String opcode = "";
 			
-			String opcode=st.nextToken().toLowerCase();	// on passe l'opcode
+			// Check if the first token is a label.
+			String firstToken = st.nextToken().toLowerCase();
+			Pattern p = Pattern.compile("[a-zA-Z]*:");
+			Matcher m = p.matcher(firstToken);
+			// If it is, set it as the address, and fetch the opcode (next token).
+			if (m.matches()) {
+				super.setCase(firstToken, a, 0);
+				// As for the command, it needs to be stripped from its label.
+				// We thus write the same command, but beginning from /after/ the label.
+				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
+				super.setCase(asm.substring(firstToken.length()+1), a, 2);
+				opcode = st.nextToken().toLowerCase();
+			}
+			else {
+				opcode = firstToken;
+			}
+			
+			
 			
 			if (opcode.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
 				sol = "001";

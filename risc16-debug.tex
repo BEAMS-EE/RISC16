@@ -49,6 +49,10 @@
     \item The problem comes from \texttt{MemProg::getIns}, the function parsing the ASM instruction upon assembly.
     It supposes that the first token of the assembly line is always an instruction, otherwise it throws an ``error : bad instruction" at the face of the poor user.
     We should probably first check if there is no label before the instruction.
+    \item Checking first for the label was a good idea.
+    Now the label is correctly put in the address column upon assembly.
+    However, when parsing the rest of the code, if a label is used on a line and has not been defined before that line, it throws a warning fucking everything up (``Unknown label or format error").
+    Assembling twice, first to parse the label and second for the rest, does not help.
   \end{itemize}
 
 \end{itemize}
