@@ -95,6 +95,13 @@ public class MemProg extends Memoire {
 	// ////////////////////////////////////////////////////////////////////////////
 
 	// ////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Returns back the opcode of the instruction at the given address.
+	 * 
+	 * @param a Address
+	 * @param assemb True if assembling
+	 * @return String of the opcode on 3 bits.
+	 */
 	public String getIns(int a, boolean assemb) {//assemb => true si on est en train d'assembler
 		//renvoie le string equivalent de l'instruction en bit a l'adresse int a
 		//et trouve le format de l'instruction
@@ -104,13 +111,13 @@ public class MemProg extends Memoire {
 			return "0000000000000000";
 		}
 		else {
-			String asm= new String(super.getCase(a, 2));
+			String asm= new String(super.getCase(a, 2));// Get shit from the third column at the line 'a'.
 			if ( asm.length()<3)  //on decompose la chaine en sous chaine contenu ds un vect
 				return "0000000000000000";
 
-			String[] sTab = new String[3];
-			String sol = new String();		
-			int format=0;  // 0=RRR 1=RRI 2=RI
+			String[] sTab = new String[3];// Tokens of the ASM line.
+			String sol = new String();// opcode (3-bit)
+			int format=0;  // 0=RRR 1=RRI 2=RI; R=register, I=immediate
 
 			//-------------------------------------------------------------------------------------
 			// INSTRUCTION !

@@ -1,7 +1,7 @@
 /*
 
 
-/// nimporte quoi > adresse tjs pos >si on a un WE mais que adresse négayive -)-> on perd le WE !!
+/// nimporte quoi > adresse tjs pos >si on a un WE mais que adresse nï¿½gayive -)-> on perd le WE !!
 
 */
 package seq_final;
@@ -30,7 +30,7 @@ public abstract class Memoire extends JInternalFrame {
   private int state=0;
   private Bus address,input,output;
   private int busidadd,busidin;
-  private int delay=0;//compte le nbr de fois qu'on effectue act sur la ROM (on lit une donnée en 3microcycles)
+  private int delay=0;//compte le nbr de fois qu'on effectue act sur la ROM (on lit une donnï¿½e en 3microcycles)
 
   private int addressValue=-1,data=0; // on stocke ici l adresse courante & data
   protected int addressMax= 2048;
@@ -201,6 +201,13 @@ private Fich fi;
 	  table.setValueAt(check,l, c);
   }
   
+  /**
+   * Get something
+   * 
+   * @param l Line, begins at 0
+   * @param c Column, begins at 0
+   * @return Something else
+   */
 	public String getCase(int l, int c) {
 
 		//memory.setRowSelectionInterval(l, l);
@@ -295,7 +302,7 @@ public void setColorIdle(){
 	}
 }
 
-public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilisée pour une instruction
+public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilisï¿½e pour une instruction
 public void setActive(){color=colorIdle;state=0;isActive=true;}
 
   public void setColorDefault(Color couleur){
@@ -307,13 +314,13 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 	
 	  ++delay;
      
-	  if(!isActive){//attention, ça se fera qu'au moment où on devrait utiliser la Ram
-		  this.data = input.getData(busidin);//permet d'éteindre le bus si on écrit pas dedans
+	  if(!isActive){//attention, ï¿½a se fera qu'au moment oï¿½ on devrait utiliser la Ram
+		  this.data = input.getData(busidin);//permet d'ï¿½teindre le bus si on ï¿½crit pas dedans
 		  this.addressValue = address.getData(busidadd);
 	  }else{
-		if (checkInput())  {        //  [verif si les entrees sont là]
+		if (checkInput())  {        //  [verif si les entrees sont lï¿½]
 			setBusy();
-			receive();          //  [copie dans latch entrée]
+			receive();          //  [copie dans latch entrï¿½e]
 			delay=1;
 		}
 
@@ -340,12 +347,12 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 	    {
 	 //------------------------------------------------------------
 	      if (state==2)     setIdle();
-	      if (checkInput())  {        //  [verif si les entrees sont là]
+	      if (checkInput())  {        //  [verif si les entrees sont lï¿½]
 	        setBusy();
-	        receive();                //  [copie dans latch entrée]
+	        receive();                //  [copie dans latch entrï¿½e]
 	      }
 	//------------------------------------------------------------
-	  }else  {      //[pd l'état haut ===> ]  compute et prepare data sortie > latche out put
+	  }else  {      //[pd l'ï¿½tat haut ===> ]  compute et prepare data sortie > latche out put
 	//------------------------------------------------------------
 	    if (state==1)                // si busy > latch
 	     {
@@ -371,7 +378,7 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 	    	}
 	    	
 	    }
-	    System.out.println("ROM OU RAM on demande de regarder les inputs mais il n'y a rien a l'entré");
+	    System.out.println("ROM OU RAM on demande de regarder les inputs mais il n'y a rien a l'entrï¿½");
 	    return false;
 	    
 	}
@@ -402,7 +409,7 @@ public void latch(){
           //system.out.println("MEM > \twriting data =   " + data + "  at " +  addressValue);
                     hasData=false; WE=false;
         }
-        else { // RAM=>LATCH, pas ROM car latch est réécrite dans MemProg
+        else { // RAM=>LATCH, pas ROM car latch est rï¿½ï¿½crite dans MemProg
           int data = 0;
           String temp = new String();
           temp = getCase(addressValue, 1);
@@ -418,19 +425,19 @@ public void latch(){
 //===============================================================================================
 //    EXTRA
 //===============================================================================================
-public void highlight(int data){	//surligne l'instruction dans la mémoire
+public void highlight(int data){	//surligne l'instruction dans la mï¿½moire
 	  if(data<=addressMax){
 		  
-		table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la sélection?
+		table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la sï¿½lection?
 		//memory.getSelectionModel().setLeadSelectionIndex(selectionLine);		
 		 
 	  }
 	  }
-public void highlightSet(int row1){	//surligne l'instruction dans la mémoire
+public void highlightSet(int row1){	//surligne l'instruction dans la mï¿½moire
 	table.setRowSelectionInterval(row1, row1);
 
 	  }
-public void highlightAdd(int row1){	//surligne l'instruction dans la mémoire
+public void highlightAdd(int row1){	//surligne l'instruction dans la mï¿½moire
 	table.addRowSelectionInterval(row1, row1);
 
 	  }
@@ -522,7 +529,7 @@ public void dessine(Graphics g) {
 		    s = fi.getLine();
 		    
 		    while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller ï¿½ l'adresse @XXXX
 					int j=0;
 				
 					i=Integer.decode(s.substring(1));
@@ -538,11 +545,11 @@ public void dessine(Graphics g) {
 
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire aprï¿½s l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires ï¿½ l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());
@@ -645,7 +652,7 @@ public void dessine(Graphics g) {
 		    s = fi.getLine();
 		    
 		    while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller ï¿½ l'adresse @XXXX
 					int j=0;
 				
 					i=Integer.decode(s.substring(1));
@@ -661,11 +668,11 @@ public void dessine(Graphics g) {
 
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire aprï¿½s l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires ï¿½ l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());
