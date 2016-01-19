@@ -71,7 +71,19 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	public void assembler() {
 
-
+		if(this.labelTable == null) {
+			this.labelTable = new Hashtable<String, Integer>();
+		}
+		else {
+			this.labelTable.clear();
+		}
+		for (int i = 0; i < super.getAddressMax(); ++i) {
+			getLabel(i, super.getCase(i, 2));
+		}
+		
+		System.out.println("Print dat table.");
+		System.out.println(labelTable);
+		
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
@@ -85,6 +97,8 @@ public class MemProg extends Memoire {
 				instruction="0x"+instruction;}//bintohex
 			super.setCase(instruction, i, 1);}  
 	}
+	
+	
 	public void resetMemory(){
 		for(int i=0;i < super.getAddressMax() ; i++) {
 			super.setCase(Integer.toString(i),i,0);
@@ -95,6 +109,30 @@ public class MemProg extends Memoire {
 		labelTable=null;
 	}
 	// ////////////////////////////////////////////////////////////////////////////
+	
+	public void getLabel(int address, String command) {
+		if(command != null) {
+			// Split 'command'.
+			StringTokenizer st = new StringTokenizer(command,", \t\n\r\f");
+			// Check if the first token is a label.
+			String firstToken = st.nextToken().toLowerCase();
+			Pattern p = Pattern.compile("^[a-zA-Z]*:");
+			Matcher m = p.matcher(firstToken);
+			// If it is, set it as the address, and fetch the opcode (next token).
+			if (m.matches()) {
+				firstToken = firstToken.substring(0, firstToken.length()-1); // Remove the trailing ':'.
+				if(this.labelTable.get(firstToken)==null) {
+					this.labelTable.put(firstToken.toLowerCase(), address);
+				}
+				//TODO If the label is already in the table, it should be discarded (like when we import a ROM).
+				super.setCase(firstToken, address, 0);
+				// As for the command, it needs to be stripped from its label.
+				// We thus write the same command, but beginning from /after/ the label.
+				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
+				super.setCase(command.substring(firstToken.length()+1), address, 2);
+			}
+		}
+	}
 
 	// ////////////////////////////////////////////////////////////////////////////
 	/**
@@ -128,22 +166,27 @@ public class MemProg extends Memoire {
 			StringTokenizer st = new StringTokenizer(asm,", \t\n\r\f");
 			String opcode = "";
 			
+			
 			// Check if the first token is a label.
 			String firstToken = st.nextToken().toLowerCase();
-			Pattern p = Pattern.compile("[a-zA-Z]*:");
-			Matcher m = p.matcher(firstToken);
-			// If it is, set it as the address, and fetch the opcode (next token).
-			if (m.matches()) {
-				super.setCase(firstToken, a, 0);
-				// As for the command, it needs to be stripped from its label.
-				// We thus write the same command, but beginning from /after/ the label.
-				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
-				super.setCase(asm.substring(firstToken.length()+1), a, 2);
-				opcode = st.nextToken().toLowerCase();
-			}
-			else {
+//			Pattern p = Pattern.compile("[a-zA-Z]*:");
+//			Matcher m = p.matcher(firstToken);
+//			// If it is, set it as the address, and fetch the opcode (next token).
+//			if (m.matches()) {
+//				if(labelTable.get(firstToken)!=null) {
+//					labelTable.put(firstToken.toLowerCase(), a);
+//				}
+//				//TODO If the label is already in the table, it should be discarded (like when we import a ROM).
+//				super.setCase(firstToken, a, 0);
+//				// As for the command, it needs to be stripped from its label.
+//				// We thus write the same command, but beginning from /after/ the label.
+//				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
+//				super.setCase(asm.substring(firstToken.length()+1), a, 2);
+//				opcode = st.nextToken().toLowerCase();
+//			}
+//			else {
 				opcode = firstToken;
-			}
+//			}
 			
 			
 			
@@ -448,6 +491,8 @@ public class MemProg extends Memoire {
 			// Will be null when fi.getLine() returns null, that is the end of the file.
 			while (s!=null){
 				StringTokenizer st=new StringTokenizer(s);
+				// Analyze the tokens, but only looking for special ones,
+				// like comments, labels, addresses, 'movi', etc.
 				if (st.hasMoreTokens()){
 					String firsttoken = st.nextToken();
 					// If comment line, ignore it.
@@ -476,9 +521,14 @@ public class MemProg extends Memoire {
 					}
 					// If it was a label
 					if (label!=""){
+						// If the label is already in the table, it means
+						// that the label is already in use and should be
+						// ignored.
+						// TODO Discarding a label for multiple use should raise a warning.
 						if(labelTable.get(label)!=null){
 							setCase(String.valueOf(address),address,0);
 						}
+						// Label not in the labelTable yet.
 						else{
 							labelTable.put(label.toLowerCase(),address);
 							setCase(label,address,0);
@@ -514,6 +564,7 @@ public class MemProg extends Memoire {
 						++j;
 					}	   
 				}else{
+					// If there is a comment after the command, remove it.
 					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//"));// Comment after the instruction.
 					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#"));
 					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){// No more comments

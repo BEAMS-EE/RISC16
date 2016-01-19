@@ -38,14 +38,14 @@
     \item The problem probably comes from the comment parsing when importing the file in \texttt{MemProg::fileopen()}.
   \end{itemize}
 
-  \item[\notdone] When coding a label in the program memory, the said label is not recognized as an address and generates errors.
+  \item[\done] When coding a label in the program memory, the said label is not recognized as an address and generates errors.
   The code needs to be exported and imported back again so that the label is set in the address column correctly.
   \begin{itemize}
     \item We can only code using the ASM column, the others are read-only.
     However, the label needs to be in the Address column.
     Hence, when we input something like \texttt{loop: beq 2,0,end}, the label \texttt{loop} stays in the same column as the opcode even though it should be considered as an address.
     To work around that, we can export and import back the code; the labels are then moved away from the ASM column to the Address column.
-    \item When using the \texttt{Assembly} function (through the dedicated button), the labels shouldbe parsed and moved to the Address column.
+    \item When using the \texttt{Assembly} function (through the dedicated button), the labels should be parsed and moved to the Address column.
     \item The problem comes from \texttt{MemProg::getIns}, the function parsing the ASM instruction upon assembly.
     It supposes that the first token of the assembly line is always an instruction, otherwise it throws an ``error : bad instruction" at the face of the poor user.
     We should probably first check if there is no label before the instruction.
@@ -53,6 +53,8 @@
     Now the label is correctly put in the address column upon assembly.
     However, when parsing the rest of the code, if a label is used on a line and has not been defined before that line, it throws a warning fucking everything up (``Unknown label or format error").
     Assembling twice, first to parse the label and second for the rest, does not help.
+    \item The label parsing needs to be a full step on its own.
+    See the new \texttt{getLabel} loop in \texttt{MemProg}.
   \end{itemize}
 
 \end{itemize}

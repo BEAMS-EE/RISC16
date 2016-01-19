@@ -241,6 +241,16 @@ private Fich fi;
     table.setValueAt(Integer.toString(valeur), l, 1);
   }
 //////////////////////////////////////////////////////////////////
+  
+  /**
+   * Set the value of the specified cell to 'code'.
+   * 
+   * <br />
+   * Note: I guess "case" is the French version of "cell". It should probably be "setCell()".
+   * @param code
+   * @param l line
+   * @param c column
+   */
   public void setCase(String code, int l, int c) {
 	  if(!ROM){
 		  table.setValueAt(code, l, c);
