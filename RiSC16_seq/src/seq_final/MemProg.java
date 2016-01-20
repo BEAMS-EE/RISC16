@@ -74,9 +74,6 @@ public class MemProg extends Memoire {
 		if(this.labelTable == null) {
 			this.labelTable = new Hashtable<String, Integer>();
 		}
-		else {
-			this.labelTable.clear();
-		}
 		for (int i = 0; i < super.getAddressMax(); ++i) {
 			getLabel(i, super.getCase(i, 2));
 		}
