@@ -60,6 +60,9 @@
   \item[\notdone] The compiler can't handle a \texttt{movi} with a label not yet declared.
   It throws an error in \texttt{movi()} on line \texttt{MemProg.java:442}.
 
+  \item[\notdone] When using a label as the signed immediate operand of \texttt{addi}, the RiSC stores the relative address of the label, not its absolute.
+  Hence, if we want to jump with \texttt{jalr} to the address taken from a register filled with an \texttt{addi} operating with a label, it won't go to the expected place.
+
 \end{itemize}
 
 \section{Performance improvements}

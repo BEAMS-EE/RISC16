@@ -1,0 +1,7 @@
+addi 3,0,1
+addi 4,0,1
+addi 1,0,foo
+jalr 6,1
+end: halt
+foo: addi 5,0,1
+beq 0,0,end
