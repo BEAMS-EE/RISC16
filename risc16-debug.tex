@@ -57,8 +57,13 @@
     See the new \texttt{getLabel} loop in \texttt{MemProg}.
   \end{itemize}
 
-  \item[\notdone] When using a label as the signed immediate operand of \texttt{addi}, the RiSC stores the relative address of the label, not its absolute.
+  \item[\done] When using a label as the signed immediate operand of \texttt{addi}, the RiSC stores the relative address of the label, not its absolute.
   Hence, if we want to jump with \texttt{jalr} to the address taken from a register filled with an \texttt{addi} operating with a label, it won't go to the expected place.
+  \begin{itemize}
+    \item All the jumps where considered relative.
+    However, jumps using \texttt{beq} are relative, but jumps using \texttt{jalr} are absolute.
+    It's just a matter of selecting the good jump type uppon arguments parsing.
+  \end{itemize}
 
 \end{itemize}
 

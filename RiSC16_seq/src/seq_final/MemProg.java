@@ -308,12 +308,15 @@ public class MemProg extends Memoire {
 			//  RRI  (63 > -64)
 			//-------------------------------------------------------------------------------------
 			case 1: { //format RRI-type
+				
+				// Missing data, throw warning.
 				if (sTab[2] == null && opcode.indexOf("jalr") == -1){
 					warning("error : data missing (RRI type)",a,assemb);
 					return "error : data missing (RRI type)";
 				}
 
 
+				// Extract register B from the second token.
 				RegB = Integer.toBinaryString( Integer.parseInt(sTab[1]));
 				if (RegB.length() > 3){
 					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
@@ -321,13 +324,22 @@ public class MemProg extends Memoire {
 				}
 				while (RegB.length() < 3)     RegB = "0" + RegB;
 
+				
 				if (opcode.indexOf("jalr") == -1) {
 					int imm;
 					try {
 						imm=Integer.decode(sTab[2]);
 					} catch (NumberFormatException e) {	// si il s'agit d'un label
 						try {
-							imm=labelTable.get(sTab[2])-(a+1);
+//							imm=labelTable.get(sTab[2])-(a+1);
+							// opcode is BEQ, relative jump
+							if(sol == "110") {
+								imm = labelTable.get(sTab[2]) - (a + 1);
+							}
+							// JALR is an absolute jump.
+							else {
+								imm = labelTable.get(sTab[2]);
+							}
 						} catch (Exception e1) {
 							warning("error : Unknown label or format error",a,assemb);
 							return "error : Unknown label or format error arg0";
@@ -350,7 +362,9 @@ public class MemProg extends Memoire {
 						return "error : Imm too big (RRI type)";
 					}
 					while (RegC.length() < 7)  RegC = "0" + RegC;
-				}else{
+				}
+				// If the opcode is JALR, the immediate is 0000000.
+				else{
 					RegC="0000000";
 				}
 
