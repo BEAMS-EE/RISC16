@@ -363,7 +363,7 @@ public class MemProg extends Memoire {
 					}
 					while (RegC.length() < 7)  RegC = "0" + RegC;
 				}
-				// If the opcode is JALR, the immediate is 0000000.
+				// If the opcode is JALR, the immediate is 0000000.ta
 				else{
 					RegC="0000000";
 				}
@@ -392,13 +392,9 @@ public class MemProg extends Memoire {
 					warning1("The accuracy of the value is limited to "+newimm,a,assemb);
 					setCase("lui "+sTab[0]+","+newimm, a, 2);
 				}
-				imm=Integer.rotateRight(imm, 6);
 				imm = imm & 0x3FF;
 				RegC = Integer.toBinaryString(imm);
-				//if (RegC.length() > 10){
-				//  warning("error : Imm too big (RI type)",a,assemb);
-				// return "error : Imm too big (RI type)";
-				//}
+
 				while (RegC.length() < 10)     RegC = "0" + RegC;
 				sol = sol + RegA + RegC;
 				break;
@@ -453,9 +449,8 @@ public class MemProg extends Memoire {
 		if (st.hasMoreTokens()) intermediaire=st.nextToken();
 
 
-		int immhi=Integer.decode(intermediaire);
-		int immlo=immhi%64;
-		immhi=(immhi/64)*64;
+		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;// Get the 10 high bits to the lower bits.
+		int immlo = Integer.decode(intermediaire) & 0x001F;
 		String immH = Integer.toString(immhi);
 		String imml=Integer.toString(immlo);
 		s="lui "+rx+","+immH;
