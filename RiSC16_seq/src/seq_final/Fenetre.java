@@ -121,8 +121,8 @@ public class Fenetre  extends JFrame {
 		//======== South Sub-Panel
 
 		JButton button1 = new JButton("RESET");
-		JButton button2 = new JButton("� Clock");
-		JButton button3 = new JButton("-�  Clock");
+		JButton button2 = new JButton("1/2 Clock");
+		JButton button3 = new JButton("-1/2  Clock");
 		JButton button4 = new JButton("Instruction");
 		JButton button5=  new JButton("RUN");
 

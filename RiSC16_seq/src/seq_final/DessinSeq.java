@@ -43,7 +43,7 @@ public class DessinSeq extends JPanel {
 	private CtlSignal  MUXpc,MUXalu1,MUXalu2,MUXrf,MUXtgt;
 	private CtlSignal  WErf,WEdmem,FUNCalu,PC0Read, PSEN;
 
-	//==== regroupement dans des vecteurs -> paint & reset façilement ====
+	//==== regroupement dans des vecteurs -> paint & reset faï¿½ilement ====
 	private Bus   Bus16[],Bus16h[],Busx[];  // bus de 16bits |  h = hidden  |  x = -de 16bit
 	private CtlSignal Busctl[];
 	private Multiplexeur Mux[];
@@ -220,7 +220,7 @@ public class DessinSeq extends JPanel {
 		Bus[] Bustmp = new Bus[2];    Bustmp[0]=c05;  Bustmp[1]=c06;
 
 		CtlSeq = new Ctl(42,500,60);       CtlSeq.setInput(Bustmp);     // OP & EQ
-		CtlSeq.setSignal(Busctl); // nb : défini plus haut (donne les signaux ctlsignal)
+		CtlSeq.setSignal(Busctl); // nb : dï¿½fini plus haut (donne les signaux ctlsignal)
 
 
 		////////////////////////////////////////////////////////////////////////
@@ -300,7 +300,7 @@ public class DessinSeq extends JPanel {
 		g.setFont(new Font("Monospaced", Font.PLAIN, g.getFont().getSize()));
 		Clock.inc();
 
-		++etape;//conte les étapes pour pouvoir revenir en arrière
+		++etape;//conte les ï¿½tapes pour pouvoir revenir en arriï¿½re
 
 		CtlSeq.incrState();
 
@@ -317,7 +317,7 @@ public class DessinSeq extends JPanel {
 		}
 
 
-		if(paint){//permet de ne pas devoir afficher tous les états lorsqu'on fait -1/2 clock
+		if(paint){//permet de ne pas devoir afficher tous les ï¿½tats lorsqu'on fait -1/2 clock
 			Clock.paint(g);
 		}
 		System.out.println("======= CLOCK :  " + Clock.getTime()+ " |  "+Clock.getLevel()+" ==============");
@@ -328,60 +328,60 @@ public class DessinSeq extends JPanel {
 		{
 
 		case 1:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t PSEN > Program Memory");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t PSEN > Program Memory");
 			break;
 		case 2:
 		case 3:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t Program Memory");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t Program Memory");
 			break;
 		case 4:
 		case 5:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t IR");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION FETCH \u25AA\t IR");
 			break;
 		case 6:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Ctl");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Ctl");
 			//msg.setText("    \u25AA ID/RF \u25AA\t MUXrf & MUX alu 1 & MUX alu 2");
 			break;
 		case 7:
 		case 8:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Ctl / RF(SRC1)");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Ctl / RF(SRC1)");
 			//msg.setText("    \u25AA ID/RF \u25AA\t MUXrf & MUX alu 1 & MUX alu 2");
 			break;
 		case 9:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Mux_RF");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t Mux_RF");
 			//msg.setText("    \u25AA ID/RF \u25AA\t MUXrf & MUX alu 1 & MUX alu 2");
 			break;
 		case 10:
 		case 11:
 		case 12:
-			msg.setText("STATE n° "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t RF(SRC2)");
+			msg.setText("STATE no "+(state)+"\t\u25AA INSTRUCTION DECODE/REGISTER FILE \u25AA\t RF(SRC2)");
 			break;
 		case 13:
 		case 14:
-			msg.setText("STATE n° "+(state)+"\t\u25AA EXECUTION \u25AA\t 	Fonction ALU");
+			msg.setText("STATE no "+(state)+"\t\u25AA EXECUTION \u25AA\t 	Fonction ALU");
 
 			break;
 
 		case 15:
 		case 16:
 		case 17:
-			msg.setText("STATE n° "+(state)+"\t\u25AA WRITEBACK \u25AA\t Memory Access");
+			msg.setText("STATE no "+(state)+"\t\u25AA WRITEBACK \u25AA\t Memory Access");
 
 			break;
 
 		case 18:
 		case 19:
-			msg.setText("STATE n° "+(state)+"\t\u25AA WRITEBACK \u25AA\t Register WE");
+			msg.setText("STATE no "+(state)+"\t\u25AA WRITEBACK \u25AA\t Register WE");
 			break;
 		case 20:
-			msg.setText("STATE n° "+(state)+"\t\u25AA WRITEBACK \u25AA\t Register WE & PC");
+			msg.setText("STATE no "+(state)+"\t\u25AA WRITEBACK \u25AA\t Register WE & PC");
 			break;
 
 
 		}
 		/***************************************************************************************************/    
 		/***************************************************************************************************/
-		//----------------déroulement------------------------------------------
+		//----------------dï¿½roulement------------------------------------------
 
 
 		if(state==6 || state==7 || state==8 || state==9 || state== 10|| state==11 || state==12 || state==13 || state==19 || state==20 || state==1)
@@ -442,7 +442,7 @@ public class DessinSeq extends JPanel {
 		Mux[4].act();
 
 		if(state==16){
-			Mux[2].receive();//sinon prob pour SW, le mux a déjà fais un receive et un latch, et il faut donc désactiver le bus... 
+			Mux[2].receive();//sinon prob pour SW, le mux a dï¿½jï¿½ fais un receive et un latch, et il faut donc dï¿½sactiver le bus... 
 		}
 		if(state==19){
 			Mux[4].receive();//sinon prob pour JALR
@@ -450,7 +450,7 @@ public class DessinSeq extends JPanel {
 		if(state == 17){
 			String op = Rom.getCase(PC0.getData(),2);
 			if (op.indexOf("lw") != -1) {
-				b12.enable();//sinon il s'éteind immédiatement
+				b12.enable();//sinon il s'ï¿½teind immï¿½diatement
 			}   	  
 		}else if(state == 18){
 			b12.disable();
@@ -459,7 +459,7 @@ public class DessinSeq extends JPanel {
 		String op = null;
 		op = Rom.getCase(PC0.getData(),2);
 		
-		// on surligne l'adresse où une donnée sera lue ou écrite dans la Data Mem
+		// on surligne l'adresse oï¿½ une donnï¿½e sera lue ou ï¿½crite dans la Data Mem
 		if ((op != null) && (op.indexOf("sw") != -1 || op.indexOf("lw") != -1) && (state >= 15) && (state <= 19))
 		{
 			tabbedPane.setSelectedIndex(1);
@@ -469,7 +469,7 @@ public class DessinSeq extends JPanel {
 
 
 
-		// on surligne l'instruction dans la fenêtre Prog Mem
+		// on surligne l'instruction dans la fenï¿½tre Prog Mem
 		if(state!=20)//PCO change avant la fin de l'instruction...
 			Rom.highlight(PC0.getData());
 
@@ -478,7 +478,7 @@ public class DessinSeq extends JPanel {
 			repaint();
 		}
 		
-		// sauvegarde utilisée pour le retour en arrière
+		// sauvegarde utilisï¿½e pour le retour en arriï¿½re
 		if (state==20 && nouveau) sauvegarde2();
 		
 		
@@ -514,7 +514,7 @@ public class DessinSeq extends JPanel {
 		repaint();
 	}
 	///////////////////////////////////////////////////////
-	//  init - à executer au démarrage ou apres un reset
+	//  init - ï¿½ executer au dï¿½marrage ou apres un reset
 	public void init() {
 		PC0.setBusy();
 		PC0.act();
@@ -672,7 +672,7 @@ public class DessinSeq extends JPanel {
 		}
 	}
 	///////////////////////////////////////////////////////
-	// function utils à la construction des bus
+	// function utils ï¿½ la construction des bus
 	private int[][] fillMat(int vect[], int l, int c) {
 		int mat[][] = new int[l][c];
 		for (int i = 0; i < l; i++) {
@@ -684,7 +684,7 @@ public class DessinSeq extends JPanel {
 	}
 	//////////////////////////////////////////////////////
 
-	public void previousstep(){//-1/2 étape, reset puis ++step jusqu'a l'état précédent
+	public void previousstep(){//-1/2 ï¿½tape, reset puis ++step jusqu'a l'ï¿½tat prï¿½cï¿½dent
 		int etape2=etape-1;
 		this.reset();
 
@@ -782,11 +782,11 @@ public class DessinSeq extends JPanel {
 
 
 	public void setInactive(){//fonction permettant de griser les chips qui ne servent a rien pour l'instruction
-		//suivant l'opérande on change la couleur des chips non utilisées en gris
+		//suivant l'opï¿½rande on change la couleur des chips non utilisï¿½es en gris
 		String op = Rom.getCase(PC0.getData(),2);//colonne de droite de la Jtable
 
 		setActive();
-		//désactiver les chip suivant l'instruction
+		//dï¿½sactiver les chip suivant l'instruction
 
 		if (op.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
 			Add.setInactive();
