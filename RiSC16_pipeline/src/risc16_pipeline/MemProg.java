@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -54,7 +55,7 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	public void latch(){
 		if (getCurrentAddr()>=0) {
-			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ça, on doit même plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
+			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ï¿½a, on doit mï¿½me plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
 			String instr = getCase(super.getCurrentAddr(),1);
 
 			if (instr.indexOf("error") != -1)  // si c est une erreur >> nop
@@ -73,11 +74,18 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	public void assembler() {
 
+		if(this.labelTable == null) {
+			this.labelTable = new Hashtable<String, Integer>();
+		}
+		for (int i = 0; i < super.getAddressMax(); ++i) {
+			getLabel(i, super.getCase(i, 2));
+		}
+
 
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
-				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
+				this.movi(instruction, i);//permet de dï¿½composer en "lui" et "addi" mais il faut encore assembler
 				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
 			}
 
@@ -97,6 +105,30 @@ public class MemProg extends Memoire {
 		labelTable=null;
 	}
 	// ////////////////////////////////////////////////////////////////////////////
+	
+	public void getLabel(int address, String command) {
+		if(command != null) {
+			// Split 'command'.
+			StringTokenizer st = new StringTokenizer(command,", \t\n\r\f");
+			// Check if the first token is a label.
+			String firstToken = st.nextToken().toLowerCase();
+			Pattern p = Pattern.compile("^[a-zA-Z]*:");
+			Matcher m = p.matcher(firstToken);
+			// If it is, set it as the address, and fetch the opcode (next token).
+			if (m.matches()) {
+				firstToken = firstToken.substring(0, firstToken.length()-1); // Remove the trailing ':'.
+				if(this.labelTable.get(firstToken)==null) {
+					this.labelTable.put(firstToken.toLowerCase(), address);
+				}
+				//TODO If the label is already in the table, it should be discarded (like when we import a ROM).
+				super.setCase(firstToken, address, 0);
+				// As for the command, it needs to be stripped from its label.
+				// We thus write the same command, but beginning from /after/ the label.
+				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
+				super.setCase(command.substring(firstToken.length()+1), address, 2);
+			}
+		}
+	}
 	
 	// ////////////////////////////////////////////////////////////////////////////
 	public String getIns(int a, boolean assemb) {//assemb => true si on est en train d'assembler
@@ -174,7 +206,7 @@ public class MemProg extends Memoire {
 				}
 
 			//-------------------------------------------------------------------------------------
-			//  décomposition du format  -> sTab[0,1,2]
+			//  dï¿½composition du format  -> sTab[0,1,2]
 			//-------------------------------------------------------------------------------------
 			
 			for(int i=0;i<3;i++){
@@ -260,7 +292,15 @@ public class MemProg extends Memoire {
 						imm=Integer.decode(sTab[2]);
 					} catch (NumberFormatException e) {	// si il s'agit d'un label
 						try {
-							imm=labelTable.get(sTab[2])-(a+1);
+//							imm=labelTable.get(sTab[2])-(a+1);
+							// opcode is BEQ, relative jump
+							if(sol == "110") {
+								imm = labelTable.get(sTab[2]) - (a + 1);
+							}
+							// JALR is an absolute jump.
+							else {
+								imm = labelTable.get(sTab[2]);
+							}
 						} catch (Exception e1) {
 							warning("error : Unknown label or format error",a,assemb);
 							return "error : Unknown label or format error arg0";
@@ -376,10 +416,8 @@ public class MemProg extends Memoire {
 		if (st.hasMoreTokens()) rx=st.nextToken();
 		if (st.hasMoreTokens()) intermediaire=st.nextToken();
 
-
-		int immhi=Integer.decode(intermediaire);
-		int immlo=immhi%64;
-		immhi=(immhi/64)*64;
+		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;// Get the 10 high bits to the lower bits.
+		int immlo = Integer.decode(intermediaire) & 0x001F;
 		String immH = Integer.toString(immhi);
 		String imml=Integer.toString(immlo);
 		s="lui "+rx+","+immH;
@@ -472,7 +510,7 @@ public class MemProg extends Memoire {
 			fi = new Fich(fi.getPath());
 			s = fi.getLine();
 			while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller ï¿½ l'adresse @XXXX
 					int j=0;
 					s = s.substring(1, s.length());
 					i = Integer.decode(s);
@@ -484,9 +522,9 @@ public class MemProg extends Memoire {
 						++j;
 					}	   
 				}else{
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
-					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires ï¿½ l'aide de //
 
 						s = s.trim();
 						if(s.length() != 0){

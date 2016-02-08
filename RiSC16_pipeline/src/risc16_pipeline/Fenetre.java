@@ -36,7 +36,7 @@ public class Fenetre  extends JFrame {
 	public Fenetre(String path) {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("RiSC 16 Simulator   ---   Pipelined Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un µP RISC-16
+		setTitle("RiSC 16 Simulator   ---   Pipelined Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un ï¿½P RISC-16
 		setBackground(new Color(220, 220, 220));
 		setExtendedState(MAXIMIZED_BOTH);
 		setSize(1000, 600);
@@ -107,7 +107,7 @@ public class Fenetre  extends JFrame {
 	////////PANNEAU DE CONTROLE/////////////////////////////////////////////////////////////
 
 	/**	
-	 * Panneau de contrôle
+	 * Panneau de contrï¿½le
 	 */
 	private JPanel getControlPanel(){
 		JPanel controlpanel = new JPanel(new GridLayout(2, 0));		
@@ -136,8 +136,8 @@ public class Fenetre  extends JFrame {
 	private JPanel getButtons() {
 		JPanel f = new JPanel(new GridLayout(0, 6)); // buttons
 		JButton button1 = new JButton("RESET");
-		JButton button2 = new JButton("+½ Clock");
-		JButton button3 = new JButton("-½ Clock");
+		JButton button2 = new JButton("+1/2 Clock");
+		JButton button3 = new JButton("-1/2 Clock");
 		JButton button4 = new JButton("+1 Cycle");
 		JButton button5 = new JButton("-1 Cycle");
 		JButton button6=  new JButton("RUN");
@@ -242,7 +242,7 @@ public class Fenetre  extends JFrame {
 
 	////////TRAITEMENT/////////////////////////////////////////////////////////////////////	
 	/**
-	 * Gère les actions des différents Boutons et Menus
+	 * Gï¿½re les actions des diffï¿½rents Boutons et Menus
 	 *
 	 */
 	public class Traitement implements ActionListener, ItemListener  {
@@ -350,7 +350,7 @@ public class Fenetre  extends JFrame {
 				" (http://beams.ulb.ac.be/)</html>"+
 				"\nDavid CROSS" +
 				"\nLaurent ENGLEBIN"+
-				"\nMichaël HUYSMAN"+
+				"\nMichaï¿½l HUYSMAN"+
 				"\nMarc JAUMAIN" +
 				"\nPierre MATHYS" +
 				"\nQuentin MONNEAUX" +

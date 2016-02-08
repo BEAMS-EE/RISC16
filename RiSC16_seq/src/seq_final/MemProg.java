@@ -78,8 +78,8 @@ public class MemProg extends Memoire {
 			getLabel(i, super.getCase(i, 2));
 		}
 		
-		System.out.println("Print dat table.");
-		System.out.println(labelTable);
+//		System.out.println("Print dat table.");
+//		System.out.println(labelTable);
 		
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
