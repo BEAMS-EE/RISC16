@@ -450,7 +450,7 @@ public class MemProg extends Memoire {
 
 
 		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;// Get the 10 high bits to the lower bits.
-		int immlo = Integer.decode(intermediaire) & 0x001F;
+		int immlo = Integer.decode(intermediaire) & 0x003F;
 		String immH = Integer.toString(immhi);
 		String imml=Integer.toString(immlo);
 		s="lui "+rx+","+immH;
