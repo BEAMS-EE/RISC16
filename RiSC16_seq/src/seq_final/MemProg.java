@@ -2,6 +2,7 @@ package seq_final;
 import java.awt.*;
 //import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -19,6 +20,10 @@ public class MemProg extends Memoire {
 	 */
 	private static final long serialVersionUID = -781133839929335937L;
 	private Hashtable<String, Integer> labelTable;
+	/**
+	 * List of addresses holding orphan labels (i.e. labels without instruction).
+	 */
+	private ArrayList<Integer> orphanLabels;
 
 	//  private JButton assemblage;
 	//  private Bus address;
@@ -78,8 +83,8 @@ public class MemProg extends Memoire {
 			getLabel(i, super.getCase(i, 2));
 		}
 		
-//		System.out.println("Print dat table.");
-//		System.out.println(labelTable);
+		System.out.println("Print dat table.");
+		System.out.println(labelTable);
 		
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
@@ -113,20 +118,20 @@ public class MemProg extends Memoire {
 			StringTokenizer st = new StringTokenizer(command,", \t\n\r\f");
 			// Check if the first token is a label.
 			String firstToken = st.nextToken().toLowerCase();
-			Pattern p = Pattern.compile("^[a-zA-Z]*:");
+			Pattern p = Pattern.compile("^[\\w]*:");
 			Matcher m = p.matcher(firstToken);
 			// If it is, set it as the address, and fetch the opcode (next token).
 			if (m.matches()) {
 				firstToken = firstToken.substring(0, firstToken.length()-1); // Remove the trailing ':'.
 				if(this.labelTable.get(firstToken)==null) {
-					this.labelTable.put(firstToken.toLowerCase(), address);
+					this.labelTable.put(firstToken.toLowerCase(), address);//TODO Should we really put it to lowerCase?
 				}
 				//TODO If the label is already in the table, it should be discarded (like when we import a ROM).
 				super.setCase(firstToken, address, 0);
 				// As for the command, it needs to be stripped from its label.
 				// We thus write the same command, but beginning from /after/ the label.
 				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
-				super.setCase(command.substring(firstToken.length()+1), address, 2);
+				super.setCase(command.substring(firstToken.length()+1), address, 2);//TODO Here we should trim the extra leading space.
 			}
 		}
 	}
@@ -309,6 +314,8 @@ public class MemProg extends Memoire {
 			//-------------------------------------------------------------------------------------
 			case 1: { //format RRI-type
 				
+				System.out.println("sTab[]: '" + sTab[0] + "', '" + sTab[1] + "', '" + sTab[2] + "'");
+				
 				// Missing data, throw warning.
 				if (sTab[2] == null && opcode.indexOf("jalr") == -1){
 					warning("error : data missing (RRI type)",a,assemb);
@@ -334,7 +341,10 @@ public class MemProg extends Memoire {
 //							imm=labelTable.get(sTab[2])-(a+1);
 							// opcode is BEQ, relative jump
 							if(sol == "110") {
+								System.out.println("I'm BEQ, I want that label from that table.");
+								System.out.println("Label is '" + sTab[2] + "'");
 								imm = labelTable.get(sTab[2]) - (a + 1);
+								System.out.println("imm is '" + imm + "'");
 							}
 							// JALR is an absolute jump.
 							else {
@@ -476,6 +486,7 @@ public class MemProg extends Memoire {
 		int i = 0;
 		String s = "";
 		Fich fi;
+		orphanLabels = new ArrayList<Integer>();
 
 
 		if (path.length()>3)    
@@ -519,7 +530,13 @@ public class MemProg extends Memoire {
 					// Ending with ":" => label.
 					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
 						label = firsttoken.substring(0, firsttoken.length()-1);
-						/*if (st.hasMoreTokens())*/ opcode=st.nextToken();				
+						if (st.hasMoreTokens()){
+							opcode=st.nextToken();
+						}
+						// Mark the label as orphan for later processing.
+						else {
+							orphanLabels.add(address);
+						}
 					}
 					else {
 						label="";
@@ -615,7 +632,16 @@ public class MemProg extends Memoire {
 									setCase(instructionwhitoutlabel.trim(), i, 2);
 								}
 							}
-							i++;
+							// If the current address is an orphan label, do not increment the address and free the orphan.
+							if(orphanLabels.contains(i)) {
+								orphanLabels.remove(i);
+							}
+							else {
+								i++;
+							}
+						}
+						else {
+							System.out.println("Empty line!");
 						}
 					}
 				}
