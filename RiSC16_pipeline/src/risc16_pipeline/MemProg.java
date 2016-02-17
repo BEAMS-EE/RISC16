@@ -2,6 +2,7 @@ package risc16_pipeline;
 import java.awt.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -22,6 +23,10 @@ public class MemProg extends Memoire {
 	private static final String opcode = null;
 	
 	private Hashtable<String, Integer> labelTable;
+	/**
+	 * List of addresses holding orphan labels (i.e. labels without instruction).
+	 */
+	private ArrayList<Integer> orphanLabels;
 
 	//  private JButton assemblage;
 	//  private Bus address;
@@ -442,6 +447,7 @@ public class MemProg extends Memoire {
 		int i = 0;
 		String s = "";
 		//Fich fi;
+		orphanLabels = new ArrayList<Integer>();
 
 
 		if (path.length()>3)    
@@ -479,7 +485,13 @@ public class MemProg extends Memoire {
 					}
 					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
 						label = firsttoken.substring(0, firsttoken.length()-1);
-						/*if (st.hasMoreTokens())*/ opcode=st.nextToken();				
+						if (st.hasMoreTokens()){
+							opcode=st.nextToken();
+						}
+						// Mark the label as orphan for later processing.
+						else {
+							orphanLabels.add(address);
+						}				
 					}
 					else {
 						label="";
@@ -566,7 +578,13 @@ public class MemProg extends Memoire {
 									setCase(instructionwhitoutlabel.trim(), i, 2);
 								}
 							}
-							i++;
+							// If the current address is an orphan label, do not increment the address and free the orphan.
+							if(orphanLabels.contains(i)) {
+								orphanLabels.remove(i);
+							}
+							else {
+								i++;
+							}
 						}
 					}
 				}

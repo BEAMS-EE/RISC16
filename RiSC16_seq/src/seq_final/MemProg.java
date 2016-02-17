@@ -640,9 +640,9 @@ public class MemProg extends Memoire {
 								i++;
 							}
 						}
-						else {
-							System.out.println("Empty line!");
-						}
+//						else {
+//							System.out.println("Empty line!");
+//						}
 					}
 				}
 				s = fi.getLine();
