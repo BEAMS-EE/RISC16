@@ -137,20 +137,13 @@ public class MemProg extends Memoire {
 				return "error : data missing ("+format+" type)";
 			}
 			if (st.hasMoreTokens())	{
+				//Overflow argument
 				String a3=st.nextToken();
 				System.out.println("We've got a badass overhere.");
 				try {
 					arg3=Integer.decode(a3);
 				} catch (NumberFormatException e) {
-					// If BEQ, relative jump.
-					if("beq".equals(op)) {
-						arg3=labelTable.get(a3)-(a+1);
-					}
-					// In other cases (like ADDI), absolute jump.
-					else {
-						System.out.println("Get that label '" + a3 + "'");
-						arg3 = labelTable.get(a3);
-					}
+					arg3=labelTable.get(a3)-(a+1);arg3 = labelTable.get(a3);
 				}
 			}
 			
