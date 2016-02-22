@@ -78,10 +78,11 @@
 
     \item[\notdone] In the ASM simulator, if there are instructions after the \texttt{halt}, it keeps going instead of stopping.
 
-    \item[\notdone] Jump after overflow does not work.
+    \item[\done] Jump after overflow does not work.
     \begin{itemize}
       \item In the ASM simulator, when an overflow occurs (in an ADD operation, for example), if a label is used to point to the exception routine, it does not jump to the right place.
       Instead of converting the label to a relative jump, it takes the address of the label and does \verb|PC + 1 + label_address|.
+      \item It was only a matter of label translation.
     \end{itemize}
 
     \item[\notdone] The ASM LUI is so fucked up.

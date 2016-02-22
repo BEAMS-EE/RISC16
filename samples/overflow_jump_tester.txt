@@ -1,6 +1,6 @@
-foo: addi 1,1,1
+addi 1,1,1
 addi 2,2,2
-addi 3,3,3
+foo: addi 3,3,3
 addi 4,4,4
 movi 5,0x7fff
 add 6,5,5,foo

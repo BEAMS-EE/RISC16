@@ -143,7 +143,7 @@ public class MemProg extends Memoire {
 				try {
 					arg3=Integer.decode(a3);
 				} catch (NumberFormatException e) {
-					arg3=labelTable.get(a3)-(a+1);arg3 = labelTable.get(a3);
+					arg3=labelTable.get(a3)-(a+1);
 				}
 			}
 			
