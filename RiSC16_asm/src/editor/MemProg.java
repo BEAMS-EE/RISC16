@@ -72,8 +72,10 @@ public class MemProg extends Memoire {
 			if ( instruction.indexOf("error") == -1){
 				instruction=Integer.toHexString(Integer.decode(instruction)).toUpperCase();
 				while(instruction.length()<Math.ceil(architecture.instructionSize/4.0)) instruction="0"+instruction;
-				instruction="0x"+instruction;}//bintohex
-			super.setCase(instruction, i, 1);}  
+				instruction="0x"+instruction; //bintohex
+			}
+			super.setCase(instruction, i, 1);
+		}  
 	}
 
 	public String getIns(int a, boolean assemb) {
@@ -127,7 +129,6 @@ public class MemProg extends Memoire {
 					}
 					// In other cases (like ADDI), absolute jump.
 					else {
-						System.out.println("Get that label '" + a2 + "'");
 						arg2 = labelTable.get(a2);
 					}
 				}
@@ -139,7 +140,6 @@ public class MemProg extends Memoire {
 			if (st.hasMoreTokens())	{
 				//Overflow argument
 				String a3=st.nextToken();
-				System.out.println("We've got a badass overhere.");
 				try {
 					arg3=Integer.decode(a3);
 				} catch (NumberFormatException e) {
@@ -201,8 +201,8 @@ public class MemProg extends Memoire {
 		if (st.hasMoreTokens()) intermediaire=st.nextToken();
 
 
-//		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;
-		int immhi = (Integer.decode(intermediaire)) & 0xFFC0;
+		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;
+//		int immhi = (Integer.decode(intermediaire)) & 0xFFC0;
 		int immlo = Integer.decode(intermediaire) & 0x003F;
 //		int immhi=Integer.decode(intermediaire);
 //		int immlo=immhi%64;

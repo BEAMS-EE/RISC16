@@ -85,10 +85,11 @@
       \item It was only a matter of label translation.
     \end{itemize}
 
-    \item[\notdone] The ASM LUI is so fucked up.
+    \item[\done] The ASM LUI is so fucked up.
     \begin{itemize}
       \item The shifting seems to be right, but the operand is completely different to what is expected.
       \item \texttt{lui 1,0x200} should yield \texttt{r1=0x8000}.
+      \item The operand was indeed shifted on two different places.
     \end{itemize}
 
 

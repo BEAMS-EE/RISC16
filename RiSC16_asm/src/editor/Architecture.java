@@ -411,7 +411,8 @@ public class Architecture {
 
 		int immRRR=arg3 & (int) (Math.pow(2, immRRRSize)-1);
 		int immRRI=arg2 & (int) (Math.pow(2, immRRISize)-1);
-		int immRI=(arg1 >> (16-immRISize)) & (int) (Math.pow(2, immRISize)-1);
+//		int immRI=(arg1 >> (16-immRISize)) & (int) (Math.pow(2, immRISize)-1);
+		int immRI = arg1;
 
 		if (getFormat(op).equals("RRR")){
 			num=num+(arg1 << shift_b) + (arg2 << shift_c) + (immRRR << shift_imm);
@@ -481,7 +482,7 @@ public class Architecture {
 			}
 			else if(imm>0 && imm%twoExpShift!=0){
 				int newimm=(imm/twoExpShift)*twoExpShift;
-				informationMessage("The accuracy of the value is limited to "+newimm,ligne);
+//				informationMessage("The accuracy of the value is limited to "+newimm,ligne);
 				//setCase("lui "+sTab[0]+","+newimm, a, 2);
 			}	
 		}
