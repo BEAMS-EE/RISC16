@@ -84,6 +84,13 @@
       Instead of converting the label to a relative jump, it takes the address of the label and does \verb|PC + 1 + label_address|.
     \end{itemize}
 
+    \item[\notdone] The ASM LUI is so fucked up.
+    \begin{itemize}
+      \item The shifting seems to be right, but the operand is completely different to what is expected.
+      \item \texttt{lui 1,0x200} should yield \texttt{r1=0x8000}.
+    \end{itemize}
+
+
 
 \end{itemize}
 
