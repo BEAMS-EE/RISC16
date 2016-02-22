@@ -1,6 +1,7 @@
 package editor;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
@@ -14,6 +15,10 @@ public class MemProg extends Memoire {
 
 
 	private Hashtable<String, Integer> labelTable;
+	/**
+	 * List of addresses holding orphan labels (i.e. labels without instruction).
+	 */
+	private ArrayList<Integer> orphanLabels;
 	private Architecture architecture;
 
 
@@ -60,7 +65,7 @@ public class MemProg extends Memoire {
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
-				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
+				this.movi(instruction, i);//permet de dï¿½composer en "lui" et "addi" mais il faut encore assembler
 				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
 			}
 
@@ -116,7 +121,15 @@ public class MemProg extends Memoire {
 				try {
 					arg2=Integer.decode(a2);
 				} catch (NumberFormatException e) {
-					arg2=labelTable.get(a2)-(a+1);
+					// If BEQ, relative jump.
+					if("beq".equals(op)) {
+						arg2=labelTable.get(a2)-(a+1);
+					}
+					// In other cases (like ADDI), absolute jump.
+					else {
+						System.out.println("Get that label '" + a2 + "'");
+						arg2 = labelTable.get(a2);
+					}
 				}
 			}
 			else if (format.equals("RRR") || format.equals("RRI") && !op.equals("jalr")){
@@ -125,10 +138,19 @@ public class MemProg extends Memoire {
 			}
 			if (st.hasMoreTokens())	{
 				String a3=st.nextToken();
+				System.out.println("We've got a badass overhere.");
 				try {
 					arg3=Integer.decode(a3);
 				} catch (NumberFormatException e) {
-					arg3=labelTable.get(a3)-(a+1);
+					// If BEQ, relative jump.
+					if("beq".equals(op)) {
+						arg3=labelTable.get(a3)-(a+1);
+					}
+					// In other cases (like ADDI), absolute jump.
+					else {
+						System.out.println("Get that label '" + a3 + "'");
+						arg3 = labelTable.get(a3);
+					}
 				}
 			}
 			
@@ -186,9 +208,8 @@ public class MemProg extends Memoire {
 		if (st.hasMoreTokens()) intermediaire=st.nextToken();
 
 
-		int immhi=Integer.decode(intermediaire);
-		int immlo=immhi%64;
-		immhi=(immhi/64)*64;
+		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;
+		int immlo = Integer.decode(intermediaire) & 0x003F;
 		String immH = Integer.toString(immhi);
 		String imml=Integer.toString(immlo);
 		s="lui "+rx+","+immH;
@@ -210,6 +231,7 @@ public class MemProg extends Memoire {
 		int i = 0;
 		String s = "";
 		Fich fi = new Fich(path);
+		orphanLabels = new ArrayList<Integer>();
 
 		if (fi.isOpen()) {
 			s = fi.getLine();
@@ -218,7 +240,7 @@ public class MemProg extends Memoire {
 			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
 			labelTable=new Hashtable<String, Integer>();
 
-			// première passe pour trouver les labels
+			// premiï¿½re passe pour trouver les labels
 			while (s!=null){
 				StringTokenizer st=new StringTokenizer(s);
 				if (st.hasMoreTokens()){
@@ -238,14 +260,19 @@ public class MemProg extends Memoire {
 					}
 					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
 						label = firsttoken.substring(0, firsttoken.length()-1);
-						/*if (st.hasMoreTokens())*/ opcode=st.nextToken();				
+						if (st.hasMoreTokens()){
+							opcode=st.nextToken();
+						}
+						else {
+							orphanLabels.add(address);
+						}
 					}
 					else {
 						label="";
 						opcode = firsttoken;
 					}
 					if (label!=""){
-						if(labelTable.get(label)!=null){	// label dupliqué
+						if(labelTable.get(label)!=null){	// label dupliquï¿½
 							setCase(String.valueOf(address),address,0);
 						}
 						else{
@@ -268,7 +295,7 @@ public class MemProg extends Memoire {
 			fi = new Fich(path);
 			s = fi.getLine();
 			while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller ï¿½ l'adresse @XXXX
 					int j=0;
 					s = s.substring(1, s.length());
 					i = Integer.decode(s);
@@ -280,9 +307,9 @@ public class MemProg extends Memoire {
 						++j;
 					}	   
 				}else{
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
-					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
+					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#")); // si on met un commentaire aprï¿½s l'instruction
+					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires ï¿½ l'aide de //
 
 						s = s.trim();
 						if(s.length() != 0){
@@ -324,7 +351,12 @@ public class MemProg extends Memoire {
 									setCase(instructionwhitoutlabel.trim(), i, 2);
 								}
 							}
-							i++;
+							if(orphanLabels.contains(i)) {
+								orphanLabels.remove(i);
+							}
+							else {
+								i++;
+							}
 						}
 					}
 				}

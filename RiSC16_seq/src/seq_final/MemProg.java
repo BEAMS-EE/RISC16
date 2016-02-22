@@ -314,7 +314,7 @@ public class MemProg extends Memoire {
 			//-------------------------------------------------------------------------------------
 			case 1: { //format RRI-type
 				
-				System.out.println("sTab[]: '" + sTab[0] + "', '" + sTab[1] + "', '" + sTab[2] + "'");
+//				System.out.println("sTab[]: '" + sTab[0] + "', '" + sTab[1] + "', '" + sTab[2] + "'");
 				
 				// Missing data, throw warning.
 				if (sTab[2] == null && opcode.indexOf("jalr") == -1){
@@ -341,10 +341,10 @@ public class MemProg extends Memoire {
 //							imm=labelTable.get(sTab[2])-(a+1);
 							// opcode is BEQ, relative jump
 							if(sol == "110") {
-								System.out.println("I'm BEQ, I want that label from that table.");
-								System.out.println("Label is '" + sTab[2] + "'");
+//								System.out.println("I'm BEQ, I want that label from that table.");
+//								System.out.println("Label is '" + sTab[2] + "'");
 								imm = labelTable.get(sTab[2]) - (a + 1);
-								System.out.println("imm is '" + imm + "'");
+//								System.out.println("imm is '" + imm + "'");
 							}
 							// JALR is an absolute jump.
 							else {
@@ -562,7 +562,7 @@ public class MemProg extends Memoire {
 					// If it is a "movi" opcode, skip an address, as it is an alias for two operations: LUI, then ADDI.
 					if(opcode.toLowerCase().indexOf("movi") != -1) {
 						address+=2;
-						System.out.println("if movi boucle 1 fileopen");	
+//						System.out.println("if movi boucle 1 fileopen");	
 					}
 					else address++;
 				}
