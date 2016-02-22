@@ -1,0 +1,7 @@
+foo: addi 1,1,1
+bar: addi 2,2,2
+bur: addi 3,3,3
+beq 0,0, bar
+addi 4,4,4
+addi 5,5,5
+halt
