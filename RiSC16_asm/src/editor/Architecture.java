@@ -198,6 +198,7 @@ public class Architecture {
 			setLastLWDest(0);
 			break;
 		case LUI :
+			System.out.println("immRISize="+immRISize);
 			res=(immRI << (16-immRISize)) & ((int) (Math.pow(2, immRISize)-1) << (16-immRISize));
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
@@ -472,6 +473,7 @@ public class Architecture {
 			int shift=(16-immRISize);
 			int twoExpShift=(int) (Math.pow(2,16-immRISize));
 			int maxRI=(int) (Math.pow(2, immRISize)-1);
+			System.out.println("imm="+imm+", shift="+shift+", twoExpShift="+twoExpShift+", maxRI="+maxRI);
 			if(imm >(maxRI << shift)) {
 				int newimm=((imm/twoExpShift)& maxRI) *twoExpShift;
 				informationMessage("Imm too big (RI type)\nMax Value is : "+(maxRI << shift)+"\nValue was remplaced by : "+newimm,ligne);

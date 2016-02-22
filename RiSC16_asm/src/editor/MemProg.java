@@ -122,7 +122,7 @@ public class MemProg extends Memoire {
 					arg2=Integer.decode(a2);
 				} catch (NumberFormatException e) {
 					// If BEQ, relative jump.
-					if("beq".equals(op)) {
+					if("beq".equals(op) || "bg".equals(op) || "bl".equals(op)) {
 						arg2=labelTable.get(a2)-(a+1);
 					}
 					// In other cases (like ADDI), absolute jump.
@@ -208,8 +208,12 @@ public class MemProg extends Memoire {
 		if (st.hasMoreTokens()) intermediaire=st.nextToken();
 
 
-		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;
+//		int immhi = (Integer.decode(intermediaire) >> 6) & 0x03FF;
+		int immhi = (Integer.decode(intermediaire)) & 0xFFC0;
 		int immlo = Integer.decode(intermediaire) & 0x003F;
+//		int immhi=Integer.decode(intermediaire);
+//		int immlo=immhi%64;
+//		immhi=(immhi/64)%64;
 		String immH = Integer.toString(immhi);
 		String imml=Integer.toString(immlo);
 		s="lui "+rx+","+immH;
