@@ -241,11 +241,36 @@ public class Architecture {
 			break;
 		case SUB :
 			res=Integer.decode(registers.getCase(regB,1))-Integer.decode(registers.getCase(regC,1));
+			String tmp = registers.getCase(regB, 1);
+			// Two's complement translation.
+			int tmpRes = Integer.valueOf((registers.getCase(regB, 1)).substring(2), 16).shortValue() - Integer.valueOf((registers.getCase(regC, 1)).substring(2), 16).shortValue();
+			if(isSigned) {
+				if(tmpRes < -32768 || tmpRes > 32767) {
+					overflowFlag = true;
+					System.out.println("SUB overflow");
+				}
+				else {
+					System.out.println("No sub overflow");
+				}
+			}
+			else {
+				if(res > 65535 || res < 0) {
+					overflowFlag = true;
+					System.out.println("SUB overflow");
+				}
+				else {
+					System.out.println("No sub overflow");
+				}
+			}
+				
 			// For subtraction the carry out is inverted
-			carryFlag=((res & 0x10000)==0);
+			carryFlag=((res & 0x10000)==0);//TODO WHY?
 			// For subtraction, OF=(src1(15) XOR src2(15)) AND (res(15) XNOR src2(15))
 			// Overflow when (+)-(-)=(-) and (-)-(+)=(+)
-			overflowFlag=(((regBValue & 0x8000 ^ regCValue & 0x8000)) & ~(res & 0x8000 ^ regCValue & 0x8000))!=0 ;
+//			overflowFlag=(((regBValue & 0x8000 ^ regCValue & 0x8000)) & ~(res & 0x8000 ^ regCValue & 0x8000))!=0 ;
+			if(overflowFlag) {
+				System.out.println("SUB overflow");
+			}
 			res=res & 0xFFFF;
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);

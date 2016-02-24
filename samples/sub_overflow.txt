@@ -1,0 +1,5 @@
+movi 1,0x7fff
+addi 3,3,2
+sub 2,0,1
+sub 2,2,3
+halt

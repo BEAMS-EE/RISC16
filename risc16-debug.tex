@@ -93,6 +93,10 @@
     \end{itemize}
 
     \item[\notdone] MOVI does not correctly in extended instruction set (16 regs, 24bit IS).
+    \begin{itemize}
+      \item It's okay, LUI is not supposed to shift in 24bit mode.
+      However, the movi is still broken because it adds the same value twice in the register, multiplying it by 2.
+    \end{itemize}
 
 
 
