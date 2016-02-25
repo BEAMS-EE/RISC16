@@ -277,6 +277,7 @@ public class Architecture {
 			if (isOverFlow(carryFlag,overflowFlag)){
 				setNewpc(pc+immRRR);
 				setLastInstructionBranch(true);
+				trace += " (overflow)";
 			}
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
 			setLastLWDest(0);
