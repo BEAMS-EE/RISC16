@@ -356,12 +356,12 @@ public class MemProg extends Memoire {
 					warning1("Imm too big (RI type)\nMax Value is : 65472 (0xFFC0)\nValue was remplaced by : "+newimm,a,assemb);
 					setCase("lui "+sTab[0]+","+newimm, a, 2);
 				}
-				else if(imm>0 && imm%64!=0){
-					int newimm=(imm/64)*64;
-					warning1("The accuracy of the value is limited to "+newimm,a,assemb);
-					setCase("lui "+sTab[0]+","+newimm, a, 2);
-				}
-				imm=Integer.rotateRight(imm, 6);
+//				else if(imm>0 && imm%64!=0){
+//					int newimm=(imm/64)*64;
+//					warning1("The accuracy of the value is limited to "+newimm,a,assemb);
+//					setCase("lui "+sTab[0]+","+newimm, a, 2);
+//				}
+//				imm=Integer.rotateRight(imm, 6);
 				imm = imm & 0x3FF;
 				RegC = Integer.toBinaryString(imm);
 				//if (RegC.length() > 10){
