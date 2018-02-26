@@ -163,7 +163,7 @@ public class Architecture {
 		boolean test=false;
 		int sens=0;
 		short val=0;
-
+		System.out.println("OHAI");
 		switch(Instruction.toInstru(opname)){
 		case ADD :
 			res=Integer.decode(registers.getCase(regB,1))+Integer.decode(registers.getCase(regC,1));
@@ -175,8 +175,12 @@ public class Architecture {
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
 			if (isOverFlow(carryFlag,overflowFlag)){
+				System.out.println("Overflow!");
 				setNewpc(pc+immRRR);
 				setLastInstructionBranch(true);
+			}
+			else {
+				System.out.println("No overflow.");
 			}
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
 			setLastLWDest(0);
@@ -199,7 +203,8 @@ public class Architecture {
 			break;
 		case LUI :
 			System.out.println("immRISize="+immRISize);
-			res=(immRI << (16-immRISize)) & ((int) (Math.pow(2, immRISize)-1) << (16-immRISize));
+//			res=(immRI << (16-immRISize)) & ((int) (Math.pow(2, immRISize)-1) << (16-immRISize));
+			res=(immRI << 6) & 0xFFC0;
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
 			setLastLWDest(0);
@@ -354,9 +359,13 @@ public class Architecture {
 			test=false;
 			if (isSigned){		
 				test=((short)regAValue < (short)regBValue);
+				System.out.println("test=((short)regAValue < (short)regBValue);");
+				System.out.println("test="+test+", regAValue=" + regAValue + "regBValue="+regBValue);
 			}
 			else {
 				test=(regAValue < regBValue);
+				System.out.println("test=(regAValue < regBValue);");
+				System.out.println("test="+test+", regAValue=" + regAValue + "regBValue="+regBValue);
 			}
 			if(test){
 				System.out.println("branch");
@@ -542,7 +551,8 @@ public class Architecture {
 	}
 
 	public boolean isOverFlow(boolean carry,boolean overflow){
-		return (isSigned)? (branchOnCarry & overflow) : (branchOnCarry & carry)	;	
+		System.out.println("carry:" + carry + " overflow:"+ overflow+" branchOnCarry: "+branchOnCarry + " isSigned: "+isSigned);
+		return (isSigned)? (branchOnCarry & overflow) : (branchOnCarry & carry)	;
 	}
 
 
