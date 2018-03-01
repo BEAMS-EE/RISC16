@@ -168,9 +168,12 @@ public class Architecture {
 		case ADD :
 			res=Integer.decode(registers.getCase(regB,1))+Integer.decode(registers.getCase(regC,1));
 			carryFlag=((res & 0x10000)!=0);
+			System.out.println("carryflag: " + carryFlag);
 			// For subtraction, OF=(src1(15) XNOR src2(15)) AND (res(15) XOR src1(15))
 			// Overflow when (+)+(+)=(-) and (-)+(-)=(+)
-			overflowFlag=((~(regBValue & 0x8000 ^ regCValue & 0x8000)) & (res & 0x8000 ^ regBValue & 0x8000))!=0 ;
+//			overflowFlag=((~(regBValue & 0x8000 ^ regCValue & 0x8000)) & (res & 0x8000 ^ regBValue & 0x8000))!=0 ;
+			// The overflow flag and the carry flag are the same, you goddamn dimwit.
+			overflowFlag = carryFlag;
 			res=res & 0xFFFF;
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
@@ -292,16 +295,19 @@ public class Architecture {
 			sens=0;
 			if(val<0)
 				sens=1;
-			//sens=(regCValue >> 4) & 0x1;
 			res = logicalShift(regBValue,sens,val);//regCValue & 0x1F);
-			res=res & 0xFFFF;
-			registers.write(regA, res);
 			if (sens==0){
-				if(predictShiftOverFlow(regBValue,val)){//regCValue & 0x1F)) {
+				if(res > 0xFFFF) {
+					// Does not detect if shift so much that res becomes negative.
+					// On the other hand, this only happens if we shift 16 bits to
+					// the left. If you shift a 16-bit number 16 bits to the left,
+					// it's bound to overflow. Don't be stupid.
 					setNewpc(pc+immRRR);
 					setLastInstructionBranch(true);
 				}
 			}
+			res=res & 0xFFFF;
+			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
 			setLastLWDest(0);
@@ -311,16 +317,15 @@ public class Architecture {
 			sens=0;
 			if(val<0)
 				sens=1;
-			//sens=(regCValue >> 4) & 0x1;
 			res = arithmShift(regBValue,sens,val);//regCValue & 0x1F);
-			res=res & 0xFFFF;
-			registers.write(regA, res);
 			if (sens==0){
-				if(predictShiftOverFlow(regBValue,val)){//regCValue & 0x1F)) {
+				if(res > 0xFFFF){//regCValue & 0x1F)) {
 					setNewpc(pc+immRRR);
 					setLastInstructionBranch(true);
 				}
 			}
+			res=res & 0xFFFF;
+			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
 			setLastLWDest(0);
@@ -558,10 +563,12 @@ public class Architecture {
 
 	public int logicalShift(int num,int sens,int n){
 		if (sens==0){
-			return (short)(num << n);
+//			return (short)(num << n);
+			return (num << n);
 		}
 		else if (sens==1){
-			return  (short)(num >>> (-n));// logical right shifts
+//			return  (short)(num >>> (-n));// logical right shifts
+			return  (num >>> (-n));// logical right shifts
 		}
 		else return -1;		
 	}
@@ -569,10 +576,10 @@ public class Architecture {
 
 	public int arithmShift(int num,int sens,int n){
 		if (sens==0){
-			return (short)(num << n);
+			return (num << n);
 		}
 		else if (sens==1){
-			return (short)num >> (-n);
+			return num >> (-n);
 		}
 		else return -1;		
 	}
