@@ -3,6 +3,9 @@ package editor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -22,7 +25,7 @@ import javax.swing.event.InternalFrameListener;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Main extends JFrame implements ActionListener{
@@ -36,7 +39,7 @@ public class Main extends JFrame implements ActionListener{
 	private JRadioButtonMenuItem preset1;
 	private JRadioButtonMenuItem preset2;
 	private JRadioButtonMenuItem preset3;
-	private JRadioButtonMenuItem preset4;	
+	private JRadioButtonMenuItem preset4;
 	private JRadioButtonMenuItem is1;
 	private JRadioButtonMenuItem is2;
 	private JRadioButtonMenuItem is3;
@@ -82,7 +85,13 @@ public class Main extends JFrame implements ActionListener{
 
 	public Main() {
 		super("RiSC 16   ---   Instruction Set Simulator   ---   ULB-BEAMS 2009");
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		//screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		screenSize = new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight());
+
+		System.out.println(screenSize.getWidth());
+		System.out.println(screenSize.getHeight());
+
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 700);
@@ -98,10 +107,10 @@ public class Main extends JFrame implements ActionListener{
 		desktop.setBackground(Color.DARK_GRAY);
 
 		/* EDITOR FRAME*/
-		editorFrame = new JInternalFrame("editor",true,false,true,true); 
+		editorFrame = new JInternalFrame("editor",true,false,true,true);
 		editorFrame.setSize(2*(screenSize.width-20)/3,(screenSize.height-120)/2);
 		editorFrame.setMinimumSize(new Dimension(400,200));
-		editorFrame.setVisible(true);	
+		editorFrame.setVisible(true);
 		editorFrame.setLocation(0,0);
 		setEditor(new EditorTab());
 		editorFrame.add(editor);
@@ -121,13 +130,13 @@ public class Main extends JFrame implements ActionListener{
 		/* REGISTERS FRAME*/
 		registers=new Registers(regnum);
 		regframe=new JInternalFrame("Registers",true,false,false,true);
-		regframe.setBackground(new Color(220, 220, 220));	
+		regframe.setBackground(new Color(220, 220, 220));
 		regframe.setLayout(new BorderLayout ());
 		desktop.add(regframe);
 		regframe.setVisible(false);
 
 		/* DEBUG FRAME*/
-		debugFrame = new JInternalFrame("debug",true,true,true,true); 
+		debugFrame = new JInternalFrame("debug",true,true,true,true);
 		debugFrame.setVisible(false);
 		desktop.add(debugFrame);
 		debugFrame.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -147,7 +156,7 @@ public class Main extends JFrame implements ActionListener{
 
 		/* CONSOLE FRAME*/
 		desktop.add(createConsole());
-		
+
 		desktop.setVisible(true);
 		this.getContentPane().add(desktop);
 		this.setVisible(true);
@@ -179,13 +188,15 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	private boolean assemble(){
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		//screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		screenSize = new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight());
 		if (boolDebug){
 			editor.assembler();
 			return true;
 		}
 		else{
-			
+
 		try {
 			if (isa==-1)
 				arch=new Architecture("archi",instructionSet,regnum,instruSize,true,isSigned);
@@ -239,11 +250,11 @@ public class Main extends JFrame implements ActionListener{
 			setDebugger(new Debugger(arch,memprog,ram,registers));
 			debugFrame.add(debugger);
 			debugFrame.setSize(2*(screenSize.width-20)/3,(screenSize.height-120)/2);
-			debugFrame.setMinimumSize(new Dimension(400,200));	
+			debugFrame.setMinimumSize(new Dimension(400,200));
 			debugFrame.setLocation(0,(screenSize.height-120)/2);
 			debugFrame.setVisible(true);
 			debugFrame.moveToFront();
-			
+
 			editorFrame.setSize(2*(screenSize.width-20)/3,(screenSize.height-120)/2);
 
 			boolDebug=true;
@@ -251,11 +262,11 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 
-	/**	
+	/**
 	 * Console
 	 */
 	private JInternalFrame createConsole(){
-		
+
 		final JTextArea ta = new JTextArea(10,10);
 		ta.setEditable(false);
 		ta.setLineWrap(true);
@@ -279,10 +290,10 @@ public class Main extends JFrame implements ActionListener{
 		PrintStream ps = new PrintStream(new TextAreaOutputStream(ta));
 		System.setOut(ps);
 		System.setErr(ps);
-		
+
 		return consoleFrame;
 	}
-	
+
 	class TextAreaOutputStream extends OutputStream {
 
 		private JTextArea ta;
@@ -297,10 +308,10 @@ public class Main extends JFrame implements ActionListener{
 		}
 	}
 
-	/**	
+	/**
 	 * Barre de Menu
 	 */
-	private JMenuBar createMenuBar() {	
+	private JMenuBar createMenuBar() {
 		JMenuBar maBarre = new JMenuBar();
 		maBarre.add(getJMenuFile());
 		maBarre.add(getJMenuArchitecture());
@@ -374,7 +385,7 @@ public class Main extends JFrame implements ActionListener{
 
 		menuArchitecture.add(ISApreset);
 		menuArchitecture.addSeparator();
-		menuArchitecture.add(instructionSet);	
+		menuArchitecture.add(instructionSet);
 		menuArchitecture.add(regMenu);
 		menuArchitecture.add(sizes);
 		menuArchitecture.add(arithmetic);
@@ -442,7 +453,7 @@ public class Main extends JFrame implements ActionListener{
 
 	private void runExtSimulation(boolean isPipeline) {
 
-		// si souhait de changer path, voir comment gérer les Properties
+		// si souhait de changer path, voir comment gï¿½rer les Properties
 		// http://java.sun.com/docs/books/tutorial/essential/environment/properties.html
 		String jarpath;
 		if (isPipeline){
@@ -468,9 +479,9 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 
-/** LISTENERS **/	
+/** LISTENERS **/
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (e.getSource().equals(preset1)){
 			instruSize=16;
 			isa=0;
@@ -551,7 +562,7 @@ public class Main extends JFrame implements ActionListener{
 			isSigned=true;
 
 		}  else if (e.getSource().equals(usarithmetic)) {
-			isSigned=false;		
+			isSigned=false;
 
 		} else if (e.getSource().equals(isOtherConfiguration)) {
 
@@ -573,7 +584,7 @@ public class Main extends JFrame implements ActionListener{
 			sizeDialog.pack();
 			sizeDialog.setVisible(true);
 
-			int [] retour = sizeDialog.getDonnees();	
+			int [] retour = sizeDialog.getDonnees();
 			instruSize=retour[0];
 			immRISize=retour[1];
 			immRRISize=retour[2];
@@ -583,7 +594,7 @@ public class Main extends JFrame implements ActionListener{
 			if(!dialogHelpVisible){
 //				String s= "help"
 //					+ System.getProperty("file.separator" )
-//					+ "index2.html"; 
+//					+ "index2.html";
 //				System.out.println(s);
 //				URL index = ClassLoader.getSystemResource(s);
 //				System.out.println(index);
@@ -620,7 +631,7 @@ public class Main extends JFrame implements ActionListener{
 			}
 
 		} else if (e.getSource().equals(hConsole)){
-			consoleFrame.setVisible(true);	
+			consoleFrame.setVisible(true);
 			consoleFrame.moveToFront();
 
 		} else if (e.getSource().equals(hAbout)){
@@ -631,12 +642,12 @@ public class Main extends JFrame implements ActionListener{
 			"\n http://www.engr.umd.edu/~blj/RiSC"+
 			"\n\nSimulator created by : " +
 			"\n<html><font color=blue>ULB - BEAMS</font>"+
-			" (http://beams.ulb.ac.be/)</html>"+		
+			" (http://beams.ulb.ac.be/)</html>"+
 			"\nLaurent ENGLEBIN"+
 			"\nMarc JAUMAIN" +
 			"\nPierre MATHYS" +
 			"\nMichel OSEE" +
-			"\nAliénor RICHARD\n";
+			"\nAliï¿½nor RICHARD\n";
 
 			JOptionPane.showMessageDialog(null, text ,"ABOUT", JOptionPane.INFORMATION_MESSAGE);
 
@@ -646,9 +657,9 @@ public class Main extends JFrame implements ActionListener{
 		updateButStatus();
 	}
 
-	
-/** AUTRES FONCTIONS UTILES POUR MAJ de L'ARCHITECTURE **/	
-	
+
+/** AUTRES FONCTIONS UTILES POUR MAJ de L'ARCHITECTURE **/
+
 	private void updateButStatus() {
 		if (isa!=0 && regnum!=8){
 			simButton.setEnabled(false);
@@ -679,5 +690,3 @@ public class Main extends JFrame implements ActionListener{
 		return (instruSize-osize-rsize <=16) ;
 	}
 }
-
-
