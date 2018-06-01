@@ -1,4 +1,4 @@
-### Command-line generation of the jar, from the main directory of any simulator, e.g. RiSC16_asm :
+### Command-line generation of the jar, from the main directory, of any simulator e.g. RiSC16_asm :
 
 Build: (you need *apache ant* to build)
 ```
