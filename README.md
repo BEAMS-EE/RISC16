@@ -1,14 +1,14 @@
-### Command-line generation of the jar, example for the sequential simulator, from the ```bin/``` directory:
+### Command-line generation of the jar, from the main directory, of any simulator e.g. RiSC16_asm :
 
+Build: (you need *apache ant* to build)
 ```
-jar -c -f ../jar/RiSC16_pipelinev1.1.jar -m MANIFEST.MF risc16_pipeline/*
+cd RiSC16_asm
+ant
 ```
 
-with the manifest simply pointing to the entry point:
-
+Launch:
 ```
-Manifest-Version: 1.0
-Main-Class: risc16_pipeline.Principal
+java -jar *generated-file*.jar
 ```
 
 - The movi pseudo-instruction is replaced with the combination of lui and addi. The simulator currently requires the user to add a nop instruction after the movi, so that during the assembly step, the couple movi/nop is replaced with lui/addi.
