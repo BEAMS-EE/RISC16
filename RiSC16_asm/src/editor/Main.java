@@ -84,6 +84,8 @@ public class Main extends JFrame implements ActionListener{
 		super("RiSC 16   ---   Instruction Set Simulator   ---   ULB-BEAMS 2009");
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+		System.out.println("Hello World!");
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 700);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -277,8 +279,8 @@ public class Main extends JFrame implements ActionListener{
 				ta.setText("");
 			}});
 		PrintStream ps = new PrintStream(new TextAreaOutputStream(ta));
-		System.setOut(ps);
-		System.setErr(ps);
+		//System.setOut(ps);
+		//System.setErr(ps);
 		
 		return consoleFrame;
 	}
@@ -442,7 +444,7 @@ public class Main extends JFrame implements ActionListener{
 
 	private void runExtSimulation(boolean isPipeline) {
 
-		// si souhait de changer path, voir comment gérer les Properties
+		// si souhait de changer path, voir comment gï¿½rer les Properties
 		// http://java.sun.com/docs/books/tutorial/essential/environment/properties.html
 		String jarpath;
 		if (isPipeline){
@@ -636,7 +638,7 @@ public class Main extends JFrame implements ActionListener{
 			"\nMarc JAUMAIN" +
 			"\nPierre MATHYS" +
 			"\nMichel OSEE" +
-			"\nAliénor RICHARD\n";
+			"\nAliï¿½nor RICHARD\n";
 
 			JOptionPane.showMessageDialog(null, text ,"ABOUT", JOptionPane.INFORMATION_MESSAGE);
 

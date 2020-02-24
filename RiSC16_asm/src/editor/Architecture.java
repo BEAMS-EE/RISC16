@@ -63,6 +63,7 @@ public class Architecture {
 		this.instructionSize=instruSize;
 		this.branchOnCarry=branchOnCarry;
 		this.isSigned=isSigned;
+		System.out.println("isSigned: "+isSigned);
 
 		initConstants();
 
@@ -163,17 +164,34 @@ public class Architecture {
 		boolean test=false;
 		int sens=0;
 		short val=0;
-		System.out.println("OHAI");
 		switch(Instruction.toInstru(opname)){
 		case ADD :
 			res=Integer.decode(registers.getCase(regB,1))+Integer.decode(registers.getCase(regC,1));
+//			String tmp = registers.getCase(regB, 1);
+			int tmpAddRes = Integer.valueOf((registers.getCase(regB, 1)).substring(2), 16).shortValue() + Integer.valueOf((registers.getCase(regC, 1)).substring(2), 16).shortValue();
+			if(isSigned) {
+				if (tmpAddRes < -32768 || tmpAddRes > 32767) {
+					overflowFlag = true;
+					System.out.println("Signed ADD overflow, results is "+ tmpAddRes);
+				}
+				else {
+					System.out.println("No signed ADD overflow.");
+				}
+			}
+			else {
+				if (res > 65535 || res < 0) {
+					overflowFlag = true;
+					System.out.println("Unsigned ADD overflow, result is "+tmpAddRes);
+				}
+				else {
+					System.out.println("No unsigned ADD overflow.");
+				}
+			}
 			carryFlag=((res & 0x10000)!=0);
 			System.out.println("carryflag: " + carryFlag);
 			// For subtraction, OF=(src1(15) XNOR src2(15)) AND (res(15) XOR src1(15))
 			// Overflow when (+)+(+)=(-) and (-)+(-)=(+)
 //			overflowFlag=((~(regBValue & 0x8000 ^ regCValue & 0x8000)) & (res & 0x8000 ^ regBValue & 0x8000))!=0 ;
-			// The overflow flag and the carry flag are the same, you goddamn dimwit.
-			overflowFlag = carryFlag;
 			res=res & 0xFFFF;
 			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
@@ -249,11 +267,11 @@ public class Architecture {
 			break;
 		case SUB :
 			res=Integer.decode(registers.getCase(regB,1))-Integer.decode(registers.getCase(regC,1));
-			String tmp = registers.getCase(regB, 1);
+			String tmpSub = registers.getCase(regB, 1);
 			// Two's complement translation.
-			int tmpRes = Integer.valueOf((registers.getCase(regB, 1)).substring(2), 16).shortValue() - Integer.valueOf((registers.getCase(regC, 1)).substring(2), 16).shortValue();
+			int tmpSubRes = Integer.valueOf((registers.getCase(regB, 1)).substring(2), 16).shortValue() - Integer.valueOf((registers.getCase(regC, 1)).substring(2), 16).shortValue();
 			if(isSigned) {
-				if(tmpRes < -32768 || tmpRes > 32767) {
+				if(tmpSubRes < -32768 || tmpSubRes > 32767) {
 					overflowFlag = true;
 					System.out.println("SUB overflow");
 				}

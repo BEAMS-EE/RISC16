@@ -1,0 +1,6 @@
+addi 1,0,-1
+addi 2,0,1
+add 3,2,1,jump
+addi 6,0,2
+jump: addi 5,0,1
+halt
