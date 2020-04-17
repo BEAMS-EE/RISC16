@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.DisplayMode;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -85,15 +86,25 @@ public class Main extends JFrame implements ActionListener{
 
 	public Main() {
 		super("RiSC 16   ---   Instruction Set Simulator   ---   ULB-BEAMS 2009");
-		//screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		screenSize = new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight());
-
+		// screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		// GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = environment.getScreenDevices();
+        DisplayMode dm = gs[0].getDisplayMode();
+        int width = dm.getWidth();
+        int height = dm.getHeight();
+        for (int i = 0; i < gs.length; i++) {
+            dm = gs[i].getDisplayMode();
+            if (dm.getWidth() < width) {
+                width = dm.getWidth();
+            }
+            if (dm.getHeight() < height) {
+                height = dm.getHeight();
+            }
+        } 
+		screenSize = new Dimension(width, height);
 		System.out.println(screenSize.getWidth());
 		System.out.println(screenSize.getHeight());
-
-
-		System.out.println("Hello World!");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 700);
@@ -190,9 +201,6 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	private boolean assemble(){
-		//screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		screenSize = new Dimension(gd.getDisplayMode().getWidth(),gd.getDisplayMode().getHeight());
 		if (boolDebug){
 			editor.assembler();
 			return true;
