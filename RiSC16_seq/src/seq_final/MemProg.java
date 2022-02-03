@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 public class MemProg extends Memoire {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -781133839929335937L;
 	private Hashtable<String, Integer> labelTable;
@@ -36,12 +36,12 @@ public class MemProg extends Memoire {
 		super.getJButtonAss().addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				assembler();			
+				assembler();
 			}});
 		super.getJButtonRM().addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				resetMemory();			
+				resetMemory();
 			}});
 	}
 	/////////////////////////////////////////////////////////////////////SEQ c comme ci dessous qu'on init la ROM
@@ -57,7 +57,7 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	public void latch(){
 		if (getCurrentAddr()>=0) {
-			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse �a, on doit m�me plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
+			//String instr = getIns(super.getCurrentAddr(), false);//si on laisse ça, on doit même plus appuyer sur assembler mais la colonne du milieu n'est pas raffraichie...
 			String instr = getCase(super.getCurrentAddr(),1);
 
 			if (instr.indexOf("error") != -1)  // si c est une erreur >> nop
@@ -82,14 +82,14 @@ public class MemProg extends Memoire {
 		for (int i = 0; i < super.getAddressMax(); ++i) {
 			getLabel(i, super.getCase(i, 2));
 		}
-		
+
 		System.out.println("Print dat table.");
 		System.out.println(labelTable);
-		
+
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
-				this.movi(instruction, i);//permet de d�composer en "lui" et "addi" mais il faut encore assembler
+				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
 				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
 			}
 
@@ -97,10 +97,10 @@ public class MemProg extends Memoire {
 				instruction=Integer.toHexString(Integer.parseInt(instruction,2)).toUpperCase();
 				while(instruction.length()<4) instruction="0"+instruction;
 				instruction="0x"+instruction;}//bintohex
-			super.setCase(instruction, i, 1);}  
+			super.setCase(instruction, i, 1);}
 	}
-	
-	
+
+
 	public void resetMemory(){
 		for(int i=0;i < super.getAddressMax() ; i++) {
 			super.setCase(Integer.toString(i),i,0);
@@ -111,7 +111,7 @@ public class MemProg extends Memoire {
 		labelTable=null;
 	}
 	// ////////////////////////////////////////////////////////////////////////////
-	
+
 	public void getLabel(int address, String command) {
 		if(command != null) {
 			// Split 'command'.
@@ -139,7 +139,7 @@ public class MemProg extends Memoire {
 	// ////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Returns back the opcode of the instruction at the given address.
-	 * 
+	 *
 	 * @param a Address
 	 * @param assemb True if assembling
 	 * @return String of the opcode on 3 bits.
@@ -167,8 +167,8 @@ public class MemProg extends Memoire {
 			//-------------------------------------------------------------------------------------
 			StringTokenizer st = new StringTokenizer(asm,", \t\n\r\f");
 			String opcode = "";
-			
-			
+
+
 			// Check if the first token is a label.
 			String firstToken = st.nextToken().toLowerCase();
 //			Pattern p = Pattern.compile("[a-zA-Z]*:");
@@ -189,9 +189,9 @@ public class MemProg extends Memoire {
 //			else {
 				opcode = firstToken;
 //			}
-			
-			
-			
+
+
+
 			if (opcode.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
 				sol = "001";
 				format = 1;
@@ -206,19 +206,19 @@ public class MemProg extends Memoire {
 			}
 			else if (opcode.indexOf("lui") != -1) {
 				sol = "011";
-				format = 2;		
+				format = 2;
 			}
 			else if (opcode.indexOf("sw") != -1) {
 				sol = "101";
-				format = 1;			
+				format = 1;
 			}
 			else if (opcode.indexOf("lw") != -1) {
 				sol = "100";
-				format = 1;			
+				format = 1;
 			}
 			else if (opcode.indexOf("beq") != -1) {
 				sol = "110";
-				format = 1;				
+				format = 1;
 			}
 			else if (opcode.indexOf("jalr") != -1) {
 				sol = "111";
@@ -243,9 +243,9 @@ public class MemProg extends Memoire {
 				}
 
 			//-------------------------------------------------------------------------------------
-			//  d�composition du format  -> sTab[0,1,2]
+			//  décomposition du format  -> sTab[0,1,2]
 			//-------------------------------------------------------------------------------------
-			
+
 			for(int i=0;i<3;i++){
 				if (st.hasMoreTokens())	{
 					sTab[i]=st.nextToken();
@@ -257,7 +257,7 @@ public class MemProg extends Memoire {
 			String RegC = new String();
 
 			if (sTab[0] == null || sTab[1] == null){
-				warning("error : format error",a, assemb);   
+				warning("error : format error",a, assemb);
 				return "error : format error";
 			}
 
@@ -269,7 +269,7 @@ public class MemProg extends Memoire {
 			RegA = Integer.toBinaryString( Integer.parseInt(sTab[0]));
 			////system.out.println("REGAAAAAAAA"+RegA+"T"+sTab[0]);
 			if (RegA.length() > 3){
-				warning("error : format error (rA)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+				warning("error : format error (rA)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);
 				return "error : format error (rA)";
 			}
 			while (RegA.length() < 3)     RegA = "0" + RegA;
@@ -295,14 +295,14 @@ public class MemProg extends Memoire {
 				//RegB = Integer.toBinaryString( (int) (sTab[1].charAt(0) - '0'));
 				RegB = Integer.toBinaryString( Integer.parseInt(sTab[1]));
 				if (RegB.length() > 3){
-					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);
 					return "error : format error (rB)";
 				}
 				while (RegB.length() < 3)     RegB = "0" + RegB;
 				//RegC = Integer.toBinaryString( (int) (sTab[2].charAt(0) - '0'));
 				RegC = Integer.toBinaryString( Integer.parseInt(sTab[2]));
 				if (RegC.length() > 3){
-					warning("error : format error (rC)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					warning("error : format error (rC)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);
 					return "error : format error (rC)";
 				}
 				while (RegC.length() < 3)     RegC = "0" + RegC;
@@ -313,9 +313,9 @@ public class MemProg extends Memoire {
 			//  RRI  (63 > -64)
 			//-------------------------------------------------------------------------------------
 			case 1: { //format RRI-type
-				
+
 //				System.out.println("sTab[]: '" + sTab[0] + "', '" + sTab[1] + "', '" + sTab[2] + "'");
-				
+
 				// Missing data, throw warning.
 				if (sTab[2] == null && opcode.indexOf("jalr") == -1){
 					warning("error : data missing (RRI type)",a,assemb);
@@ -326,12 +326,12 @@ public class MemProg extends Memoire {
 				// Extract register B from the second token.
 				RegB = Integer.toBinaryString( Integer.parseInt(sTab[1]));
 				if (RegB.length() > 3){
-					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);   	  
+					warning("error : format error (rB)"+"\n"+"The RiSC-16 contains only 8 registers (0->7)",a, assemb);
 					return "error : format error (rB)";
 				}
 				while (RegB.length() < 3)     RegB = "0" + RegB;
 
-				
+
 				if (opcode.indexOf("jalr") == -1) {
 					int imm;
 					try {
@@ -389,7 +389,7 @@ public class MemProg extends Memoire {
 				try {
 					imm=Integer.decode(sTab[1]);
 				} catch (NumberFormatException e) {
-					warning("error : format error",a);   
+					warning("error : format error",a);
 					return "error : format error arg1";
 				}
 				if(imm>65472) {
@@ -481,7 +481,7 @@ public class MemProg extends Memoire {
 		String p= new String("");
 		this.fileopen(p);
 	}
-	
+
 	public void fileopen(String path) {
 		int i = 0;
 		String s = "";
@@ -489,7 +489,7 @@ public class MemProg extends Memoire {
 		orphanLabels = new ArrayList<Integer>();
 
 
-		if (path.length()>3)    
+		if (path.length()>3)
 			fi = new Fich(path);
 		else                    {
 			fi = new Fich();
@@ -501,7 +501,7 @@ public class MemProg extends Memoire {
 		if (fi.isOpen()) {
 			s = fi.getLine();
 
-			int address=0; 
+			int address=0;
 			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
 			labelTable=new Hashtable<String, Integer>();
 
@@ -562,20 +562,20 @@ public class MemProg extends Memoire {
 					// If it is a "movi" opcode, skip an address, as it is an alias for two operations: LUI, then ADDI.
 					if(opcode.toLowerCase().indexOf("movi") != -1) {
 						address+=2;
-//						System.out.println("if movi boucle 1 fileopen");	
+//						System.out.println("if movi boucle 1 fileopen");
 					}
 					else address++;
 				}
 				s = fi.getLine();
 			}
 
-		
+
 			// Open the file a second time.
 			//TODO This is not good performance-wise. Do not open the same file twice in a row.
 			fi = new Fich(fi.getPath());
 			s = fi.getLine();
 			while (s != null){
-				if(s.indexOf("@")==0){//aller � l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
 					int j=0;
 					s = s.substring(1, s.length());// Address to go to.
 					i = Integer.decode(s);// Integer version of the address
@@ -585,7 +585,7 @@ public class MemProg extends Memoire {
 							setCase(s, j, 2);
 						}
 						++j;
-					}	   
+					}
 				}else{
 					// If there is a comment after the command, remove it.
 					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//"));// Comment after the instruction.
@@ -602,7 +602,7 @@ public class MemProg extends Memoire {
 
 								if(firsttoken.charAt(firsttoken.length()-1)==':'){
 									label = firsttoken.substring(0, firsttoken.length()-1);
-									if (st.hasMoreTokens()) opcode=st.nextToken();				
+									if (st.hasMoreTokens()) opcode=st.nextToken();
 								}
 								else {
 									label="";
@@ -625,7 +625,7 @@ public class MemProg extends Memoire {
 									arg3=st.nextToken(", \t\n\r\f");
 									instructionwhitoutlabel+=", "+arg3;
 								}
-								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi 
+								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi
 									movi(instructionwhitoutlabel.trim(),i);
 									++i;
 								}else{//si ce n'est pas un movi
@@ -649,11 +649,11 @@ public class MemProg extends Memoire {
 			}
 			fi.openclose(); // ferme le stream
 		}
-		
+
 		this.assembler(); // assemblage a la fin du chargement
 	}
 
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	public void filesave() {
 		Fich fi = new Fich();
@@ -665,20 +665,20 @@ public class MemProg extends Memoire {
 
 			while(i<addressMax){
 
-				
+
 					adress = Integer.toString(i);
-		
+
 				if(super.getCase(i,2).indexOf("nop")== -1){
 					if(adressWrite){
 						fi.setLine("@"+adress);
-						
+
 						try {
 							Integer.decode(super.getCase(i,0));
 							fi.setLine(super.getCase(i, 2));
 						} catch (Exception e) {
 							fi.setLine(super.getCase(i,0)+": "+super.getCase(i, 2));
 						}
-						
+
 						adressWrite=false;
 					}else{
 						try {

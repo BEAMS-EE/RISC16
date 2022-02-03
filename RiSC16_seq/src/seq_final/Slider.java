@@ -8,13 +8,13 @@ import java.util.Hashtable;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Slider extends JPanel implements ChangeListener {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;//?
 
@@ -39,25 +39,25 @@ public class Slider extends JPanel implements ChangeListener {
 
 		labelTable.put(new Integer( 0 ),new JLabel("1"));
 		labelTable.put(new Integer( 1 ),new JLabel(""));
-		labelTable.put(new Integer( 2 ),new JLabel("3") );      
-		labelTable.put(new Integer( 3 ),new JLabel("") );                    
+		labelTable.put(new Integer( 2 ),new JLabel("3") );
+		labelTable.put(new Integer( 3 ),new JLabel("") );
 		labelTable.put(new Integer( 4 ),new JLabel("5") );
-		labelTable.put(new Integer( 5 ),new JLabel("") );                  
-		labelTable.put(new Integer( 6 ),new JLabel("7") );             
-		labelTable.put(new Integer( 7 ),new JLabel("") );                
+		labelTable.put(new Integer( 5 ),new JLabel("") );
+		labelTable.put(new Integer( 6 ),new JLabel("7") );
+		labelTable.put(new Integer( 7 ),new JLabel("") );
 		labelTable.put(new Integer( 8 ),new JLabel("9") );
 		labelTable.put(new Integer( 9 ),new JLabel("") );
 		labelTable.put(new Integer( 10 ),new JLabel("11") );
-		labelTable.put(new Integer( 11 ),new JLabel("") );      
-		labelTable.put(new Integer( 12 ),new JLabel("13") );                    
+		labelTable.put(new Integer( 11 ),new JLabel("") );
+		labelTable.put(new Integer( 12 ),new JLabel("13") );
 		labelTable.put(new Integer( 13 ),new JLabel("") );
-		labelTable.put(new Integer( 14 ),new JLabel("15") );                  
-		labelTable.put(new Integer( 15 ),new JLabel("") );             
-		labelTable.put(new Integer( 16 ),new JLabel("17") );                
+		labelTable.put(new Integer( 14 ),new JLabel("15") );
+		labelTable.put(new Integer( 15 ),new JLabel("") );
+		labelTable.put(new Integer( 16 ),new JLabel("17") );
 		labelTable.put(new Integer( 17 ),new JLabel("") );
 		labelTable.put(new Integer( 18 ),new JLabel("19") );
 		labelTable.put(new Integer( 19 ),new JLabel("") );
-		labelTable.put(new Integer( 20 ),new JLabel("21") );      
+		labelTable.put(new Integer( 20 ),new JLabel("21") );
 
 
 		slide.setSnapToTicks(true) ;
@@ -105,7 +105,7 @@ public class Slider extends JPanel implements ChangeListener {
 		constraint.weightx = 2.0;
 		constraint.gridwidth = 5;
 		constraint.gridx = 0;
-		constraint.gridy = 1;   	
+		constraint.gridy = 1;
 		add(slide, constraint);
 
 		setBackground(new Color(220, 220, 220));

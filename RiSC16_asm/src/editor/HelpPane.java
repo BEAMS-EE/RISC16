@@ -7,7 +7,7 @@ import java.net.*;
 import java.awt.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class HelpPane extends JEditorPane {
@@ -20,9 +20,9 @@ public class HelpPane extends JEditorPane {
  */
 public HelpPane(URL hlpURL) {
 
-    helpURL = hlpURL; 
+    helpURL = hlpURL;
     setBackground(new Color(220, 220, 220));
-    
+
     setEditable(false);
     try {
     	setPage(helpURL);
@@ -40,7 +40,7 @@ public HelpPane(URL hlpURL) {
             }
         }
     });
-   
+
     // end constructor
 }
 }//end HelpWindow class

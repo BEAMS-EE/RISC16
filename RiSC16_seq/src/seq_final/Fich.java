@@ -6,7 +6,7 @@ import javax.swing.*;
 //import java.lang.*;
 
 //////////////////////////////////////////////////////////////////////////////
-// Préparation du flux d'entrée
+// PrÃ©paration du flux d'entrÃ©e
 //http://java.sun.com/j2se/1.5.0/docs/api/java/io/BufferedInputStream.html
 //src: http://www.scit.wlv.ac.uk/~jphb/java/basicio.html
 //    //system.out.println(f.getPath()); // --> 11345
@@ -14,7 +14,7 @@ import javax.swing.*;
 
 public class Fich extends JPanel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 8174446083380149969L;
 
@@ -35,7 +35,7 @@ public class Fich extends JPanel {
 
 	//////////////////////////////////////////////////////////////////////////////
 	  public Fich() {
-		   
+
 		    String directory = System.getProperty("user.dir");
 			fc = new JFileChooser(directory);
 			//chooser.removeChoosableFileFilter(chooser.getFileFilter());
@@ -48,7 +48,7 @@ public class Fich extends JPanel {
 		            return "memory files (*.txt)";
 		        }
 		    });
-		    
+
 		  }
 
 	public Fich(String path) {

@@ -35,7 +35,7 @@ public class Alu extends Chip{
 	/////////////////////////////////////////////////////////////////////
 	public boolean checkInput(){  // n effectue des actions que lorsqu il recoit signal controle
 
-		if (ctl.isActive()){         
+		if (ctl.isActive()){
 
 			if(rctl == false){
 				setBusy();
@@ -49,25 +49,25 @@ public class Alu extends Chip{
 		return rctl;
 	}
 
-	public void act(){ 
+	public void act(){
 		++delay;
 
 		if (state==2)     setIdle();
 
-		if (checkInput())  {        //  [verif si les entrees sont l‡]
+		if (checkInput())  {        //  [verif si les entrees sont l√†]
 
 			if(isInActive(0)|| isInActive(1)){
 				setBusy();
 				if(delay==2){
-					receive();                //  [copie dans latch entrÈe]
-					computes(); 
-				}				  
+					receive();                //  [copie dans latch entr√©e]
+					computes();
+				}
 			}
 		}
 		if (state==1 && delay==2)                // si busy > latch
 		{
 			setLatch();
-			latch();		  
+			latch();
 		}
 
 		if (delay==3)delay=0;
@@ -88,7 +88,7 @@ public class Alu extends Chip{
 		case 0:  setData(add(op1,op2));     break;//c'est un add
 		case 1:  setData(nand(op1,op2));    break;//c'est un nand
 		case 2:  setData(op1);              break;//c'est un pass 1
-		case 3://c'est un eq  --> sortie sur le bus EQ (ssi demandÈ par FUNC alu !)
+		case 3://c'est un eq  --> sortie sur le bus EQ (ssi demand√© par FUNC alu !)
 
 			beq = true;
 			if(op1==op2) eq=1;
@@ -112,9 +112,9 @@ public class Alu extends Chip{
 	////////////////////////////////////////////////////////////
 	private int nand(int op1,int op2){
 		//	String ope1 = Integer.toBinaryString(op1);
-		//	String ope2 = Integer.toBinaryString(op2); 
+		//	String ope2 = Integer.toBinaryString(op2);
 		int temp = op1 & op2;
-		temp = ~temp;//en dÈcimal on peut encore avoir des nombres nÈgatifs...
+		temp = ~temp;//en d√©cimal on peut encore avoir des nombres n√©gatifs...
 		if(temp<0){
 			//temp = temp + 65536;
 			temp &=0x0000FFFF;
@@ -160,9 +160,9 @@ public class Alu extends Chip{
 		g.drawPolygon(X,Y,7);
 		//    g.drawString("ALU",super.getX()+super.getLg()/3,super.getY()+2*super.getHt()/3-5);
 		printText(g,18,"ALU",  super.getX()+super.getLg()/3, super.getY()+2*super.getHt()/3-5, Color.black);
-		if(delay != 0 || rctl)//permet de ne pas afficher l'opÈration tout le temps
+		if(delay != 0 || rctl)//permet de ne pas afficher l'op√©ration tout le temps
 			g.drawString("["+getMode()+"]",super.getX()+2*super.getLg()/3-30,super.getY()+super.getHt()-5);
-		
+
 		g.drawString("op2",super.getX()+10,super.getY()+12);
 		g.drawString("op1",super.getX()+super.getLg()-35,super.getY()+12);
 		if(delay != 0){

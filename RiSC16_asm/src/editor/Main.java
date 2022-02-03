@@ -101,7 +101,7 @@ public class Main extends JFrame implements ActionListener{
             if (dm.getHeight() < height) {
                 height = dm.getHeight();
             }
-        } 
+        }
 		screenSize = new Dimension(width, height);
 		System.out.println(screenSize.getWidth());
 		System.out.println(screenSize.getHeight());
@@ -462,7 +462,7 @@ public class Main extends JFrame implements ActionListener{
 
 	private void runExtSimulation(boolean isPipeline) {
 
-		// si souhait de changer path, voir comment g�rer les Properties
+		// si souhait de changer path, voir comment gérer les Properties
 		// http://java.sun.com/docs/books/tutorial/essential/environment/properties.html
 		String jarpath;
 		if (isPipeline){
@@ -656,7 +656,7 @@ public class Main extends JFrame implements ActionListener{
 			"\nMarc JAUMAIN" +
 			"\nPierre MATHYS" +
 			"\nMichel OSEE" +
-			"\nAli�nor RICHARD\n";
+			"\nAliénor RICHARD\n";
 
 			JOptionPane.showMessageDialog(null, text ,"ABOUT", JOptionPane.INFORMATION_MESSAGE);
 

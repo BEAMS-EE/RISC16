@@ -21,7 +21,7 @@ import javax.swing.event.ChangeListener;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class SizeDialog extends JDialog implements ChangeListener {
@@ -83,7 +83,7 @@ public class SizeDialog extends JDialog implements ChangeListener {
 		this.getContentPane().add(jPanel1,  BorderLayout.CENTER);
 
 
-		instruModel = new SpinnerNumberModel(instruSize,4+opSize+3*regSize,16+opSize+regSize,1);	     
+		instruModel = new SpinnerNumberModel(instruSize,4+opSize+3*regSize,16+opSize+regSize,1);
 		spinnerInstruction = addLabeledSpinner(jPanel1, " Instruction Size ", instruModel);
 		spinnerInstruction.setEditor(new JSpinner.NumberEditor(spinnerInstruction, "#"));
 		spinnerInstruction.addChangeListener(this);
@@ -96,16 +96,16 @@ public class SizeDialog extends JDialog implements ChangeListener {
 
 
 		//int min=Math.max(4+2*regSize,10);
-		immRIModel = new SpinnerNumberModel(immRISize,4+2*regSize,16,1);	     
+		immRIModel = new SpinnerNumberModel(immRISize,4+2*regSize,16,1);
 		spinnerRI = addLabeledSpinner(jPanel11, " RI-type ", immRIModel);
 		spinnerRI.setEditor(new JSpinner.NumberEditor(spinnerRI, "#"));
 		spinnerRI.addChangeListener(this);
 
-		immRRIModel = new SpinnerNumberModel(immRRISize,4+regSize,16-regSize,1);	     
+		immRRIModel = new SpinnerNumberModel(immRRISize,4+regSize,16-regSize,1);
 		spinnerRRI = addLabeledSpinner(jPanel11, " RRI-type ", immRRIModel);
 		spinnerRRI.setEditor(new JSpinner.NumberEditor(spinnerRRI, "#"));
 		spinnerRRI.addChangeListener(this);
-		immRRRModel = new SpinnerNumberModel(immRRRSize,4,16-2*regSize,1);	     
+		immRRRModel = new SpinnerNumberModel(immRRRSize,4,16-2*regSize,1);
 		spinnerRRR = addLabeledSpinner(jPanel11, " RRR-type ", immRRRModel);
 		spinnerRRR.setEditor(new JSpinner.NumberEditor(spinnerRRR, "#"));
 		spinnerRRR.addChangeListener(this);
@@ -118,7 +118,7 @@ public class SizeDialog extends JDialog implements ChangeListener {
 
 		opcode1=new JLabel(" opcode ",JLabel.CENTER);
 		opcode2=new JLabel(" opcode ",JLabel.CENTER);
-		opcode3=new JLabel(" opcode ",JLabel.CENTER);   
+		opcode3=new JLabel(" opcode ",JLabel.CENTER);
 		regA1=new JLabel(" reg A ",JLabel.CENTER);
 		regA2=new JLabel(" reg A ",JLabel.CENTER);
 		regA3=new JLabel(" reg A ",JLabel.CENTER);
@@ -202,7 +202,7 @@ public class SizeDialog extends JDialog implements ChangeListener {
 		instruSize=instruModel.getNumber().intValue();
 		immRISize=immRIModel.getNumber().intValue();
 		immRRISize=immRRIModel.getNumber().intValue();
-		immRRRSize=immRRRModel.getNumber().intValue();     
+		immRRRSize=immRRRModel.getNumber().intValue();
 		setVisible(false);
 		//dispose();
 
@@ -219,7 +219,7 @@ public class SizeDialog extends JDialog implements ChangeListener {
 	private void updateBitsValues(int isize,int osize,int rsize){
 
 		bitslabels[0].setText(Integer.toString(isize-1));
-		bitslabels[1].setText(Integer.toString(isize-osize));     
+		bitslabels[1].setText(Integer.toString(isize-osize));
 		bitslabels[2].setText(Integer.toString(isize-osize-1));
 		bitslabels[3].setText(Integer.toString(isize-osize-rsize));
 		bitslabels[4].setText(Integer.toString(isize-osize-rsize-1));
@@ -247,25 +247,25 @@ public class SizeDialog extends JDialog implements ChangeListener {
 			instru=instruModel.getNumber().intValue();
 			ri=instru-oldregSize-oldopSize;
 			rri=ri-oldregSize;
-			rrr=rri-oldregSize;	
+			rrr=rri-oldregSize;
 
 		} else if (mySpinner==spinnerRI){
 			ri=immRIModel.getNumber().intValue();
 			instru=ri+oldregSize+oldopSize;
 			rri=ri-oldregSize;
-			rrr=rri-oldregSize;	   
+			rrr=rri-oldregSize;
 
 		} else if (mySpinner==spinnerRRI){
 			rri=immRRIModel.getNumber().intValue();
 			ri=rri+oldregSize;
 			instru=ri+oldregSize+oldopSize;
-			rrr=rri-oldregSize;	
+			rrr=rri-oldregSize;
 
 		} else if (mySpinner==spinnerRRR){
 			rrr=immRRRModel.getNumber().intValue();
 			rri=rrr+oldregSize;
 			ri=rri+oldregSize;
-			instru=ri+oldregSize+oldopSize;   
+			instru=ri+oldregSize+oldopSize;
 
 		}
 

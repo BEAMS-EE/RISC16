@@ -1,5 +1,5 @@
 /*
- * Icônes provenant de http://www.readyicons.com/ (free) : Sky_Light_(Basic)_SL
+ * IcÃ´nes provenant de http://www.readyicons.com/ (free) : Sky_Light_(Basic)_SL
  */
 
 package editor;
@@ -16,14 +16,14 @@ import javax.swing.event.*;
 import javax.swing.undo.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class EditorTab extends JPanel implements UndoableEditListener,
 		ActionListener, KeyListener {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -99,7 +99,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 		printButton.addActionListener(this);
 		printButton.setToolTipText("Print ("
 				+ KeyEvent.getKeyModifiersText(mask) + "+P" + ")");
-		
+
 
 		modified.setPreferredSize(new Dimension(15, 30));
 		modified.setForeground(Color.red);
@@ -125,7 +125,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 		// toolBar.add(commentButton);
 		// toolBar.addSeparator();
 		toolBar.add(assembButton);
-		
+
 
 		toolBar.setFloatable(false);
 		toolBar.setRollover(true);
@@ -147,7 +147,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 		 * editPanel.add(toolBar, BorderLayout.NORTH); JTabbedPane tabbedPaneMem
 		 * = new JTabbedPane(); tabbedPaneMem.addTab("Editor",editPanel);
 		 * tabbedPaneMem.setMnemonicAt(0, KeyEvent.VK_E);
-		 * 
+		 *
 		 * memprog = new MemProg();
 		 * tabbedPaneMem.addTab("Prog Mem",memprog.getContentPane());
 		 * tabbedPaneMem.setMnemonicAt(1, KeyEvent.VK_P);
@@ -156,10 +156,10 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 		this.add(scrollpane);
 		this.add(toolBar, BorderLayout.NORTH);
 		updateButtons();
-		
-		
-		
-		// à placer dans le constructeur pour éviter des problèmes de lenteur !
+
+
+
+		// Ã  placer dans le constructeur pour Ã©viter des problÃ¨mes de lenteur !
 		String directory = System.getProperty("user.dir");
 		chooser = new JFileChooser(directory);
 		//chooser.removeChoosableFileFilter(chooser.getFileFilter());
@@ -172,7 +172,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
                 return ".txt";
             }
         });
-		
+
 	}
 
 	public void updateButtons() {
@@ -357,7 +357,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 			pathfile = chooser.getSelectedFile().getAbsolutePath();
 			if (!pathfile.endsWith(".txt"))
 				pathfile += ".txt";
-			
+
 			save(pathfile);
 		}
 	}
@@ -374,7 +374,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 		}*/
 		memprog.fileopen(saveAndGetPathFile());
 	}
-	
+
 	public String saveAndGetPathFile(){
 		if (!pathfile.equals("")) {
 			save(pathfile);
@@ -385,7 +385,7 @@ public class EditorTab extends JPanel implements UndoableEditListener,
 			save("tempROM.txt");
 			return("tempROM.txt");
 		}
-		
+
 	}
 
 

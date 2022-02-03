@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Register extends Chip{
   private String nomReg;
-  boolean op=false;         // afficher l'opÈrande ?
+  boolean op=false;         // afficher l'op√©rande ?
   private CtlSignal read;
   private Color couleurTgt = new Color(153,153,255);
   private boolean reset=true, PC0=false;
@@ -30,21 +30,21 @@ public class Register extends Chip{
 
   public void setFormat(int d){
 	  this.display=d;
-	  if(d==3) setLg(160); 
+	  if(d==3) setLg(160);
 	  else setLg(100);
   }
 
   public void PC0(){reset = false; PC0 = true;}
   public void setColorChange(){
-	  setColor(couleurTgt);//couleur bleu aprËs avoir Ècris dans le registre
+	  setColor(couleurTgt);//couleur bleu apr√®s avoir √©cris dans le registre
   }
 
- public boolean checkInput(){ 
+ public boolean checkInput(){
   if(read!=null){
 	  if (read.isActive()){
 		  return true;
 	  }else{
-		  
+
 		  return false;
 	  }
   }
@@ -52,9 +52,9 @@ public class Register extends Chip{
 
       return super.checkInput();
 }
- 
+
  public void act(){
-	 reset = true;		 
+	 reset = true;
 	 super.act();
  }
 
@@ -77,14 +77,14 @@ public void reset(){
 //////////////////////////////////////////////////////////////////
 public String getAsm(String word) {
   String temp=word;//word =>16bits en string
-  
- 
+
+
   if(temp=="0000000000000000") return "NOP";
 
-  
+
   if (temp.length()>=3) temp=temp.substring(0,3);
-  
-  
+
+
   int i=Integer.parseInt(temp,2);
   switch (i){
     case 0:  return "ADD";  // break;
@@ -111,17 +111,17 @@ public String getAsm(String word) {
 
       if (display==3){
              // binary
-    	  
+
              String sb=new String(Integer.toBinaryString(super.getData()));
              while(sb.length()<16)  sb="0"+sb;
              if (sb.length()==32) sb =sb.substring(16);
-             
+
              if(isBusy()&& reset)sb="????????????????";
              g.setColor(color);
              g.fillRect(super.getX()+40,super.getY()+2,120,15);
-             g.setColor(Color.black); 
-         
-        	
+             g.setColor(Color.black);
+
+
              g.drawString(nomReg+" = "+sb,super.getX()+3,super.getY()+14);
        }else{
        if (display<1){ // hex
@@ -133,7 +133,7 @@ public String getAsm(String word) {
              g.drawString(nomReg+" = Ox"+temp,super.getX()+3,super.getY()+14);
        }else{ // decimal
              int nombre=getData();
-             if (display==2 && nombre>=32768) nombre = nombre-65536;//dÈcimal signÈe!
+             if (display==2 && nombre>=32768) nombre = nombre-65536;//d√©cimal sign√©e!
              if(isBusy()&& reset) g.drawString(nomReg+" = ?",super.getX()+3,super.getY()+14); else
              g.drawString(nomReg+" = "+Integer.toString(nombre),super.getX()+3,super.getY()+14);
  }}

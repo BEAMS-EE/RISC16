@@ -3,7 +3,7 @@ import java.awt.*;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class RegistreBank extends Chip{
@@ -14,7 +14,7 @@ public class RegistreBank extends Chip{
 	private int nbReg=8;
 
 	private int tgtData=0,tgt=0,op1=0,op2=0;
-	private boolean ctgt=false,c1=false,c2=false;    // si une nouvelle adresse est appliquée aux entrees ?
+	private boolean ctgt=false,c1=false,c2=false;    // si une nouvelle adresse est appliquÃ©e aux entrees ?
 	private boolean WE=false;
 	private RegTable regtable;
 
@@ -79,16 +79,16 @@ public class RegistreBank extends Chip{
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
-	public void act(){  
+	public void act(){
 
-		++delay; 
+		++delay;
 
 		if (state==2 && delay==4){
 			setIdle();
 		}
 
 		if (state==0 && checkInput()){
-			setBusy();        
+			setBusy();
 			delay=1;
 		}
 		if(state==1 && delay == 2){
@@ -110,7 +110,7 @@ public class RegistreBank extends Chip{
 			reg[i].setIdle();
 		if (ctl.isActive()) {
 			WE = (ctl.readData()==1);
-			//System.out.println("RF > \treceiving Ctl : WE = " + WE);     
+			//System.out.println("RF > \treceiving Ctl : WE = " + WE);
 		}
 
 		if (isInActive(1) || isInActive(2)|| isInActive(3)) // src1  ou src2 ou tgt
@@ -167,7 +167,7 @@ public class RegistreBank extends Chip{
 		if (c2)   {out[1].receive(getRegData(op2));reg[op2].setLatch();}
 		if (ctgt) {//setRegData(tgtData);
 			reg[tgt].setIdle();
-			reg[tgt].setColorChange();//il devient bleu après avoir écris dedans
+			reg[tgt].setColorChange();//il devient bleu aprÃ¨s avoir Ã©cris dedans
 
 			//System.out.println("RF > \twriting to reg# "+tgt+"   data= "+tgtData);
 		}

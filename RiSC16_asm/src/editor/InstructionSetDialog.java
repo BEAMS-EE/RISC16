@@ -8,13 +8,13 @@ import java.awt.event.*;
 import java.util.HashMap;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class InstructionSetDialog extends JDialog {
 
 	private final static String[] INSTRUSTRING={"ADD","ADDI","NAND","LUI","LW","SW","BEQ","JALR","SUB","XOR","NOR","SHL","SHA","SHIFTI","BL","BG","MUL","XNOR","OR","AND"};
-	
+
 	private JList list;
 	private DefaultListModel listModel;
 	private String[] instructionSet;
@@ -23,28 +23,28 @@ public class InstructionSetDialog extends JDialog {
 
 	public InstructionSetDialog(JFrame f,String[] oldSet) {
 		super(f,"Instruction Set Configuration",true);
-		
+
 		//this.setPreferredSize(new Dimension(500,250));
 	    this.setLocation(250,150);
 	 	this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	    this.setResizable(false);
-		
+
 		this.oldSet=oldSet;
-		
-		
+
+
 		Container c=this.getContentPane();
-		
+
 		c.setLayout(new BoxLayout(c, BoxLayout.Y_AXIS));
 		JPanel northPanel=new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.X_AXIS));
-	
+
 		JPanel listPane=createList();
-	
+
 		northPanel.add(createArea(oldSet));
 		northPanel.add(listPane);
-		
+
 		JPanel southPanel=new JPanel();
-		
+
 		JButton okButton=new JButton("OK");
 		southPanel.add(okButton);
 		//okButton.setSize(okButton.getPreferredSize());
@@ -53,7 +53,7 @@ public class InstructionSetDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				jButtonOK_actionPerformed(e);
-				
+
 			}});
 		JButton cancelButton=new JButton("Cancel");
 		southPanel.add(cancelButton);
@@ -63,9 +63,9 @@ public class InstructionSetDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				jButtonCANCEL_actionPerformed(e);
-				
+
 			}});
-		
+
 		c.add(northPanel);
 		c.add(southPanel);
 	}
@@ -138,14 +138,14 @@ public class InstructionSetDialog extends JDialog {
 
 		JPanel mainPanel=new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS ));
-		
-		
+
+
 		final JLabel opSizeLabel = new JLabel();
 		final JLabel instruCountLabel=new JLabel();
 
-		
+
 		JCheckBox[][]instruCheckBox =new JCheckBox[3][8];
-				
+
 		JPanel panel = new JPanel(new GridLayout(1,INSTRUSTRING.length/8));
 		JPanel[] colPanel=new JPanel[INSTRUSTRING.length/8+1];
 		HashMap<String,Integer> instruMap=new HashMap<String,Integer>();
@@ -156,7 +156,7 @@ public class InstructionSetDialog extends JDialog {
 			for (int j=0;j<instruCheckBox[i].length && i*8+j<INSTRUSTRING.length;j++){
 				instruCheckBox[i][j]=new JCheckBox(INSTRUSTRING[i*8+j]);
 				instruMap.put(INSTRUSTRING[i*8+j],i*8+j);
-							
+
 				colPanel[i].add(instruCheckBox[i][j]);
 				instruCheckBox[i][j].addItemListener(new ItemListener(){
 
@@ -174,21 +174,21 @@ public class InstructionSetDialog extends JDialog {
 							instruCountLabel.setText(listModel.size()+" instructions ");
 							int opSize= (int) Math.ceil((Math.log(listModel.size())/Math.log(2.0)));
 							opSizeLabel.setText(opSize+" bits ");
-						}					
-					}		
+						}
+					}
 				});
-				
+
 				if (i==0){
 					instruCheckBox[i][j].setSelected(true);
 					instruCheckBox[i][j].setEnabled(false);
 				}
-				
-				
+
+
 			}
 
 		}
-		
-		for(int i=0;i<oldSet.length;i++){		
+
+		for(int i=0;i<oldSet.length;i++){
 			if (instruMap.containsKey(oldSet[i].toUpperCase())){
 				int value=instruMap.get(oldSet[i].toUpperCase());
 				//instruCheckBox[value/8][value%8].setEnabled(true);
@@ -196,27 +196,27 @@ public class InstructionSetDialog extends JDialog {
 				//instruCheckBox[value/8][value%8].doClick();
 			}
 		}
-		
+
 		panel.setPreferredSize(new Dimension(200,150));
 		//panel.add(scrollPane, BorderLayout.CENTER);
 		//panel.setBorder(BorderFactory.createTitledBorder("Text Area"));
-		
-		
-		mainPanel.add(panel);		
+
+
+		mainPanel.add(panel);
 		mainPanel.add(instruCountLabel);
 		mainPanel.add(opSizeLabel);
-		
+
 		return mainPanel;
 	}
-	
-	
-	
+
+
+
     public String [] getDonnees(){
         return instructionSet;
     }
-    
+
     void jButtonOK_actionPerformed(ActionEvent e) {
-    	   
+
     	instructionSet=new String[listModel.size()];
 		int opSize= (int) Math.ceil((Math.log(listModel.size())/Math.log(2.0)));
 		System.out.println(opSize);

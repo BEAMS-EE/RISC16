@@ -103,9 +103,9 @@ public class Bus {
 
  //================================================================================================
    public int getId(){
-	   //donne l'identité du bus cad par ex pour le bus b00 cid = 1 pour l'incrémenteur et cid = 2 pour la ROM
+	   //donne l'identitÃ© du bus cad par ex pour le bus b00 cid = 1 pour l'incrÃ©menteur et cid = 2 pour la ROM
      cid=cid+1;                    // inc
-    //System.out.println("BUS: getID "+(cid));//on devrait rajouter le num du bus pour que ça soit clair
+    //System.out.println("BUS: getID "+(cid));//on devrait rajouter le num du bus pour que Ã§a soit clair
 
      out = new int[cid];
      for (int i = 0; i <out.length; i++)
@@ -177,7 +177,7 @@ public void reset (){
     if (out==null)
       System.out.println("!!!!!  BUS: output not defined");
     else{
-   
+
       for (int j = 0; j < out.length; j++)
         out[j] = 1;
       nboutact = out.length;
@@ -198,7 +198,7 @@ public void reset (){
       out[i - 1] = 0;
       nboutact--;
       if (nboutact==0)
-        disable();//va se désativer si tous les blocs à la sortie du bus on prit ce qu'il y avait sur le bus!
+        disable();//va se dÃ©sativer si tous les blocs Ã  la sortie du bus on prit ce qu'il y avait sur le bus!
 
     }
     System.out.println("BUS: disableID# "+i+" - act= "+nboutact+"   - nbout= "+out.length);
@@ -206,7 +206,7 @@ public void reset (){
 //================================================================================================
   public void receive(int data){
      System.out.println("BUS : receiving data =\t"+data+" \t|   "+dataHex(data)+" \t|   "+dataBin(data));
-	  
+
      setData(data);
      enable();
  }
@@ -217,8 +217,8 @@ public void reset (){
 }
 //================================================================================================
 
-  public boolean isActive(){      return (state==1);}  // contient une donnée non lue !!
-  public boolean isActive(int i){ return (out[i-1]==1);}  // la donnée i est non lue !!
+  public boolean isActive(){      return (state==1);}  // contient une donnÃ©e non lue !!
+  public boolean isActive(int i){ return (out[i-1]==1);}  // la donnÃ©e i est non lue !!
 ///////////////////////////
 
 
@@ -244,7 +244,7 @@ public void reset (){
      if(show){
       for(int j=0;j<x.length;j++)
         for(int i=0;i<x[0].length-1;i++){
-          g.setColor(couleur); // couleur & pen adéquats
+          g.setColor(couleur); // couleur & pen adÃ©quats
           g.setStroke(pen);
           if(x[j][i+1]!=0){
             if(i+1!=x[0].length-1 && x[j][i+2]!=0){

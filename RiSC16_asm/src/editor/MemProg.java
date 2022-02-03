@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class MemProg extends Memoire {
@@ -34,16 +34,16 @@ public class MemProg extends Memoire {
 		super.getJButtonAss().addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				assembler();			
+				assembler();
 			}});
 		super.getJButtonRM().addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				resetMemory();			
+				resetMemory();
 			}});
 		this.architecture=arch;
 	}
-	
+
 
 
 
@@ -52,7 +52,7 @@ public class MemProg extends Memoire {
 	//================================================================================================
 	//   MEMORY
 	//================================================================================================
-	
+
 	public void assembler() {
 
 		moveToFront();
@@ -65,7 +65,7 @@ public class MemProg extends Memoire {
 		for (int i = 0;i < super.getAddressMax() ; i++) {
 			String instruction = getIns(i,true);
 			if ( instruction.toLowerCase().indexOf("movi") != -1){//si c'est un movi
-				this.movi(instruction, i);//permet de d�composer en "lui" et "addi" mais il faut encore assembler
+				this.movi(instruction, i);//permet de décomposer en "lui" et "addi" mais il faut encore assembler
 				instruction = getIns(i,true); // et donc on doit prendre le "lui" ici
 			}
 
@@ -75,23 +75,23 @@ public class MemProg extends Memoire {
 				instruction="0x"+instruction; //bintohex
 			}
 			super.setCase(instruction, i, 1);
-		}  
+		}
 	}
 
 	public String getIns(int a, boolean assemb) {
-		
-		String instructioncodee; 
+
+		String instructioncodee;
 		if ( super.getCase(a, 2)==null){  //on decompose la chaine en sous chaine contenu ds un vect
 			super.setCase("nop",a,2);
 			return "0";
 		}
 		else {
 			String asm= new String(super.getCase(a, 2));
-					
+
 			String op="add";
 			int arg0=0,arg1=0,arg2=0,arg3=0;
 			String[] args=new String[4];
-			
+
 			String format="";
 
 			StringTokenizer st = new StringTokenizer(asm,", \t\n\r\f");
@@ -103,19 +103,19 @@ public class MemProg extends Memoire {
 				arg0=Integer.decode(st.nextToken());
 			}
 			else if (format.equals("RRR") || format.equals("RRI") || format.equals("RI")){
-				warningMessage("error : data missing ("+format+" type)",a);   
+				warningMessage("error : data missing ("+format+" type)",a);
 				return "error : data missing ("+format+" type)";
 			}
 			if (st.hasMoreTokens())	{
 				try {
 					arg1=Integer.decode(st.nextToken());
 				} catch (NumberFormatException e) {
-					warningMessage("error : format error",a);   
+					warningMessage("error : format error",a);
 					return "error : format error arg1";
 				}
 				}
 			else if (format.equals("RRR") || format.equals("RRI") || format.equals("RI")){
-				warningMessage("error : data missing ("+format+" type)",a);   
+				warningMessage("error : data missing ("+format+" type)",a);
 				return "error : data missing ("+format+" type)";
 			}
 			if (st.hasMoreTokens())	{
@@ -134,7 +134,7 @@ public class MemProg extends Memoire {
 				}
 			}
 			else if (format.equals("RRR") || format.equals("RRI") && !op.equals("jalr")){
-				warningMessage("error : data missing ("+format+" type)",a);   
+				warningMessage("error : data missing ("+format+" type)",a);
 				return "error : data missing ("+format+" type)";
 			}
 			if (st.hasMoreTokens())	{
@@ -146,7 +146,7 @@ public class MemProg extends Memoire {
 					arg3=labelTable.get(a3)-(a+1);
 				}
 			}
-			
+
 
 			if (op.indexOf("nop") != -1) {
 				return "0000000000000000";
@@ -162,7 +162,7 @@ public class MemProg extends Memoire {
 			}
 			else {
 				instructioncodee=architecture.assemble(op,arg0,arg1,arg2,arg3,a);
-			}		
+			}
 			return instructioncodee;
 		}
 	}
@@ -177,7 +177,7 @@ public class MemProg extends Memoire {
 		}
 		labelTable=null;
 	}
-	private void warningMessage(String text, int a){	
+	private void warningMessage(String text, int a){
 		String text2 = new String();
 		text2 = "\nLigne "
 			+ a
@@ -186,9 +186,9 @@ public class MemProg extends Memoire {
 				JOptionPane.WARNING_MESSAGE);
 
 }
-	
-	
-	
+
+
+
 
 	public void movi(String s, int i){
 		String movi;
@@ -233,11 +233,11 @@ public class MemProg extends Memoire {
 		if (fi.isOpen()) {
 			s = fi.getLine();
 
-			int address=0; 
+			int address=0;
 			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
 			labelTable=new Hashtable<String, Integer>();
 
-			// premi�re passe pour trouver les labels
+			// première passe pour trouver les labels
 			while (s!=null){
 				StringTokenizer st=new StringTokenizer(s);
 				if (st.hasMoreTokens()){
@@ -269,7 +269,7 @@ public class MemProg extends Memoire {
 						opcode = firsttoken;
 					}
 					if (label!=""){
-						if(labelTable.get(label)!=null){	// label dupliqu�
+						if(labelTable.get(label)!=null){	// label dupliqué
 							setCase(String.valueOf(address),address,0);
 						}
 						else{
@@ -292,7 +292,7 @@ public class MemProg extends Memoire {
 			fi = new Fich(path);
 			s = fi.getLine();
 			while (s != null){
-				if(s.indexOf("@")==0){//aller � l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
 					int j=0;
 					s = s.substring(1, s.length());
 					i = Integer.decode(s);
@@ -302,11 +302,11 @@ public class MemProg extends Memoire {
 							setCase(s, j, 2);
 						}
 						++j;
-					}	   
+					}
 				}else{
-					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//")); // si on met un commentaire apr�s l'instruction
-					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#")); // si on met un commentaire apr�s l'instruction
-					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires � l'aide de //
+					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//")); // si on met un commentaire après l'instruction
+					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#")); // si on met un commentaire après l'instruction
+					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
 
 						s = s.trim();
 						if(s.length() != 0){
@@ -318,7 +318,7 @@ public class MemProg extends Memoire {
 
 								if(firsttoken.charAt(firsttoken.length()-1)==':'){
 									label = firsttoken.substring(0, firsttoken.length()-1);
-									if (st.hasMoreTokens()) opcode=st.nextToken();				
+									if (st.hasMoreTokens()) opcode=st.nextToken();
 								}
 								else {
 									label="";
@@ -341,7 +341,7 @@ public class MemProg extends Memoire {
 									arg3=st.nextToken(", \t\n\r\f");
 									instructionwhitoutlabel+=", "+arg3;
 								}
-								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi 
+								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi
 									movi(instructionwhitoutlabel.trim(),i);
 									++i;
 								}else{//si ce n'est pas un movi
@@ -376,7 +376,7 @@ public class MemProg extends Memoire {
 
 			while(i<addressMax){
 
-				
+
 					adress = Integer.toString(i);
 
 				if(super.getCase(i,2).indexOf("nop")== -1){

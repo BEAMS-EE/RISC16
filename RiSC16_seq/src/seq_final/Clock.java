@@ -3,7 +3,7 @@ import java.awt.*;
 //import javax.swing.*;
 
 public class Clock extends Chip {
-  private int time=0;          // nb d impulsions effectuÈes
+  private int time=0;          // nb d impulsions effectu√©es
   private boolean high=false;  // 1= etat haut / 0= etat bas
   private int cycle=0;
   private int state=0;
@@ -17,10 +17,10 @@ public class Clock extends Chip {
     if (high) {high=false;state++; }
     else      {high=true;state++; time++;}
     if (state==21){state=1;cycle++;}
-    // int value max = 2^31 -1  --> attention dÈpassement  | en pratique n'arrivera JAMAIS
-  
+    // int value max = 2^31 -1  --> attention d√©passement  | en pratique n'arrivera JAMAIS
+
     System.out.printf("====\n%d %d %d \n",state,time,cycle);
-  
+
   }
 //////////////////////////////////////////////
   public void reset() {
@@ -34,7 +34,7 @@ public class Clock extends Chip {
   public boolean getLevel() { return this.high; }
   public int getState(){return state;}
   public int getCycle(){return cycle;}
-  
+
   public void setTime(int time) {this.time=time;}
   public void setCycle(int cycle) {this.cycle=cycle;}
   public void setState(int state) {this.state=state;}

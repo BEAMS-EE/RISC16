@@ -9,7 +9,7 @@ import javax.swing.*;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 class Registers extends JPanel implements ActionListener{
@@ -19,14 +19,14 @@ class Registers extends JPanel implements ActionListener{
 	private JButton resetReg;
 
 	private MemTable model;
-	
+
 	private int size;
 	public Registers(int size){
 		this.size=size;
 		setLayout(new BorderLayout ());
 		model = new MemTable(size,true);
 		table = new JTable(model){
-	        
+
 	        //Implement table cell tool tips.
 	        public String getToolTipText(MouseEvent e) {
 	            String tip = null;
@@ -50,8 +50,8 @@ class Registers extends JPanel implements ActionListener{
 	            return tip;
 	        }};
 	        model.setJTable(table);
-		
-		
+
+
 		;
 		table.getColumnModel().getColumn(0).setPreferredWidth(6);
 
@@ -75,14 +75,14 @@ class Registers extends JPanel implements ActionListener{
 		t.add(resetReg);
 		add(t,"South");
 		add(table.getTableHeader(), BorderLayout.NORTH);
-		
+
 
 	}
 
 
 	public void reset(){
 
-		for (int i=0;i<size;i++){	
+		for (int i=0;i<size;i++){
 			table.setValueAt(Integer.toString(0), i, 1);
 		}
 	}
@@ -122,7 +122,7 @@ class Registers extends JPanel implements ActionListener{
 	}
 
 
-	
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==resetReg){
 			reset();

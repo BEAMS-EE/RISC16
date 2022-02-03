@@ -10,16 +10,16 @@ import javax.swing.table.*;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class MemTable
 extends AbstractTableModel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 389310682674493969L;
-	private int taille; 
+	private int taille;
 	private String[] columnNames; // = {"Addr","Contenu"};
 	private Object[][] data; //= new String[taille][2];
 	private int disp=0;
@@ -41,7 +41,7 @@ extends AbstractTableModel {
 		types = new Class[]{String.class, String.class, String.class, Boolean.class, Boolean.class};
 		canEdit = new boolean[]{
 				false, false, true, true, false };
-	} //pour numéroter
+	} //pour numÃ©roter
 
 
 
@@ -62,7 +62,7 @@ extends AbstractTableModel {
 		canEdit = new boolean[]{
 				false, true};
 
-	} 
+	}
 
 
 	public void setJTable(JTable table){
@@ -86,7 +86,7 @@ extends AbstractTableModel {
 	}
 	public Class getColumnClass(int c) {
 		return types[c];
-	} 
+	}
 
 	public Object getValueAt(int l, int c) {
 		if (columnNames[c] == "Data"){
@@ -131,7 +131,7 @@ extends AbstractTableModel {
 		}
 	}
 
-	// méthode non utilisée mais permet d'afficher le tableau à partir d'une certaine ligne
+	// mÃ©thode non utilisÃ©e mais permet d'afficher le tableau Ã  partir d'une certaine ligne
 	public void scrollToVisible(int rowIndex) {
 		if (!(table.getParent() instanceof JViewport)) {
 			return;
@@ -159,5 +159,5 @@ extends AbstractTableModel {
 	public void setFormat(int disp) {
 		this.disp=disp;
 		fireTableDataChanged();
-	}  
+	}
 }

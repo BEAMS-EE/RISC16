@@ -4,12 +4,12 @@
  has receive ( ctl) ??
 
 
- > remettre à zero
+ > remettre Ã  zero
 
 2005.03.08
- on ne désactive pas bus d entrée tant que pas de signal clt
+ on ne dÃ©sactive pas bus d entrÃ©e tant que pas de signal clt
  si ctl = -1 --> on ne selectionne rien
- si ctl = 0 ..1..2 on selectionne entrée > out
+ si ctl = 0 ..1..2 on selectionne entrÃ©e > out
 
  */
 
@@ -21,8 +21,8 @@ public class Multiplexeur extends Chip{
   private int nbInput,select=0;  //select >   0 =input1   1 =input2 ..etc
   private int LgOut;            //longueur de la sortie verticale (dessin)
   private CtlSignal ctl;
-  private boolean rctl=false; // le mux a t il recu le signal de contrôle ?
-  private boolean used=false; // le mux est il utilisé pour cette instr ?
+  private boolean rctl=false; // le mux a t il recu le signal de contrÃ´le ?
+  private boolean used=false; // le mux est il utilisÃ© pour cette instr ?
 
 
 private boolean[] received;
@@ -92,31 +92,31 @@ private boolean[] received;
 
       if (ctl.isActive()) {
     	  used=true;
-    	  
+
     	  if(state==1){
     		  sel();
     		  setIdle();
     	  }
-    		  
-    	  if(!rctl)//permet avec le setIdle plus haut de changer l'état du mux au moment voulu
+
+    	  if(!rctl)//permet avec le setIdle plus haut de changer l'Ã©tat du mux au moment voulu
     		  setBusy();
-      } 
+      }
       if (!used) System.out.println(ctl.getName()+" > \tmux not used :sel= " + select);
    return rctl;
   }
 
 public void sel(){
-	
-	int tmp=ctl.getData();//tmp vaut l'entrée choisie
+
+	int tmp=ctl.getData();//tmp vaut l'entrÃ©e choisie
 	if (tmp<nbInput && tmp>=0) {
-		select=tmp; 
+		select=tmp;
 		used=true;
 		System.out.println(ctl.getName()+" > \tchanging select to " + select);
    }
    rctl=true;
 }
-public void act(){  
-	
+public void act(){
+
       if (state==2){
     	  setIdle();
       }
@@ -127,23 +127,23 @@ public void act(){
       if(isInActive(select) && rctl && used){
     	  latch();
       }
-      
+
       if(!isActive){
-    	  //si les entrée sont là mais qu'on l'utilise pas... on déselectionne les entrées
-    	  for (int i = 0; (i < nbInput);  ++i){//permet de désactiver tous les signaux qui arrivent au multiplexeur
+    	  //si les entrÃ©e sont lÃ  mais qu'on l'utilise pas... on dÃ©selectionne les entrÃ©es
+    	  for (int i = 0; (i < nbInput);  ++i){//permet de dÃ©sactiver tous les signaux qui arrivent au multiplexeur
               if  (isInActive(i)){// && !received[i]){
                receive(i);
                received[i]=true;
               }
           }
       }
-      
+
 }
 
   public void receive(){
     if (!used){
 
-         for (int i = 0; (i < nbInput);  ++i){//permet de désactiver tous les signaux qui arrivent au multiplexeur
+         for (int i = 0; (i < nbInput);  ++i){//permet de dÃ©sactiver tous les signaux qui arrivent au multiplexeur
         	 //++i???
              if  (isInActive(i)){// && !received[i]){
               receive(i);
@@ -154,7 +154,7 @@ public void act(){
       int data=        receive(select);
      // received[select]=true;
       for (int i = 0; (i < nbInput);  ++i){
-        if ((i!=select) && isInActive(i) && !received[i]){//permet de désactiver les signaux qui arrivent au multiplexeur et qui ne sont pas select
+        if ((i!=select) && isInActive(i) && !received[i]){//permet de dÃ©sactiver les signaux qui arrivent au multiplexeur et qui ne sont pas select
           receive(i);
          // received[i]=true;
         }
@@ -164,25 +164,25 @@ public void act(){
     }
   }
   public void latch(){
-	  
-	  	receive();					//  [copie dans latch entrée]
-	  	if (used){    
+
+	  	receive();					//  [copie dans latch entrÃ©e]
+	  	if (used){
 	  		super.latch();
 	  		setLatch();
 	  	}
 	  	//     System.out.println(ctl.getName()+": latching data =   "+super.getData()+"  ["+(select+1)+"/"+nbInput+"]");
 	  	rctl=false;
-	  	
-	  	 for (int i = 0; (i < nbInput);  ++i){//permet de désactiver tous les signaux qui arrivent au multiplexeur
-        	
+
+	  	 for (int i = 0; (i < nbInput);  ++i){//permet de dÃ©sactiver tous les signaux qui arrivent au multiplexeur
+
              if  (isInActive(i)){// && !received[i]){
               receive(i);
               received[i]=true;
              }
          }
-	  	for (int i = 0; i < received.length; ++i)  { received[i]=false;}//permet de réinitialiser le vecteur received   
+	  	for (int i = 0; i < received.length; ++i)  { received[i]=false;}//permet de rÃ©initialiser le vecteur received
 	  	used=false;//pas sur d'en avoir besoin
-	  
+
   }
 
 

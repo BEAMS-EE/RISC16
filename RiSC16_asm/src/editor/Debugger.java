@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 import javax.swing.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Debugger extends JPanel implements Runnable {
@@ -78,7 +78,7 @@ public class Debugger extends JPanel implements Runnable {
 		nextButton = new JButton();
 		resetButton = new JButton();
 		saveButton = new JButton();
-		
+
 		runButton.setIcon(new ImageIcon(this.getClass().getResource("icons/Run.png")));
 		runButton.setPreferredSize(new Dimension(30, 30));
 		runButton.setToolTipText("RUN");
@@ -94,8 +94,8 @@ public class Debugger extends JPanel implements Runnable {
 		saveButton.setIcon(new ImageIcon(this.getClass().getResource("icons/Save.png")));
 		saveButton.setPreferredSize(new Dimension(30, 30));
 		saveButton.setToolTipText("SAVE");
-		
-		
+
+
 		JButton [] buttons = {runButton,stopButton,nextButton,resetButton,saveButton};
 		toolBar = new JToolBar();
 		for (int i=0;i<buttons.length;i++){
@@ -106,10 +106,10 @@ public class Debugger extends JPanel implements Runnable {
 					if (e.getSource().equals(runButton)){
 						runcount=0;
 						updateButtons(true);
-						start();	
+						start();
 					}else if (e.getSource().equals(stopButton)){
 						updateButtons(false);
-						stop();	
+						stop();
 					}else if (e.getSource().equals(resetButton)) {
 						reset();
 					} else if (e.getSource().equals(saveButton)) {
@@ -120,8 +120,8 @@ public class Debugger extends JPanel implements Runnable {
 						updateStatistics();
 						rom.highlight(oldpc);
 						trace.setCaretPosition(trace.getText().length() - 1);
-					} 		
-				}});	
+					}
+				}});
 		}
 		toolBar.add(runButton);
 		toolBar.add(stopButton);
@@ -160,9 +160,9 @@ public class Debugger extends JPanel implements Runnable {
 		this.add(split);
 		this.add(toolBar, BorderLayout.NORTH);
 		updateButtons(false);
-		
-		
-		
+
+
+
 		String directory = System.getProperty("user.dir");
 		chooser = new JFileChooser(directory);
 		//chooser.removeChoosableFileFilter(chooser.getFileFilter());
@@ -213,8 +213,8 @@ public class Debugger extends JPanel implements Runnable {
 		if (instructionexecutee !=0) shortString = (threeDec.format(5/getCPI()));
 		return shortString;
 	}
-	
-	
+
+
 	public String getSpeedUpClockString() {
 		String shortString = "          ";
 		DecimalFormat threeDec = new DecimalFormat("0.00");
@@ -248,8 +248,8 @@ public class Debugger extends JPanel implements Runnable {
 			trace.append(tr);
 		}*/
 		//updateStatistics();
-		// increment stomp after updatestatistics because a stompevent 
-		if(arch.isLastInstructionBranch()) stomp++; 
+		// increment stomp after updatestatistics because a stompevent
+		if(arch.isLastInstructionBranch()) stomp++;
 		runcount++;
 
 
@@ -262,7 +262,7 @@ public class Debugger extends JPanel implements Runnable {
 			updateButtons(false);
 			return false;
 		}
-		else {		
+		else {
 			return true;
 		}
 
@@ -281,7 +281,7 @@ public class Debugger extends JPanel implements Runnable {
 			thread=null;
 		}
 	}
-	
+
 	public void start() {
 		thread = new Thread(this);
 		thread.setName("RUN");
@@ -307,7 +307,7 @@ public class Debugger extends JPanel implements Runnable {
 		rom.highlight(0);
 		updateStatistics();
 	}
-	
+
 	public void save(String pathfile) {
 		try {
 			//String text = trace.getText(0, trace.getLength());
@@ -365,10 +365,10 @@ public class Debugger extends JPanel implements Runnable {
 
 		pcField = new JTextField(10);
 		pcField.setEditable(false);
-		
+
 		speedUpField=new JTextField(10);
 		speedUpField.setEditable(false);
-		
+
 		speedUpClockField=new JTextField(10);
 		speedUpClockField.setEditable(false);
 

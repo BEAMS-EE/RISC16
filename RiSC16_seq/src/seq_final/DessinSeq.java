@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class DessinSeq extends JPanel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1460854940293728819L;
 
@@ -34,7 +34,7 @@ public class DessinSeq extends JPanel {
 	private LeftShift Shift;
 	private InstrReg IR;
 	private Multiplexeur MuxPC, MuxRf, MuxTGT,MuxAlu1,MuxAlu2;
-	private Register PC0;  
+	private Register PC0;
 
 	//==== Bus ====
 	private Bus   b00,b01,b02,b03,b04,b05,b06,b07,b08,b09;
@@ -43,7 +43,7 @@ public class DessinSeq extends JPanel {
 	private CtlSignal  MUXpc,MUXalu1,MUXalu2,MUXrf,MUXtgt;
 	private CtlSignal  WErf,WEdmem,FUNCalu,PC0Read, PSEN;
 
-	//==== regroupement dans des vecteurs -> paint & reset fa�ilement ====
+	//==== regroupement dans des vecteurs -> paint & reset facilement ====
 	private Bus   Bus16[],Bus16h[],Busx[];  // bus de 16bits |  h = hidden  |  x = -de 16bit
 	private CtlSignal Busctl[];
 	private Multiplexeur Mux[];
@@ -123,7 +123,7 @@ public class DessinSeq extends JPanel {
 		Bus16 = new Bus[15];
 		Bus16[0]=b00;  Bus16[1]=b01;  Bus16[2]=b02;  Bus16[3]=b03;  Bus16[4]=b04;  Bus16[5]=b05;
 		Bus16[6]=b06;  Bus16[7]=b07;  Bus16[8]=b08; Bus16[9]=b09;   Bus16[10]=b10; Bus16[11]=b11;
-		Bus16[12]=b12; Bus16[13]=b13; Bus16[14]=b14; 
+		Bus16[12]=b12; Bus16[13]=b13; Bus16[14]=b14;
 		Bus16h = new Bus[0];//    Bus16h[0]=b03;  Bus16h[1]=b25;   Bus16h[2]=b50; Bus16h[3]=b63;  Bus16h[4]=b64;
 
 		/////// BUS ///////////////////////////////////////////////////////////
@@ -177,14 +177,14 @@ public class DessinSeq extends JPanel {
 		PC0Read  = new CtlSignal(xd3,yd3,			"WE_PC0");
 		PSEN	  = new CtlSignal(xd5,yd5,       	"PSEN");
 
-		MUXpc.setStringPos(15,240);    
-		MUXalu1.setStringPos(180,505);  
-		MUXalu2.setStringPos(230, 545);  
-		MUXrf.setStringPos(100, 470);    
-		MUXtgt.setStringPos(310,300);   
-		WErf.setStringPos(180, 460);     
-		WEdmem.setStringPos(240,605);   
-		FUNCalu.setStringPos(265,570);  
+		MUXpc.setStringPos(15,240);
+		MUXalu1.setStringPos(180,505);
+		MUXalu2.setStringPos(230, 545);
+		MUXrf.setStringPos(100, 470);
+		MUXtgt.setStringPos(310,300);
+		WErf.setStringPos(180, 460);
+		WEdmem.setStringPos(240,605);
+		FUNCalu.setStringPos(265,570);
 		PC0Read.setStringPos(15,240);
 		PSEN.setStringPos(15,380);
 
@@ -220,7 +220,7 @@ public class DessinSeq extends JPanel {
 		Bus[] Bustmp = new Bus[2];    Bustmp[0]=c05;  Bustmp[1]=c06;
 
 		CtlSeq = new Ctl(42,500,60);       CtlSeq.setInput(Bustmp);     // OP & EQ
-		CtlSeq.setSignal(Busctl); // nb : d�fini plus haut (donne les signaux ctlsignal)
+		CtlSeq.setSignal(Busctl); // nb : défini plus haut (donne les signaux ctlsignal)
 
 
 		////////////////////////////////////////////////////////////////////////
@@ -300,7 +300,7 @@ public class DessinSeq extends JPanel {
 		g.setFont(new Font("Monospaced", Font.PLAIN, g.getFont().getSize()));
 		Clock.inc();
 
-		++etape;//conte les �tapes pour pouvoir revenir en arri�re
+		++etape;//conte les étapes pour pouvoir revenir en arrière
 
 		CtlSeq.incrState();
 
@@ -317,7 +317,7 @@ public class DessinSeq extends JPanel {
 		}
 
 
-		if(paint){//permet de ne pas devoir afficher tous les �tats lorsqu'on fait -1/2 clock
+		if(paint){//permet de ne pas devoir afficher tous les états lorsqu'on fait -1/2 clock
 			Clock.paint(g);
 		}
 		System.out.println("======= CLOCK :  " + Clock.getTime()+ " |  "+Clock.getLevel()+" ==============");
@@ -379,9 +379,9 @@ public class DessinSeq extends JPanel {
 
 
 		}
-		/***************************************************************************************************/    
 		/***************************************************************************************************/
-		//----------------d�roulement------------------------------------------
+		/***************************************************************************************************/
+		//----------------déroulement------------------------------------------
 
 
 		if(state==6 || state==7 || state==8 || state==9 || state== 10|| state==11 || state==12 || state==13 || state==19 || state==20 || state==1)
@@ -402,7 +402,7 @@ public class DessinSeq extends JPanel {
 
 
 		if (state==19 || state ==20 ||state==1)
-			PC0.act();   
+			PC0.act();
 
 		if (state==1 || state==2 || state==3 || state==4)
 		{
@@ -434,7 +434,7 @@ public class DessinSeq extends JPanel {
 			Alu.checkInput();
 
 		/****/
-		//Mux[0]=MuxPC;   Mux[1]=MuxAlu1;   Mux[2]=MuxAlu2; Mux[3]=MuxRf; Mux[4]=MuxTGT;    
+		//Mux[0]=MuxPC;   Mux[1]=MuxAlu1;   Mux[2]=MuxAlu2; Mux[3]=MuxRf; Mux[4]=MuxTGT;
 		Mux[0].act();
 		Mux[1].act();
 		Mux[2].act();
@@ -442,7 +442,7 @@ public class DessinSeq extends JPanel {
 		Mux[4].act();
 
 		if(state==16){
-			Mux[2].receive();//sinon prob pour SW, le mux a d�j� fais un receive et un latch, et il faut donc d�sactiver le bus... 
+			Mux[2].receive();//sinon prob pour SW, le mux a déjà fais un receive et un latch, et il faut donc désactiver le bus...
 		}
 		if(state==19){
 			Mux[4].receive();//sinon prob pour JALR
@@ -450,16 +450,16 @@ public class DessinSeq extends JPanel {
 		if(state == 17){
 			String op = Rom.getCase(PC0.getData(),2);
 			if (op.indexOf("lw") != -1) {
-				b12.enable();//sinon il s'�teind imm�diatement
-			}   	  
+				b12.enable();//sinon il s'éteind immédiatement
+			}
 		}else if(state == 18){
 			b12.disable();
 		}
 
 		String op = null;
 		op = Rom.getCase(PC0.getData(),2);
-		
-		// on surligne l'adresse o� une donn�e sera lue ou �crite dans la Data Mem
+
+		// on surligne l'adresse où une donnée sera lue ou écrite dans la Data Mem
 		if ((op != null) && (op.indexOf("sw") != -1 || op.indexOf("lw") != -1) && (state >= 15) && (state <= 19))
 		{
 			tabbedPane.setSelectedIndex(1);
@@ -469,22 +469,22 @@ public class DessinSeq extends JPanel {
 
 
 
-		// on surligne l'instruction dans la fen�tre Prog Mem
+		// on surligne l'instruction dans la fenêtre Prog Mem
 		if(state!=20)//PCO change avant la fin de l'instruction...
 			Rom.highlight(PC0.getData());
 
-	
+
 		if(paint){
 			repaint();
 		}
-		
-		// sauvegarde utilis�e pour le retour en arri�re
+
+		// sauvegarde utilisée pour le retour en arrière
 		if (state==20 && nouveau) sauvegarde2();
-		
-		
+
+
 	}
 	///////////////////////////////////////////////////////
-	public void reset() {	  	
+	public void reset() {
 
 		etape=0;
 		setActive();
@@ -495,7 +495,7 @@ public class DessinSeq extends JPanel {
 
 		Add.reset();     Alu.reset();    Clock.reset();
 		Inc.reset();     IR.reset();     RegFile.reset();
-		Rom.reset();  Ram.reset();     Sign.reset();    
+		Rom.reset();  Ram.reset();     Sign.reset();
 		Shift.reset();	slider.reset();//DLatch.reset();
 
 		PC0.reset();
@@ -514,18 +514,18 @@ public class DessinSeq extends JPanel {
 		repaint();
 	}
 	///////////////////////////////////////////////////////
-	//  init - � executer au d�marrage ou apres un reset
+	//  init - à executer au démarrage ou apres un reset
 	public void init() {
 		PC0.setBusy();
 		PC0.act();
-		PC0.act();	
+		PC0.act();
 		//System.out.println("--------START----------");
-		
+
 		nbretour=10;
 		tabReg=new int[nbretour][12];
 		IRsave=new String[nbretour][2];
 		tabBus=new int[nbretour][44];
-		
+
 		for(int i=0;i<nbretour;i++){
 			IRsave[i][0]="0000000000000000";
 			IRsave[i][1]="0000000000000000";
@@ -538,10 +538,10 @@ public class DessinSeq extends JPanel {
 
 		ramTemp = new File[nbretour];
 		for(int i=0;i<nbretour;i++){
-			ramTemp[i]=new File("ramseq_temp"+i+".txt");	
+			ramTemp[i]=new File("ramseq_temp"+i+".txt");
 			ramTemp[i].deleteOnExit(); // permet de supprimer le fichier quand on quitte le programme
 		}
-		
+
 	}
 	///////////////////////////////////////////////////////
 	// avance jusqu'a la fin de l instr en cours
@@ -557,7 +557,7 @@ public class DessinSeq extends JPanel {
 
 		repaint();
 	}
-	
+
 	private void sauvegarde2(){
 		int cycle=Clock.getCycle();
 		cycle=cycle%tabReg.length;
@@ -672,7 +672,7 @@ public class DessinSeq extends JPanel {
 		}
 	}
 	///////////////////////////////////////////////////////
-	// function utils � la construction des bus
+	// function utils à la construction des bus
 	private int[][] fillMat(int vect[], int l, int c) {
 		int mat[][] = new int[l][c];
 		for (int i = 0; i < l; i++) {
@@ -680,20 +680,20 @@ public class DessinSeq extends JPanel {
 				mat[i][j] = vect[i * c + j];
 			}
 		}
-		return mat; 
+		return mat;
 	}
 	//////////////////////////////////////////////////////
 
-	public void previousstep(){//-1/2 �tape, reset puis ++step jusqu'a l'�tat pr�c�dent
+	public void previousstep(){//-1/2 étape, reset puis ++step jusqu'a l'état précédent
 		int etape2=etape-1;
 		this.reset();
 
 		for (int i=0;i<etape2-1;++i){
-			step(false,false);		
+			step(false,false);
 		}
-		step(true,false);	
+		step(true,false);
 	}
-	
+
 	public void previousstep2(){
 
 		setActive();
@@ -718,7 +718,7 @@ public class DessinSeq extends JPanel {
 				cy++;
 			}
 			else{
-				while(Clock.getState()!=20) step(false,false); 
+				while(Clock.getState()!=20) step(false,false);
 				restauration2(cy,false);
 				//restauration();
 				while(Clock.getState()!=micro) step(false,true);
@@ -732,7 +732,7 @@ public class DessinSeq extends JPanel {
 		repaint();
 
 	}
-	
+
 	public void previoushalfclock(int micro){
 		if(Clock.getCycle()==0) reset();
 		else{
@@ -752,14 +752,14 @@ public class DessinSeq extends JPanel {
 		//clk.setText(Clock.getText());
 		//stageview.setStep(Clock.getState());
 	}
-	
+
 	public void previoushalfclock(){
 		int micro=Clock.getState()-1;
 		if (micro!=-1){
 			if (micro==0 && Clock.getCycle()!=0) {micro=20;}
 			previoushalfclock(micro);}
 	}
-	
+
 	//////////////////////////////////////////////////////
 	public JInternalFrame getRom(){
 		return Rom;
@@ -777,16 +777,16 @@ public class DessinSeq extends JPanel {
 		Sign.setActive();
 		Shift.setActive();
 		MuxTGT.setActive();
-		MuxAlu2.setActive();	
+		MuxAlu2.setActive();
 	}
 
 
 	public void setInactive(){//fonction permettant de griser les chips qui ne servent a rien pour l'instruction
-		//suivant l'op�rande on change la couleur des chips non utilis�es en gris
+		//suivant l'opérande on change la couleur des chips non utilisées en gris
 		String op = Rom.getCase(PC0.getData(),2);//colonne de droite de la Jtable
 
 		setActive();
-		//d�sactiver les chip suivant l'instruction
+		//désactiver les chip suivant l'instruction
 
 		if (op.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
 			Add.setInactive();
@@ -854,7 +854,7 @@ public class DessinSeq extends JPanel {
 										Ram.setInactive();
 										MuxAlu2.setInactive();
 										MuxRf.setInactive();
-									}	  
+									}
 	}
 	public RegistreBank getRegBank() {
 		// TODO Auto-generated method stub
@@ -862,14 +862,14 @@ public class DessinSeq extends JPanel {
 	}
 	public void run() {
 		int startAdress=PC0.getData();
-		int i=0; // garde-fou pour eviter les boucles	
+		int i=0; // garde-fou pour eviter les boucles
 		// s'arrete quand rencontre un (nop), un breakpoint, un halt, ou i devient trop grand
-		while(/*Integer.decode(Rom.getCase(PC0.getData(),1))!=0 &&*/ !Rom.getCaseB(PC0.getData(),3) && Integer.decode(Rom.getCase(PC0.getData(),1))!=57471  && i<100 || PC0.getData()==startAdress ){	
+		while(/*Integer.decode(Rom.getCase(PC0.getData(),1))!=0 &&*/ !Rom.getCaseB(PC0.getData(),3) && Integer.decode(Rom.getCase(PC0.getData(),1))!=57471  && i<100 || PC0.getData()==startAdress ){
 			step_instr();
 			i++;
 			startAdress=-1;
 		}
-		if (Rom.getCaseB(PC0.getData(),3)){ 
+		if (Rom.getCaseB(PC0.getData(),3)){
 			//Rom.setCaseB(false,PC0.getData(),3); // on retire le breakpoint
 			startAdress=PC0.getData();
 		}
@@ -881,7 +881,7 @@ public class DessinSeq extends JPanel {
 				run();
 			}
 		}
-		Rom.highlight(PC0.getData()); // on surligne	
+		Rom.highlight(PC0.getData()); // on surligne
 	}
 
 

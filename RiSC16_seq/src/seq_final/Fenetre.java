@@ -33,14 +33,14 @@ import javax.swing.JTabbedPane;
 public class Fenetre  extends JFrame {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -4548624000237069379L;
 
 	static final String DEFAULTROMPATH="rom.txt";
 
 	private JTextField msg;
-	private DessinSeq d;  
+	private DessinSeq d;
 
 
 	//internal frame!
@@ -53,31 +53,31 @@ public class Fenetre  extends JFrame {
 
 	public Fenetre(){
 		this(DEFAULTROMPATH);
-	} 
+	}
 
 
 	public Fenetre(String path) {
 
-		
 
-		Toolkit toolkit = Toolkit.getDefaultToolkit(); 
-		
+
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+
 		Dimension screenSize = toolkit.getScreenSize();
 		int scry = screenSize.height-55;
 		int scrx = screenSize.width;
 
 
-		//    On r�cup�re la taille de l'�cran par d�faut :
+		//    On récupère la taille de l'écran par défaut :
 		Dimension dim = toolkit.getScreenSize();
-		//    On r�cup�re la configuration par d�faut de l'�cran par d�faut :
+		//    On récupère la configuration par défaut de l'écran par défaut :
 		GraphicsConfiguration gconf = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
-		//    On r�cup�re les 'marges' de l'�cran :
+		//    On récupère les 'marges' de l'écran :
 		Insets insets = toolkit.getScreenInsets(gconf); //variables publiques!
 		setSize(scrx, scry);
 		scry = dim.height-insets.bottom;
 		scrx = dim.width;
-		slider = new Slider(0,19,0);//au lieu de transf�rer le slider partout on aurait pu le prendre de d directement
+		slider = new Slider(0,19,0);//au lieu de transférer le slider partout on aurait pu le prendre de d directement
 		d = new DessinSeq(path, slider);
 		d.setPreferredSize (new Dimension(720,610));
 		JScrollPane scrollpaneD = new JScrollPane(d);
@@ -91,7 +91,7 @@ public class Fenetre  extends JFrame {
 		this.setIconImage(img);
 		//------------------------------------------------------------
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("RiSC 16 Simulator   ---   Sequential Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un �P RISC-16
+		setTitle("RiSC 16 Simulator   ---   Sequential Implementation   ---   ULB-BEAMS 2009"); //Simulation d'un µP RISC-16
 
 
 
@@ -104,7 +104,7 @@ public class Fenetre  extends JFrame {
 		//======================================
 
 		JPanel f = new JPanel(new GridLayout(0, 5));
-		JPanel n = new JPanel(new GridLayout(0, 1));   
+		JPanel n = new JPanel(new GridLayout(0, 1));
 		JPanel t = new JPanel(new GridLayout(0, 2));
 		JPanel p = new JPanel(new GridLayout(2, 0));
 		t.setBackground(new Color(220, 220, 220));
@@ -208,9 +208,9 @@ public class Fenetre  extends JFrame {
 
 
 
-		
+
 		JInternalFrame frameM = new JInternalFrame("Memories",true,false,false,false);
-		JTabbedPane tabbedPaneMem = new JTabbedPane();  
+		JTabbedPane tabbedPaneMem = new JTabbedPane();
 		tabbedPaneMem.addTab("Prog Mem",d.getRom().getContentPane());
 		tabbedPaneMem.setMnemonicAt(0, KeyEvent.VK_P);
 		tabbedPaneMem.addTab("Data Mem",d.getRam().getContentPane());
@@ -250,7 +250,7 @@ add(southpannel,"South");
 
 
 
-		d.setTabbedPane(tabbedPaneMem); 
+		d.setTabbedPane(tabbedPaneMem);
 		d.getRegBank().setRegTable(regtable);
 		regtable.setDessin(d);
 
@@ -269,20 +269,20 @@ add(southpannel,"South");
 	//        } catch (Exception e) { }
 	//     Create and show the GUI...
 	///////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * Action listener of the application, handles all the actions performed by clicking on the buttons.
 	 * This class is associated to each and every element and assigned a "mode".
 	 * When invoked, the proper action is selected based on this mode.
 	 *
 	 */
-	public class Traitement implements ActionListener { //classe interne qui g�re les action des boutons
+	public class Traitement implements ActionListener { //classe interne qui gère les action des boutons
 
 		private int mode;
 		JFrame frame;
-		
 
-		
+
+
 
 		/////////////////////////////////
 		public Traitement(int mode) {
@@ -307,7 +307,7 @@ add(southpannel,"South");
 			case 2:
 				splitPane.setDividerLocation(750+splitPane.getInsets().left);
 				d.reset();           //le reset
-				d.step(true,true);//permet au reset de revenir au m�me �tat que celui de d�part
+				d.step(true,true);//permet au reset de revenir au même état que celui de départ
 				break;
 			case 3:
 				splitPane.setDividerLocation(750+splitPane.getInsets().left);
@@ -325,7 +325,7 @@ add(southpannel,"South");
 				/*case 25 :
         	d.changeCouleur();
         	break;*/
-			case 31:       //  HELP			
+			case 31:       //  HELP
 				if(!instructionVisible){
 					String s=System.getProperty("user.dir" )
 			        + System.getProperty("file.separator" )
@@ -350,9 +350,9 @@ add(southpannel,"South");
 					} catch (MalformedURLException e1) {
 						e1.printStackTrace();
 					}
-					
 
-					
+
+
 				}else{
 					frameInstructions.setVisible(true);
 					frameInstructions.setLocation(300,200);
@@ -371,7 +371,7 @@ add(southpannel,"South");
 				" (http://beams.ulb.ac.be/)</html>"+
 				"\nDavid CROSS" +
 				"\nLaurent ENGLEBIN" +
-				"\nMicha�l HUYSMAN"+
+				"\nMichaël HUYSMAN"+
 				"\nMarc JAUMAIN" +
 				"\nPierre MATHYS" +
 				"\nQuentin MONNEAUX" +

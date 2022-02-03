@@ -145,7 +145,7 @@ public class Architecture {
 		int immRRR=(Integer.decode(hexOp) >> shift_imm) & (int) (Math.pow(2, immRRRSize)-1);
 		if((immRRR & (1 << (immRRRSize-1)))!=0) immRRR=immRRR-(int) (Math.pow(2, immRRRSize));
 		int immRRI=(Integer.decode(hexOp)) & (int) (Math.pow(2, immRRISize)-1);
-		if((immRRI & (1 << (immRRISize-1)))!=0) immRRI=immRRI-(int) (Math.pow(2, immRRISize));		
+		if((immRRI & (1 << (immRRISize-1)))!=0) immRRI=immRRI-(int) (Math.pow(2, immRRISize));
 		int immRI=(Integer.decode(hexOp)) & (int) (Math.pow(2, immRISize)-1);
 
 		int regAValue=Integer.decode(registers.getCase(regA,1)).intValue();
@@ -157,7 +157,7 @@ public class Architecture {
 		setLastInstructionStall(false);
 
 
-		int res=0;	
+		int res=0;
 		String trace="";
 		boolean carryFlag=false;
 		boolean overflowFlag=false;
@@ -217,7 +217,7 @@ public class Architecture {
 		case NAND :
 			res=~(Integer.decode(registers.getCase(regB,1))&Integer.decode(registers.getCase(regC,1)));
 			res=res & 0xFFFF;
-			registers.write(regA, res);		
+			registers.write(regA, res);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(res);
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
 			setLastLWDest(0);
@@ -252,7 +252,7 @@ public class Architecture {
 			setLastInstructionStall(equalLastLWDest(regA) | equalLastLWDest(regB));
 			setLastLWDest(0);
 			break;
-		case JALR :		
+		case JALR :
 			if (immRRI==0){
 				setNewpc(Integer.decode(registers.getCase(regB,1)).intValue()-1);
 				setLastInstructionBranch(true);
@@ -288,7 +288,7 @@ public class Architecture {
 					System.out.println("No sub overflow");
 				}
 			}
-				
+
 			// For subtraction the carry out is inverted
 			carryFlag=((res & 0x10000)==0);//TODO WHY?
 			// For subtraction, OF=(src1(15) XOR src2(15)) AND (res(15) XNOR src2(15))
@@ -365,11 +365,11 @@ public class Architecture {
 			setLastLWDest(0);
 			break;
 		case SHIFTI :
-			if (((immRRI >> 5) & 0x1) == 1) { 
-				res = arithmShift(regBValue,(immRRI >> 4) & 0x1,immRRI & 0x1F); 
+			if (((immRRI >> 5) & 0x1) == 1) {
+				res = arithmShift(regBValue,(immRRI >> 4) & 0x1,immRRI & 0x1F);
 			}
-			else if (((immRRI >> 5) & 0x1) == 0) { 
-				res = logicalShift(regBValue,(immRRI >> 4) & 0x1,immRRI & 0x1F); 
+			else if (((immRRI >> 5) & 0x1) == 0) {
+				res = logicalShift(regBValue,(immRRI >> 4) & 0x1,immRRI & 0x1F);
 			}
 			res=res & 0xFFFF;
 			registers.write(regA, res);
@@ -380,7 +380,7 @@ public class Architecture {
 
 		case BL :
 			test=false;
-			if (isSigned){		
+			if (isSigned){
 				test=((short)regAValue < (short)regBValue);
 				System.out.println("test=((short)regAValue < (short)regBValue);");
 				System.out.println("test="+test+", regAValue=" + regAValue + "regBValue="+regBValue);
@@ -400,7 +400,7 @@ public class Architecture {
 			break;
 		case BG :
 			test=false;
-			if (isSigned){		
+			if (isSigned){
 				test=((short)regAValue > (short)regBValue);
 			}
 			else {
@@ -419,7 +419,7 @@ public class Architecture {
 			int msb=(res >> 16)& 0xFFFF;
 			int lsb=res & 0xFFFF;
 			registers.write(regA-1, msb);
-			registers.write(regA, lsb);		
+			registers.write(regA, lsb);
 			if (regA!=0) trace="r" + regA + " = " + decToHex(lsb);
 			if (regA>1) trace+=" r" + (regA-1) + " = " + decToHex(msb);
 			setLastInstructionStall(equalLastLWDest(regB) | equalLastLWDest(regC));
@@ -481,10 +481,10 @@ public class Architecture {
 		else if(getFormat(op).equals("RI")){
 			num=num+immRI ;
 		}
-		
+
 		String testSize = Integer.toBinaryString(arg0);
 		if (testSize.length() > regSize){
-			warningMessage("error : format error (rA)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);   	  
+			warningMessage("error : format error (rA)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);
 			return "error : format error (rA)";
 		}
 		if (!op.equals("sw") && !op.equals("beq") && arg0==0 && !(op.equals("jalr") && arg2==-1)) {
@@ -494,12 +494,12 @@ public class Architecture {
 		if (getFormat(op).equals("RRR")){
 			testSize = Integer.toBinaryString(arg1);
 			if (testSize.length() > regSize){
-				warningMessage("error : format error (rB)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);   	  
+				warningMessage("error : format error (rB)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);
 				return "error : format error (rB)";
 			}
 			testSize = Integer.toBinaryString(arg2);
 			if (testSize.length() > regSize){
-				warningMessage("error : format error (rC)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);   	  
+				warningMessage("error : format error (rC)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);
 				return "error : format error (rC)";
 			}
 
@@ -512,7 +512,7 @@ public class Architecture {
 		else if (getFormat(op).equals("RRI")){
 			testSize = Integer.toBinaryString(arg1);
 			if (testSize.length() > regSize){
-				warningMessage("error : format error (rB)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);   	  
+				warningMessage("error : format error (rB)"+"\n"+"There are only "+numberOfRegister+" registers",ligne);
 				return "error : format error (rB)";
 			}
 			if (!op.equals("jalr")) {
@@ -522,8 +522,8 @@ public class Architecture {
 				if (arg2<-(int)(Math.pow(2,immRRISize-1)) || arg2>(int)(Math.pow(2,immRRISize-1))-1){
 					warningMessage("error : Imm too big (RRI type)",ligne);
 					return "error : Imm too big (RRI type)";
-				}				
-			}	
+				}
+			}
 		}
 
 		else if (getFormat(op).equals("RI")){
@@ -542,7 +542,7 @@ public class Architecture {
 				int newimm=(imm/twoExpShift)*twoExpShift;
 //				informationMessage("The accuracy of the value is limited to "+newimm,ligne);
 				//setCase("lui "+sTab[0]+","+newimm, a, 2);
-			}	
+			}
 		}
 
 		String instruction=Integer.toHexString(num).toUpperCase();
@@ -588,7 +588,7 @@ public class Architecture {
 //			return  (short)(num >>> (-n));// logical right shifts
 			return  (num >>> (-n));// logical right shifts
 		}
-		else return -1;		
+		else return -1;
 	}
 
 
@@ -599,20 +599,20 @@ public class Architecture {
 		else if (sens==1){
 			return num >> (-n);
 		}
-		else return -1;		
+		else return -1;
 	}
 
 	public boolean predictShiftOverFlow(int num,int n){
 		if (isSigned){
 
 
-			if ((((short)num >> (15-n))& 0xFFFF)==0 & (((short)num >> 15) & 0x1)==0) {System.out.printf("IF\n");return false;}  
-			else if ((((short)num >> (15-n))& 0xFFFF)==0xFFFF & (((short)num >> 15) & 0x1)==1) {System.out.printf("ELSEIF\n");return false;}            
+			if ((((short)num >> (15-n))& 0xFFFF)==0 & (((short)num >> 15) & 0x1)==0) {System.out.printf("IF\n");return false;}
+			else if ((((short)num >> (15-n))& 0xFFFF)==0xFFFF & (((short)num >> 15) & 0x1)==1) {System.out.printf("ELSEIF\n");return false;}
 			else {System.out.printf("ELSE\n");return true;}
 		}
 		else {
-			if ((((short)num >> (16-n))& 0xFFFF)==0 ) {System.out.printf("IF\n");return false;}  
-			//else if ((((short)num >> (15-n))& 0xFFFF)==0xFFFF & (((short)num >> 15) & 0x1)==1) {System.out.printf("ELSEIF\n");return true;}            
+			if ((((short)num >> (16-n))& 0xFFFF)==0 ) {System.out.printf("IF\n");return false;}
+			//else if ((((short)num >> (15-n))& 0xFFFF)==0xFFFF & (((short)num >> 15) & 0x1)==1) {System.out.printf("ELSEIF\n");return true;}
 			else {System.out.printf("ELSE\n");return true;}
 
 		}
@@ -632,7 +632,7 @@ public class Architecture {
 	}
 
 	public boolean isLastInstructionStall(){
-		return stall;		
+		return stall;
 	}
 	private void setLastInstructionStall(boolean stall){
 		this.stall=stall;
@@ -645,7 +645,7 @@ public class Architecture {
 	}
 
 
-	private void warningMessage(String text, int a){	
+	private void warningMessage(String text, int a){
 		String text2 = new String();
 		text2 = "\nLigne "
 			+ a
@@ -655,7 +655,7 @@ public class Architecture {
 
 	}
 
-	private void informationMessage(String text, int a){	
+	private void informationMessage(String text, int a){
 		String text2 = new String();
 		text2 = "\nLigne "
 			+ a
@@ -669,8 +669,8 @@ public class Architecture {
 		String format="";
 
 		switch(Instruction.toInstru(op)){
-		case ADD : case NAND : 
-			format= "RRR";			
+		case ADD : case NAND :
+			format= "RRR";
 			break;
 		case ADDI : case LW : case SW : case BEQ : case JALR :
 			format= "RRI";
@@ -681,7 +681,7 @@ public class Architecture {
 		case MOVI :
 			format= "RI";
 			break;
-			
+
 		case SUB : case SHL : case SHA : case NOR : case XOR :
 			format= "RRR";
 			break;
@@ -691,7 +691,7 @@ public class Architecture {
 		case MUL : case OR : case AND : case XNOR :
 			format="RRR";
 			break;
-		default :			
+		default :
 		}
 
 		return format;
@@ -716,10 +716,10 @@ public class Architecture {
 					return NOVALUE;
 				}
 
-			} 
+			}
 			catch (Exception ex) {
 				return NOVALUE;
 			}
-		}   
+		}
 	}
 }

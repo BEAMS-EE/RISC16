@@ -7,14 +7,14 @@ extends AbstractTableModel {
 
 	private static final long serialVersionUID = 389310682674493969L;
 	private int taille;
-	private String[] columnNames; 
+	private String[] columnNames;
 	private Object[][] data;
 	private int disp=0;
 	private Class[] types;
 	private boolean[] canEdit;
 
 	/**
-	 * Constructeur pour la mémoire programme
+	 * Constructeur pour la mÃ©moire programme
 	 * @param size : nombre d'adresses
 	 * @param columnNames : nom des colonnes
 	 */
@@ -31,12 +31,12 @@ extends AbstractTableModel {
 		types = new Class[]{String.class, String.class, String.class, Boolean.class, Boolean.class};
 		canEdit = new boolean[]{
 				false, false, true, true, false };
-	} 
+	}
 
 	/**
-	 * Constructeur pour la mémoire data et les registres
+	 * Constructeur pour la mÃ©moire data et les registres
 	 * @param size : nombre d'adresses
-	 * @param isReg : distingue la mémoire data des registres
+	 * @param isReg : distingue la mÃ©moire data des registres
 	 */
 	public MemTable(int size,boolean isReg) {
 		super();
@@ -53,7 +53,7 @@ extends AbstractTableModel {
 		types = new Class[]{String.class, String.class};
 		canEdit = new boolean[]{
 				false, true};
-	} 
+	}
 
 
 	public String getColumnName(int col) {
@@ -71,7 +71,7 @@ extends AbstractTableModel {
 	}
 	public Class getColumnClass(int c) {
 		return types[c];
-	} 
+	}
 
 	public Object getValueAt(int l, int c) {
 		if (columnNames[c] == "Data"){

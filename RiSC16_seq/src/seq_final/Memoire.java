@@ -1,7 +1,7 @@
 /*
 
 
-/// nimporte quoi > adresse tjs pos >si on a un WE mais que adresse n�gayive -)-> on perd le WE !!
+/// nimporte quoi > adresse tjs pos >si on a un WE mais que adresse négative -)-> on perd le WE !!
 
 */
 package seq_final;
@@ -25,12 +25,12 @@ public abstract class Memoire extends JInternalFrame {
   private int x, y, lg, ht;
   private Color color=Color.gray;
   private Color colorIdle=Color.gray,colorBusy=Color.green, colorLatch=Color.orange, colorInactive=Color.gray;;
- 
+
   protected boolean isActive=true;//true=> l'instruction uilise cette chip
   private int state=0;
   private Bus address,input,output;
   private int busidadd,busidin;
-  private int delay=0;//compte le nbr de fois qu'on effectue act sur la ROM (on lit une donn�e en 3microcycles)
+  private int delay=0;//compte le nbr de fois qu'on effectue act sur la ROM (on lit une donnée en 3microcycles)
 
   private int addressValue=-1,data=0; // on stocke ici l adresse courante & data
   protected int addressMax= 2048;
@@ -48,7 +48,7 @@ private Fich fi;
   public Memoire(String title, int x, int y, int lg, int ht, Color color,Bus output) {
 
     // ex: DATA MEMORY
-	  
+
 	super(title,
 	          true, //resizable
 	          false, //closable
@@ -62,7 +62,7 @@ private Fich fi;
     this.color = color;
     this.colorIdle = color;
     this.output = output;
-    
+
 
     model = new MemTable(addressMax,false);
     table = new JTable(model);
@@ -72,17 +72,17 @@ private Fich fi;
     table.getColumnModel().getColumn(0).setMinWidth(50);
     table.getColumnModel().getColumn(0).setWidth(50);
     table.getColumnModel().getColumn(0).setResizable(false);
-    table.getTableHeader().setReorderingAllowed(false);  
+    table.getTableHeader().setReorderingAllowed(false);
     Container c = getContentPane();
     JPanel t =new JPanel(new GridLayout(0,1));
     c.add(new JScrollPane(table), "Center");
     resetMem = new JButton("Clear");
     t.add(resetMem);
     c.add(t,"South");
-    
+
     setVisible(true);
-    
-    
+
+
     fi = new Fich();
 
   }
@@ -94,7 +94,7 @@ private Fich fi;
 	          false, //closable
 	          false, //maximizable
 	          false);//iconifiable
-	  
+
 	 this.x = x;
     this.y = y;
     this.lg = lg;
@@ -104,7 +104,7 @@ private Fich fi;
 
     model = new MemTable(addressMax,columnNames);
     table = new JTable(model) {
-        
+
         //Implement table cell tool tips.
         public String getToolTipText(MouseEvent e) {
             String tip = null;
@@ -113,7 +113,7 @@ private Fich fi;
             int colIndex = columnAtPoint(p);
             int realColumnIndex = convertColumnIndexToModel(colIndex);
 
-            if (realColumnIndex == 0) { 
+            if (realColumnIndex == 0) {
 				tip =""+  table.getModel().getValueAt(rowIndex,4) ;
 			}
 			else if (realColumnIndex==1){
@@ -124,16 +124,16 @@ private Fich fi;
 			}
 			return tip;
         }};
-        
+
         table.getColumnModel().removeColumn(table.getColumnModel().getColumn(4));
     /***/
-    
+
     TableColumn colBut = table.getColumnModel().getColumn(0);
     colBut.setWidth(40);
     colBut.setResizable(true);
     colBut.setMaxWidth(50);
     colBut.setMinWidth(18);
-    
+
     table.getColumnModel().getColumn(1).setWidth(50);
     table.getColumnModel().getColumn(1).setMaxWidth(200);
     table.getColumnModel().getColumn(1).setMinWidth(18);
@@ -144,7 +144,7 @@ private Fich fi;
     table.getColumnModel().getColumn(3).setResizable(false);
     table.getTableHeader().setReorderingAllowed(false);
     /***/
-    
+
     Container c = getContentPane();
     JPanel t =new JPanel(new GridLayout(0,2));
     c.add(new JScrollPane(table), "Center");
@@ -153,33 +153,33 @@ private Fich fi;
     resetMem = new JButton("Clear");
     t.add(resetMem);
     c.add(t,"South");
-   
-    
+
+
     table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
     this.output = output;
     setVisible(true);
-    
+
     table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     table.setColumnSelectionAllowed(false);
     table.setRowSelectionAllowed(true);
-    
-    
+
+
     fi = new Fich();
 
 
   }
-  
+
 
 ///////////////////////////////////////////////////////////////////////
   public void setBusAddr(Bus bus) {
     this.address=bus;
-    busidadd=bus.getId();  
+    busidadd=bus.getId();
     //system.out.println("MEMOIRE----busidadd="+busidadd);
     }//busidadd=2 pour la ROM car le bus va dans +1 aussi
 /////////////////////////////////////////////////////////////////////
   public void setBusIn(Bus bus) {//juste pour la RAM
     this.input=bus;
-    busidin=bus.getId(); 
+    busidin=bus.getId();
     //system.out.println("MEMOIRE----busidin="+busidadd);
     }//busidin=1 et busidadd = 1 pour la RAM
 /////////////////////////////////////////////////////////////////////
@@ -200,10 +200,10 @@ private Fich fi;
   public void setCaseB(boolean check,int l,int c){
 	  table.setValueAt(check,l, c);
   }
-  
+
   /**
    * Get something
-   * 
+   *
    * @param l Line, begins at 0
    * @param c Column, begins at 0
    * @return Something else
@@ -241,10 +241,10 @@ private Fich fi;
     table.setValueAt(Integer.toString(valeur), l, 1);
   }
 //////////////////////////////////////////////////////////////////
-  
+
   /**
    * Set the value of the specified cell to 'code'.
-   * 
+   *
    * <br />
    * Note: I guess "case" is the French version of "cell". It should probably be "setCell()".
    * @param code
@@ -255,7 +255,7 @@ private Fich fi;
 	  if(!ROM){
 		  table.setValueAt(code, l, c);
 	  }else{
-		    table.setValueAt(code, l, c);	  
+		    table.setValueAt(code, l, c);
 	  }
 
   }
@@ -286,7 +286,7 @@ public boolean isAddrActive()  { return  address.isActive(busidadd);}
 public boolean isInActive(){ return  input.isActive(busidin);}
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-  
+
 public void setIdle(){
 	if(isActive){
 		color=colorIdle;
@@ -308,11 +308,11 @@ public void setLatch(){
 public boolean isBusy(){return (state==1);}
 public void setColorIdle(){
 	if(isActive){
-		color=colorIdle; 
+		color=colorIdle;
 	}
 }
 
-public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilis�e pour une instruction
+public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilisée pour une instruction
 public void setActive(){color=colorIdle;state=0;isActive=true;}
 
   public void setColorDefault(Color couleur){
@@ -320,49 +320,49 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 		colorIdle =couleur;
 	}
 /////////////////////////////////////////////////////////////////
-  public void act(){ 		
-	
+  public void act(){
+
 	  ++delay;
-     
-	  if(!isActive){//attention, �a se fera qu'au moment o� on devrait utiliser la Ram
-		  this.data = input.getData(busidin);//permet d'�teindre le bus si on �crit pas dedans
+
+	  if(!isActive){//attention, ça se fera qu'au moment où on devrait utiliser la Ram
+		  this.data = input.getData(busidin);//permet d'éteindre le bus si on écrit pas dedans
 		  this.addressValue = address.getData(busidadd);
 	  }else{
-		if (checkInput())  {        //  [verif si les entrees sont l�]
+		if (checkInput())  {        //  [verif si les entrees sont là]
 			setBusy();
-			receive();          //  [copie dans latch entr�e]
+			receive();          //  [copie dans latch entrée]
 			delay=1;
 		}
 
 		if (state==1){
 			if(delay==2)ctl.disable();//ROM
 			if(delay==3){
-      		
+
 				setLatch();
 				latch();
-				
+
 				delay=0;
 			}
 		}
-		
-		if (state==2 && delay==1)     
+
+		if (state==2 && delay==1)
 			setIdle();
-			
+
 	  }
-       
+
  }
-  
+
   public void act(boolean level){  // 1= raising edge || 0= fallingedge
 	    if (level)
 	    {
 	 //------------------------------------------------------------
 	      if (state==2)     setIdle();
-	      if (checkInput())  {        //  [verif si les entrees sont l�]
+	      if (checkInput())  {        //  [verif si les entrees sont là]
 	        setBusy();
-	        receive();                //  [copie dans latch entr�e]
+	        receive();                //  [copie dans latch entrée]
 	      }
 	//------------------------------------------------------------
-	  }else  {      //[pd l'�tat haut ===> ]  compute et prepare data sortie > latche out put
+	  }else  {      //[pd l'état haut ===> ]  compute et prepare data sortie > latche out put
 	//------------------------------------------------------------
 	    if (state==1)                // si busy > latch
 	     {
@@ -379,18 +379,18 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 	          System.out.println("RAM > \treceiving Ctl : WE = " + WE);
 	        }
 	        if (WE && isInActive())return true; // RAM  && WE && input dispo
-	        
+
 	        return  isAddrActive();
 	    }
 	    else{//si c la ROM
 	    	if (ctl.isActive()) {//psen est actif?
 	    		return  isAddrActive();
 	    	}
-	    	
+
 	    }
-	    System.out.println("ROM OU RAM on demande de regarder les inputs mais il n'y a rien a l'entr�");
+	    System.out.println("ROM OU RAM on demande de regarder les inputs mais il n'y a rien a l'entré");
 	    return false;
-	    
+
 	}
 
 public void receive(){
@@ -419,7 +419,7 @@ public void latch(){
           //system.out.println("MEM > \twriting data =   " + data + "  at " +  addressValue);
                     hasData=false; WE=false;
         }
-        else { // RAM=>LATCH, pas ROM car latch est r��crite dans MemProg
+        else { // RAM=>LATCH, pas ROM car latch est réécrite dans MemProg
           int data = 0;
           String temp = new String();
           temp = getCase(addressValue, 1);
@@ -435,19 +435,19 @@ public void latch(){
 //===============================================================================================
 //    EXTRA
 //===============================================================================================
-public void highlight(int data){	//surligne l'instruction dans la m�moire
+public void highlight(int data){	//surligne l'instruction dans la mémoire
 	  if(data<=addressMax){
-		  
-		table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la s�lection?
-		//memory.getSelectionModel().setLeadSelectionIndex(selectionLine);		
-		 
+
+		table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la sélection?
+		//memory.getSelectionModel().setLeadSelectionIndex(selectionLine);
+
 	  }
 	  }
-public void highlightSet(int row1){	//surligne l'instruction dans la m�moire
+public void highlightSet(int row1){	//surligne l'instruction dans la mémoire
 	table.setRowSelectionInterval(row1, row1);
 
 	  }
-public void highlightAdd(int row1){	//surligne l'instruction dans la m�moire
+public void highlightAdd(int row1){	//surligne l'instruction dans la mémoire
 	table.addRowSelectionInterval(row1, row1);
 
 	  }
@@ -457,14 +457,14 @@ public void highlightRem(){
 
 
 public void warning(String text, int a){
-	
+
 	String text2 = new String();
 	text2 = "\nLine "
 				+ a
 				+ " :\n"+text+"\n"
 				;
 	JOptionPane.showMessageDialog(null, text2, "Warning : Data Memory",JOptionPane.WARNING_MESSAGE);
-	
+
 }
 
 //================================================================================================
@@ -510,7 +510,7 @@ public void dessine(Graphics g) {
 
 
   if (!ROM){//ram
-     if(WE){ 
+     if(WE){
     	 printText(g,13,"WE!",X()+5,Y()+20,Color.red,1);
     	 g.drawString("[ " + data+" ]", X()+5, Y()+getHt()-20);
      }
@@ -526,22 +526,22 @@ public void dessine(Graphics g) {
 
 //////////////////////////////////////////////////////////////////
   public void fichier() {    this.emptyColumn(1);  }
-  
+
   public void fileopen() {
 	    int i = 0;
 	    String s = "";
 	    //Fich fi = new Fich();
-	    
+
 	    fi.open();
-	    
+
 	    if (fi.isOpen()) {
-	    
+
 		    s = fi.getLine();
-		    
+
 		    while (s != null){
-				if(s.indexOf("@")==0){//aller � l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
 					int j=0;
-				
+
 					i=Integer.decode(s.substring(1));
 					s="0";
 
@@ -550,16 +550,16 @@ public void dessine(Graphics g) {
 							setCase(s, j, 1);
 						}
 						++j;
-					}	   
+					}
 
 
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire apr�s l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire apr�s l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires � l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());
@@ -577,9 +577,9 @@ public void dessine(Graphics g) {
 				}
 				s = fi.getLine();
 			}
-	      
+
 	      fi.openclose(); // ferme le streem
-	     
+
 	    }
 	  }
 ////////////////////////////////////////////////////////////////////////
@@ -591,7 +591,7 @@ public void dessine(Graphics g) {
 	    boolean adressWrite=false;
 	    String adress;
 
-	    
+
 	    while(i<addressMax){
 
 			adress = Integer.toString(i);
@@ -611,12 +611,12 @@ public void dessine(Graphics g) {
 
 		++i;
 	}
-	    
+
 	    //system.out.println("last get case"+getCase(i, 1));
 	    fi.saveclose();
   }
 	  }
-  
+
   public void tempsave(File temp) {
 	    Fich fi = new Fich(true);
 	    fi.save2(temp);
@@ -624,7 +624,7 @@ public void dessine(Graphics g) {
 	    boolean adressWrite=false;
 	    String adress;
 
-	    
+
 	    while(i<addressMax){
 
 			adress = Integer.toString(i);
@@ -644,27 +644,27 @@ public void dessine(Graphics g) {
 
 		++i;
 	}
-	    
+
 	    //system.out.println("last get case"+getCase(i, 1));
 	    fi.saveclose();
 	  }
-  
+
   public void tempload(File temp){
-	  
+
 	  int i = 0;
 	    String s = "";
-	    
-	    Fich fi = new Fich(true);    
+
+	    Fich fi = new Fich(true);
 	    fi.open2(temp);
-	    
+
 	    if (fi.isOpen()) {
-	    
+
 		    s = fi.getLine();
-		    
+
 		    while (s != null){
-				if(s.indexOf("@")==0){//aller � l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
 					int j=0;
-				
+
 					i=Integer.decode(s.substring(1));
 					s="0";
 
@@ -673,16 +673,16 @@ public void dessine(Graphics g) {
 							setCase(s, j, 1);
 						}
 						++j;
-					}	   
+					}
 
 
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire apr�s l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire apr�s l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire après l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire après l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires � l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires à l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());
@@ -700,19 +700,19 @@ public void dessine(Graphics g) {
 				}
 				s = fi.getLine();
 			}
-	      
+
 	      fi.openclose(); // ferme le streem
-	     
+
 	    }
-	  
-	  
-	  
+
+
+
   }
-  
+
   public void setFormat(int disp)
   {
 	  model.setFormat(disp);
   }
-	
+
 ////////////////////////////////////////////////////////////////////////
 }

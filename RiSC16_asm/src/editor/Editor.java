@@ -15,13 +15,13 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Editor extends JTextPane {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -122,12 +122,12 @@ public class Editor extends JTextPane {
 	}
 
 	public void colorise(int start, int end, String text) {
-		
+
 		doc.setCharacterAttributes(start, end - start, normal, true);
 
 		colorise(instruRegex2, instruAmelioreStyle);
 		colorise(instruRegex, instruStyle);
-		
+
 		colorise("(^|\n)*(@)((?:-?[0-9]{1,5})|(?:0x[0-9A-F]{1,4}))*(\\n)", AddrStyle);
 		colorise("(#|//).*", CommentStyle);
 		colorise("(^|\n).*.:", LabelStyle);
@@ -145,7 +145,7 @@ public class Editor extends JTextPane {
         }
 		} catch (BadLocationException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	public boolean getScrollableTracksViewportWidth() {
@@ -179,7 +179,7 @@ public class Editor extends JTextPane {
 		instruRegex2="";
 		for (int i=0;i<instructionSet.length;i++){
 			instruRegex2+=instructionSet[i];
-			instruRegex2+="|";		
+			instruRegex2+="|";
 		}
 		colorise(true);
 	}

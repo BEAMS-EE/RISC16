@@ -6,12 +6,12 @@ public class Ctl extends Chip {
 
   private CtlSignal[] ctl; // output (contient les signaux de controle)
 
-  private int[] data;//data est envoyer aux signaux de contrôle pour voir lequel va être activé
+  private int[] data;//data est envoyer aux signaux de contrÃ´le pour voir lequel va Ãªtre activÃ©
   private int[] changed; // on affiche que si le signal change !
-  private int clockState = 0;//donne l'état du micropro
+  private int clockState = 0;//donne l'Ã©tat du micropro
   private int opcode = 0;//operande
   private int out1=-1,out2 = -1;
-  private boolean RecOp = false;  
+  private boolean RecOp = false;
   private int delay=0;
   private int eq=0;
 
@@ -36,7 +36,7 @@ public class Ctl extends Chip {
 //////////////////////////////////////////////////////
   //////////////////////////////////////////////////////
   public void incrState(){
-	  clockState++; // incrémente l'état à chaque coup d'horloge
+	  clockState++; // incrÃ©mente l'Ã©tat Ã  chaque coup d'horloge
       if (clockState==21){
     	  clockState=1;//12coups d'horloge
     	  delay=0;
@@ -60,7 +60,7 @@ public class Ctl extends Chip {
     out2 = -1;
   }
 //////////////////////////////////////////////////////
-  public void act() {      
+  public void act() {
 	  if(opcode==6 && clockState==16){//si BEQ on reste busy
 		  setBusy();
 		  RecOp=true;
@@ -72,14 +72,14 @@ public class Ctl extends Chip {
       //   [0]=FCal; [1]=MUXa1; [2]=MUXa2; [3]=MUXpc; [4]=MUXrf; [5]=MUXtg;  [6]=WEr; [7]=WEm; [8]=PC0Read; [9]=PSEN
 
           System.out.println("CTL > state= " + clockState + "  OP= " + opcode);
-         
 
-          if (isInActive(0)) {//est ce que ctl a l'opcode à son entrée?
+
+          if (isInActive(0)) {//est ce que ctl a l'opcode Ã  son entrÃ©e?
         	  setBusy();
-        	  RecOp=true; // Pour lors de la réception de Opcode, ne pas passer ds le if plus bas
-        	  if(delay==1){                  
+        	  RecOp=true; // Pour lors de la rÃ©ception de Opcode, ne pas passer ds le if plus bas
+        	  if(delay==1){
                   System.out.println("CTL > (" + clockState + ") : op decode");
-                  opcode = receive(0);//reçoit l'opcode venant du IR et désactive le signal donnant l'opcode
+                  opcode = receive(0);//reÃ§oit l'opcode venant du IR et dÃ©sactive le signal donnant l'opcode
                   //RecOp=true; //ici?
         	  }
         	  ++delay;
@@ -88,7 +88,7 @@ public class Ctl extends Chip {
 
           switch (clockState) {
 
-          			
+
                 case 8:
     //==== MUX TGT ====
                 	if (opcode==5 || opcode==6) System.out.println("CTL=>le multiplexeur n'agit pas!");//beq et sw;
@@ -101,13 +101,13 @@ public class Ctl extends Chip {
                     else if (opcode==3 || opcode==7)    changeData(0, 2); // pass1
                     else						changeData(0, 0); // add
                   break;
-	
+
                case 18:
     //==== WE rf ====
                     if (opcode!=5 && opcode!=6)  changeData(6, 1); //  WErf diff de SW & BEQ
                     if (opcode==7) changeData(6,1);
                     break;
-               case 17 :       
+               case 17 :
    //==== MUX PC ====
                     if (opcode!=6 && opcode!=7) changeData(3, 2);
                     if (opcode==7) changeData(3, 0);//JALR
@@ -119,7 +119,7 @@ public class Ctl extends Chip {
                case 15:
     //==== WE MEMORY ====
                     if (opcode==5)    changeData(7, 1); // SW > op=4
-                    
+
                     if (opcode==6){//Si BEQ
                         eq = receive(1);
                         RecOp=true;
@@ -156,7 +156,7 @@ public class Ctl extends Chip {
     		break;
     	}
 //------------------------------------------------------------
-    
+
     if (isBusy() && !RecOp) { // si busy > latch
         setIdle();
        int i;
@@ -167,7 +167,7 @@ public class Ctl extends Chip {
            System.out.println("CTL i=" + i + "  nbout= " +
                               data.length + "  data= " + data[i] + "  chang= " +
                               changed[i] + "   [ " + ctl[i].getName() + " ]");
-           ctl[i].receive(data[i]); //dis quel signal doit être ativé
+           ctl[i].receive(data[i]); //dis quel signal doit Ãªtre ativÃ©
          }
        }
        if (out1>=0 || out2>=0){
@@ -180,7 +180,7 @@ public class Ctl extends Chip {
   }
 ///////////////////////////////////////////////////////////////////////
   private void changeData(int i, int newdata) {
-    // on envoit info sur ctlsignal >> CTL busy >> latch 
+    // on envoit info sur ctlsignal >> CTL busy >> latch
     setBusy();
     data[i] = newdata;
     changed[i] = 1;
@@ -192,7 +192,7 @@ public class Ctl extends Chip {
   public void paint(Graphics g) {
     super.paint(g);
     printText(g, 14, "CTL", getX() + getR() / 2 - 15, getY() + 35, Color.black);
- 
+
   }
 
 //////////////////////////////////////////////////////////////

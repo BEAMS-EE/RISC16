@@ -5,12 +5,12 @@ import java.io.*;
 import javax.swing.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Fich extends JPanel {
   /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 8174446083380149969L;
 
@@ -26,10 +26,10 @@ public class Fich extends JPanel {
   BufferedWriter out;
 
 
-  
+
 //////////////////////////////////////////////////////////////////////////////
   public Fich() {
-   
+
     String directory = System.getProperty("user.dir");
 	fc = new JFileChooser(directory);
 	//chooser.removeChoosableFileFilter(chooser.getFileFilter());
@@ -42,7 +42,7 @@ public class Fich extends JPanel {
             return "memory files (*.txt)";
         }
     });
-    
+
   }
 
   public Fich(String path) {
@@ -54,7 +54,7 @@ public class Fich extends JPanel {
           in = new BufferedReader(fr);
           //System.out.println(getClass().getResource(path));
           //in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path)));
-          
+
           open = true;
           }
     }
@@ -63,11 +63,11 @@ public class Fich extends JPanel {
         e.printStackTrace();
     }
   }
-  
+
   public Fich(boolean temp){
-	  
+
   }
-  
+
  public boolean isOpen() { //Strin
    return open;
  }
@@ -98,14 +98,14 @@ public class Fich extends JPanel {
     //system.out.println(msg);
     return open;
   }
-  
-  
+
+
   public void open2(File temp) { //String header
-	    
+
 	    open = false;
-	    
+
 	    File f = temp;
-	   
+
 	      try {
 	        if (f.exists() && f.canRead()) {
 	          fr = new FileReader(f);
@@ -119,19 +119,19 @@ public class Fich extends JPanel {
 	        System.err.println("File access error !");
 	        e.printStackTrace();
 	      }
-	   
+
 	  }
 
 
-  
+
   public String getLine() {
     try {
       if (open && ( (line = in.readLine()) != null)) {
-     
+
     	  return line;
       }
-     
-     
+
+
     }
     catch (Exception e) {
       System.err.println("File access error !");
@@ -195,15 +195,15 @@ public class Fich extends JPanel {
 		return false;
 	}
 
-  
+
   public void save2(File temp) {
-		
+
 			File fs = temp;
-			
+
 			try {
 				if (!fs.exists()) {
 					fs.createNewFile();}
-				
+
 				if (fs.canWrite()) {
 					fw = new FileWriter(fs);
 					out = new BufferedWriter(fw);
@@ -212,9 +212,9 @@ public class Fich extends JPanel {
 				System.err.println("File access error !");
 				e.printStackTrace();
 			}
-		
+
 	}
-  
+
   public void setLine(String s) {
     try {
       out.write(s);

@@ -24,7 +24,7 @@ public class InstrReg extends Register{
 
 ///////////////////////////////////////////////////////////////////
 
-public void reset(){    super.reset(); format =0;opcode="???"; setWord("0000000000000000");}//???est écris lorsqu'on fait un reset
+public void reset(){    super.reset(); format =0;opcode="???"; setWord("0000000000000000");}//???est Ã©cris lorsqu'on fait un reset
 //////////////////////////////////////////////////////////////////
 public int getFormat(String word) {
   String temp=word;
@@ -74,7 +74,7 @@ public int getFormat(String word) {
         format = getFormat(getWord());
         opcode     = super.getAsm(getWord());
   }
-  
+
 
   public void latch(){
     Bus[] out=getOutput();

@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class MemData    extends Memoire {
 /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 2611857003143120587L;
 /////////////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ public class MemData    extends Memoire {
     super.setBusAddr(address);
     super.setBusIn(in);
     super.fillColumn(1,"0");
-    
+
     super.getJButtonRM().addActionListener(new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -35,5 +35,5 @@ public class MemData    extends Memoire {
     g.drawString("ADDR", X() + getLg() - 40,Y() + getHt() - 3);
   }
 ////////////////////////////////////////////////////////////////
- 
+
 }

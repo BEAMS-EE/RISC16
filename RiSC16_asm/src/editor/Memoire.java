@@ -8,7 +8,7 @@ import javax.swing.table.*;
 
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class Memoire extends JInternalFrame {
@@ -23,7 +23,7 @@ public class Memoire extends JInternalFrame {
 
 	protected boolean isActive=true;//true=> l'instruction uilise cette chip
 
-	protected int addressMax= 65536; 
+	protected int addressMax= 65536;
 	private boolean ROM=true;
 	private Fich fi;
 	private Architecture architecture;
@@ -58,7 +58,7 @@ public class Memoire extends JInternalFrame {
 				int realColumnIndex = convertColumnIndexToModel(colIndex);
 
 				if (realColumnIndex==1){
-					
+
 					tip =Integer.toBinaryString(Integer.decode((String) table.getModel().getValueAt(rowIndex,1))) ;
 					while(tip.length()<16) tip="0"+tip;
 					tip="<html>"+tip;
@@ -83,7 +83,7 @@ public class Memoire extends JInternalFrame {
 			table.getColumnModel().getColumn(0).setMinWidth(50);
 			table.getColumnModel().getColumn(0).setWidth(50);
 			table.getColumnModel().getColumn(0).setResizable(false);
-			table.getTableHeader().setReorderingAllowed(false);  
+			table.getTableHeader().setReorderingAllowed(false);
 			Container c = getContentPane();
 			JPanel t =new JPanel(new GridLayout(0,1));
 			c.add(new JScrollPane(table), "Center");
@@ -97,11 +97,11 @@ public class Memoire extends JInternalFrame {
 			c.add(t,"South");
 
 			setVisible(true);
-			
-			
+
+
 			setJMenuBar(createMenuBar());
-			
-			
+
+
 			fi = new Fich();
 
 	}
@@ -119,7 +119,7 @@ public class Memoire extends JInternalFrame {
 		model = new MemTable(addressMax,columnNames);
 		table = new JTable(model) {
 
-			
+
 
 			//Implement table cell tool tips.
 			public String getToolTipText(MouseEvent e) {
@@ -129,7 +129,7 @@ public class Memoire extends JInternalFrame {
 				int colIndex = columnAtPoint(p);
 				int realColumnIndex = convertColumnIndexToModel(colIndex);
 
-				if (realColumnIndex == 0) { 
+				if (realColumnIndex == 0) {
 					tip =""+  table.getModel().getValueAt(rowIndex,4) ;
 				}
 				else if (realColumnIndex==1){
@@ -178,14 +178,14 @@ public class Memoire extends JInternalFrame {
 			table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 			table.setColumnSelectionAllowed(false);
 			table.setRowSelectionAllowed(true);
-			
-			
+
+
 			fi = new Fich();
 
 
 	}
-	
-	
+
+
 	private JMenuBar createMenuBar() {
 		JMenuBar maBarre = new JMenuBar();
 		JMenuItem mImport = new JMenuItem("Import");
@@ -197,14 +197,14 @@ public class Memoire extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fileopen();
-				
+
 			}});
 		mExport.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				filesave();
-				
+
 			}});
 		return maBarre;
 	}
@@ -262,7 +262,7 @@ public class Memoire extends JInternalFrame {
 	//////////////////////////////////////////////////////////////////
 	public void setCase(String code, int l, int c) {
 
-		table.setValueAt(code, l, c);	  
+		table.setValueAt(code, l, c);
 
 
 	}
@@ -287,19 +287,19 @@ public class Memoire extends JInternalFrame {
 	//===============================================================================================
 	//    EXTRA
 	//===============================================================================================
-	public void highlight(int data){	//surligne l'instruction dans la mÈmoire
+	public void highlight(int data){	//surligne l'instruction dans la m√©moire
 		if(data<=addressMax){
 
-			table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la sÈlection?
-			//memory.getSelectionModel().setLeadSelectionIndex(selectionLine);		
+			table.changeSelection(data,1,false,false);//+rajouter le fait qu'un click de souris ne change pas la s√©lection?
+			//memory.getSelectionModel().setLeadSelectionIndex(selectionLine);
 
 		}
 	}
-	public void highlightSet(int row1){	//surligne l'instruction dans la mÈmoire
+	public void highlightSet(int row1){	//surligne l'instruction dans la m√©moire
 		table.setRowSelectionInterval(row1, row1);
 
 	}
-	public void highlightAdd(int row1){	//surligne l'instruction dans la mÈmoire
+	public void highlightAdd(int row1){	//surligne l'instruction dans la m√©moire
 		table.addRowSelectionInterval(row1, row1);
 
 	}
@@ -341,9 +341,9 @@ public class Memoire extends JInternalFrame {
 			s = fi.getLine();
 
 			while (s != null){
-				if(s.indexOf("@")==0){//aller ‡ l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller √† l'adresse @XXXX
 					int j=0;
-				
+
 					i=Integer.decode(s.substring(1));
 					s="0";
 
@@ -352,16 +352,16 @@ public class Memoire extends JInternalFrame {
 							setCase(s, j, 1);
 						}
 						++j;
-					}	   
+					}
 
 
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire aprËs l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire aprËs l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire apr√®s l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire apr√®s l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires ‡ l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires √† l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());
@@ -430,7 +430,7 @@ public class Memoire extends JInternalFrame {
 		while(i<addressMax){
 
 				adress = Integer.toString(i);
-	
+
 				if(Integer.decode(getCase(i,1))!= 0){//if(getCase(i,1).indexOf("0")== -1 || getCase(i,1).indexOf("0")!= 0){
 				if(adressWrite){
 					fi.setLine("@"+adress);
@@ -455,7 +455,7 @@ public class Memoire extends JInternalFrame {
 		int i = 0;
 		String s = "";
 
-		Fich fi = new Fich(true);    
+		Fich fi = new Fich(true);
 		fi.open2(temp);
 
 		if (fi.isOpen()) {
@@ -463,7 +463,7 @@ public class Memoire extends JInternalFrame {
 			s = fi.getLine();
 
 			while (s != null){
-				if(s.indexOf("@")==0){//aller ‡ l'adresse @XXXX
+				if(s.indexOf("@")==0){//aller √† l'adresse @XXXX
 					int j=0;
 					i=Integer.decode(s.substring(1));
 					s="0";
@@ -473,14 +473,14 @@ public class Memoire extends JInternalFrame {
 							setCase(s, j, 1);
 						}
 						++j;
-					}	   
+					}
 				}else{
 					////system.out.println("index de z"+s.indexOf("z"));
-					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire aprËs l'instruction
-					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire aprËs l'instruction
+					if(s.lastIndexOf("//") > 0) s = s.substring(0, s.lastIndexOf("//")); // si on met un commentaire apr√®s l'instruction
+					if(s.lastIndexOf("#") > 0) s = s.substring(0, s.lastIndexOf("#")); // si on met un commentaire apr√®s l'instruction
 					////system.out.println("S="+s);
 
-					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires ‡ l'aide de //
+					if(s.indexOf("//") == -1 || s.indexOf("#") == -1){//permet d'ajouter des commentaires √† l'aide de //
 
 						s = s.trim();//si il n'y a pas mieux que des espaces dans s alors le string devient vide
 						////system.out.println("S="+s+"   longueur de s"+ s.length());

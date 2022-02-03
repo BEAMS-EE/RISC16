@@ -2,7 +2,7 @@ package seq_final;
 import java.awt.*;
 
 /**
- * 
+ *
  * @author ENGLEBIN Laurent
  */
 public class SignExt extends Chip{

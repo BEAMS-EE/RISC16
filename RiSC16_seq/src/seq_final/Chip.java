@@ -4,17 +4,17 @@ import java.awt.*;
 public class Chip {
   private int data=0;      // data : int
   private String word="0000000000000000";     // data : string
-  protected int state=0;     // 0 = idle  1=busy 2=latching 
+  protected int state=0;     // 0 = idle  1=busy 2=latching
   protected boolean isActive=true;//true=> l'instruction uilise cette chip
   private Bus input[];
   private int busid[];     // input bus id
   private Bus output[];
   private int x=0,y=0,lg=0,ht=0,r=0;
-  protected Color color=new Color(0,180,214,180);//Color(168,192,246); 
-  
+  protected Color color=new Color(0,180,214,180);//Color(168,192,246);
+
   private Color colorIdle=color,colorBusy=Color.green, colorLatch=Color.orange, colorInactive=Color.gray;;
-  protected int delay=0; //délais dans les chips
-  
+  protected int delay=0; //dÃ©lais dans les chips
+
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
   //public Chip() {}
@@ -49,13 +49,13 @@ public class Chip {
 //----------------------------------------------------------------
 //----------------------------------------------------------------
   //public Bus[] getInput(){   return input;}
-  
+
   public void setInput(Bus[] in){
     input= in;
     busid= new int[in.length];
     for (int i = 0; i < in.length; i++)
       busid[i]=in[i].getId();}
-  
+
   public void setInput(Bus in){
     input= new Bus[1];
     input[0]=in;
@@ -85,7 +85,7 @@ public void setBusy(){
 }
 public void setLatch(){
 	if(isActive){
-		color=colorLatch;		
+		color=colorLatch;
 	}
 	state=2;
 }
@@ -93,11 +93,11 @@ public boolean isBusy(){return (state==1);}
 //public int getState(){return state;}
 public void setColorIdle(){
 	if(isActive){
-		color=colorIdle; 
+		color=colorIdle;
 	}
 }
 
-public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilisée pour une instruction
+public void setInactive(){color=colorInactive;isActive=false;}//si la chip n'est pas utilisÃ©e pour une instruction
 public void setActive(){color=colorIdle;state=0;isActive=true;}
 
 public void setColorDefault(Color couleur){
@@ -113,30 +113,30 @@ public void reset(){setIdle(); this.data=0;this.word="0000000000000000";delay=0;
   public void setWord(String word){this.word=word;}
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
-  public void act(){  
+  public void act(){
 	  ++delay;//il y aura des probs lorsqu'on fera un cycle entier???
-	  
+
 	  if(!isActive){
-		  this.data=input[0].getData(busid[0]);//on retire les signaux si la puce est inactive (grisée)
+		  this.data=input[0].getData(busid[0]);//on retire les signaux si la puce est inactive (grisÃ©e)
 	  }
-	  
-	  if (state==1 && delay==2)               
+
+	  if (state==1 && delay==2)
 	   {
 		   receive();
 		   computes();//pour incrementeur, leftshift et signext
 	       setLatch();
 	       latch();
 	   }
-	  
+
 	  if (state==0 && checkInput()){
-	        setBusy();        
+	        setBusy();
 	        delay=1;
 	  }
 
 	  if (state==2 && delay==3){
 		  setIdle();
 	  }
-  
+
   }
 /////////////////////////////////////////////////////////////////
 public boolean checkInput(){   // TRUE = > ok entree dispo
@@ -156,11 +156,11 @@ public void latch(){
 //*****************************************************************
 public void receiveW(){  this.word=input[0].getWord(busid[0]);}
 //------------------------------------------------------------
-public int receive(int i){// i=> cas d'un composant à plusieurs entrées
+public int receive(int i){// i=> cas d'un composant Ã  plusieurs entrÃ©es
   this.data=input[i].getData(busid[i]);
   return this.data;
 }
-public int readInput(int i){// i=> cas d'un composant à plusieurs entrées
+public int readInput(int i){// i=> cas d'un composant Ã  plusieurs entrÃ©es
 	  return input[i].readData();
 }
 
@@ -173,7 +173,7 @@ public int readInput(int i){// i=> cas d'un composant à plusieurs entrées
   output[0].receive(word);
 }*/
 /////////////////////////////////////////////////////////////////
-public int add(int op1,int op2){ // addition bit à bit  (+carry)
+public int add(int op1,int op2){ // addition bit Ã  bit  (+carry)
   int nbit=16;
   String out=new String();
   boolean carry=false;
@@ -222,7 +222,7 @@ public int add(int op1,int op2){ // addition bit à bit  (+carry)
   public int getR(){return r;}
 /////////////////////////////////////////////////////////////////
   public Color getColor(){return color;}
-  public void setColor(Color color){this.color=color;} 
+  public void setColor(Color color){this.color=color;}
 /////////////////////////////////////////////////////////////////
   public void drawRect(Graphics g){
       g.setColor(Color.darkGray);
@@ -258,7 +258,7 @@ public int add(int op1,int op2){ // addition bit à bit  (+carry)
   g.drawString(txt,x,y);
   setDFont(g);
   }
-  
+
   public void setLg(int lg){
 	  this.lg=lg;
   }

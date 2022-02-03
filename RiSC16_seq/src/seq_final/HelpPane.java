@@ -20,9 +20,9 @@ public class HelpPane extends JEditorPane {
  */
 public HelpPane(URL hlpURL) {
     //super(title);
-    helpURL = hlpURL; 
+    helpURL = hlpURL;
     setBackground(new Color(220, 220, 220));
-    
+
     setEditable(false);
     try {
     	setPage(helpURL);
@@ -43,11 +43,11 @@ public HelpPane(URL hlpURL) {
             }
         }
     });
-   
+
     //setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     // dynamically set location
     //calculateLocation();
-   
+
     // end constructor
 }
 }//end HelpWindow class
