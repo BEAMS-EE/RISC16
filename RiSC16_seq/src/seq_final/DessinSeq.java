@@ -783,78 +783,69 @@ public class DessinSeq extends JPanel {
 
 	public void setInactive(){//fonction permettant de griser les chips qui ne servent a rien pour l'instruction
 		//suivant l'opérande on change la couleur des chips non utilisées en gris
-		String op = Rom.getCase(PC0.getData(),2);//colonne de droite de la Jtable
+		int op = Integer.decode(Rom.getCase(PC0.getData(), 1)) >>> 13;
 
 		setActive();
 		//désactiver les chip suivant l'instruction
 
-		if (op.indexOf("addi") != -1) { // il faut d abord mettre addi avant add !!!
-			Add.setInactive();
-			Shift.setInactive();
-			Sign2.setInactive();
-			Ram.setInactive();
-			MuxRf.setInactive();
-		}
-		else
-			if (op.indexOf("add") != -1 || op.indexOf("nop") != -1) {//! nop = add 0,0,0
+		switch(op) {
+			case 0: // ADD | NOP
 				Add.setInactive();
 				Sign.setInactive();
 				Sign2.setInactive();
 				Shift.setInactive();
 				Ram.setInactive();
-
-			}
-			else
-				if (op.indexOf("nand") != -1) {
-					Add.setInactive();
-					Sign.setInactive();
-					Sign2.setInactive();
-					Shift.setInactive();
-					Ram.setInactive();
-
-				}
-				else
-					if (op.indexOf("lui") != -1) {
-
-						Add.setInactive();
-						Sign2.setInactive();
-						Sign.setInactive();
-						MuxAlu2.setInactive();
-						MuxRf.setInactive();
-						Ram.setInactive();
-					}
-					else
-						if (op.indexOf("sw") != -1) {
-							Add.setInactive();
-							Sign2.setInactive();
-							Shift.setInactive();
-							MuxTGT.setInactive();
-
-						}
-						else
-							if (op.indexOf("lw") != -1) {
-								Add.setInactive();
-								Sign2.setInactive();
-								Shift.setInactive();
-								MuxRf.setInactive();
-							}
-							else
-								if (op.indexOf("beq") != -1) {
-									Sign.setInactive();
-									Shift.setInactive();
-									Ram.setInactive();
-									MuxTGT.setInactive();
-								}
-								else
-									if (op.indexOf("jalr") != -1 || op.indexOf("reset") != -1) {
-										Add.setInactive();
-										Sign.setInactive();
-										Sign2.setInactive();
-										Shift.setInactive();
-										Ram.setInactive();
-										MuxAlu2.setInactive();
-										MuxRf.setInactive();
-									}
+				break;
+			case 1: // ADDI
+				Add.setInactive();
+				Shift.setInactive();
+				Sign2.setInactive();
+				Ram.setInactive();
+				MuxRf.setInactive();
+				break;
+			case 2: // NAND
+				Add.setInactive();
+				Sign.setInactive();
+				Sign2.setInactive();
+				Shift.setInactive();
+				Ram.setInactive();
+				break;
+			case 3: // LUI
+				Add.setInactive();
+				Sign2.setInactive();
+				Sign.setInactive();
+				MuxAlu2.setInactive();
+				MuxRf.setInactive();
+				Ram.setInactive();
+				break;
+			case 4: // LW
+				Add.setInactive();
+				Sign2.setInactive();
+				Shift.setInactive();
+				MuxRf.setInactive();
+				break;
+			case 5: // SW
+				Add.setInactive();
+				Sign2.setInactive();
+				Shift.setInactive();
+				MuxTGT.setInactive();
+				break;
+			case 6: // BEQ
+				Sign.setInactive();
+				Shift.setInactive();
+				Ram.setInactive();
+				MuxTGT.setInactive();
+				break;
+			case 7: // JALR | HALT | RESET
+				Add.setInactive();
+				Sign.setInactive();
+				Sign2.setInactive();
+				Shift.setInactive();
+				Ram.setInactive();
+				MuxAlu2.setInactive();
+				MuxRf.setInactive();
+				break;
+		}
 	}
 	public RegistreBank getRegBank() {
 		// TODO Auto-generated method stub
