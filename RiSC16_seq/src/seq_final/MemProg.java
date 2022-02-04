@@ -78,7 +78,9 @@ public class MemProg extends Memoire {
 
 		if(this.labelTable == null) {
 			this.labelTable = new Hashtable<String, Integer>();
-		}
+		} else {
+                       this.labelTable.clear();
+                }
 		for (int i = 0; i < super.getAddressMax(); ++i) {
 			getLabel(i, super.getCase(i, 2));
 		}
@@ -118,20 +120,28 @@ public class MemProg extends Memoire {
 			StringTokenizer st = new StringTokenizer(command,", \t\n\r\f");
 			// Check if the first token is a label.
 			String firstToken = st.nextToken().toLowerCase();
-			Pattern p = Pattern.compile("^[\\w]*:");
+			Pattern p = Pattern.compile("^[_a-z0-9]*[_a-z][_a-z0-9]*:");
 			Matcher m = p.matcher(firstToken);
 			// If it is, set it as the address, and fetch the opcode (next token).
 			if (m.matches()) {
 				firstToken = firstToken.substring(0, firstToken.length()-1); // Remove the trailing ':'.
-				if(this.labelTable.get(firstToken)==null) {
-					this.labelTable.put(firstToken.toLowerCase(), address);//TODO Should we really put it to lowerCase?
-				}
 				//TODO If the label is already in the table, it should be discarded (like when we import a ROM).
 				super.setCase(firstToken, address, 0);
 				// As for the command, it needs to be stripped from its label.
 				// We thus write the same command, but beginning from /after/ the label.
 				// The '+1' is there to ignore the space after the ':' in the syntax '<label>: command'.
-				super.setCase(command.substring(firstToken.length()+1), address, 2);//TODO Here we should trim the extra leading space.
+				super.setCase(command.substring(firstToken.length()+1).trim(), address, 2);//TODO Here we should trim the extra leading space.
+			} else {
+				firstToken = super.getCase(address, 0);
+				try {
+					Integer.parseInt(firstToken);
+					firstToken = null;
+				} catch (NumberFormatException nfe) {
+					;
+				}
+			}
+			if(firstToken != null && this.labelTable.get(firstToken)==null) {
+				this.labelTable.put(firstToken.toLowerCase(), address);//TODO Should we really put it to lowerCase?
 			}
 		}
 	}
