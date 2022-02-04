@@ -483,169 +483,37 @@ public class MemProg extends Memoire {
 	}
 
 	public void fileopen(String path) {
-		int i = 0;
-		String s = "";
 		Fich fi;
 		orphanLabels = new ArrayList<Integer>();
 
-
 		if (path.length()>3)
 			fi = new Fich(path);
-		else                    {
+		else {
 			fi = new Fich();
 			fi.open();
 		}
-
-
-
+		int address=0;
 		if (fi.isOpen()) {
-			s = fi.getLine();
-
-			int address=0;
-			String label="",opcode="",arg0,arg1,arg2,arg3,instructionwhitoutlabel = "";
-			labelTable=new Hashtable<String, Integer>();
-
 			// Will be null when fi.getLine() returns null, that is the end of the file.
-			while (s!=null){
-				StringTokenizer st=new StringTokenizer(s);
+			for (String s=fi.getLine(); s!=null; s=fi.getLine()){
+				s = s.trim();
+				int pos;
 				// Analyze the tokens, but only looking for special ones,
-				// like comments, labels, addresses, 'movi', etc.
-				if (st.hasMoreTokens()){
-					String firsttoken = st.nextToken();
-					// If comment line, ignore it.
-					if (firsttoken.indexOf("//")==0 || firsttoken.indexOf("#")==0){
-						label="";
-						opcode="";
-						s = fi.getLine();
-						continue;
-					}
+				if ((pos = s.indexOf("//")) != -1) {
+					s = s.substring(0, pos).trim();
+				} else if ((pos = s.indexOf("#")) != -1) {
+					s = s.substring(0, pos).trim();
+				}
+				if (s.isEmpty()) {
+					continue;
+				}
+				if (s.charAt(0) == '@') {
 					// Instruction to be placed at a specific address. Extract the address, omitting the "@".
-					else if(firsttoken.indexOf("@")==0){
-						s = firsttoken.substring(1, firsttoken.length());
-						address = Integer.decode(s)-1;
-						label="";
-						opcode="";
-						continue;
-					}
-					// Ending with ":" => label.
-					else if(firsttoken.charAt(firsttoken.length()-1)==':'){
-						label = firsttoken.substring(0, firsttoken.length()-1);
-						if (st.hasMoreTokens()){
-							opcode=st.nextToken();
-						}
-						// Mark the label as orphan for later processing.
-						else {
-							orphanLabels.add(address);
-						}
-					}
-					else {
-						label="";
-						opcode = firsttoken;
-					}
-					// If it was a label
-					if (label!=""){
-						// If the label is already in the table, it means
-						// that the label is already in use and should be
-						// ignored.
-						// TODO Discarding a label for multiple use should raise a warning.
-						if(labelTable.get(label)!=null){
-							setCase(String.valueOf(address),address,0);
-						}
-						// Label not in the labelTable yet.
-						else{
-							labelTable.put(label.toLowerCase(),address);
-							setCase(label,address,0);
-						}
-					} else {
-						setCase(String.valueOf(address),address,0);
-					}
-					// If it is a "movi" opcode, skip an address, as it is an alias for two operations: LUI, then ADDI.
-					if(opcode.toLowerCase().indexOf("movi") != -1) {
-						address+=2;
-//						System.out.println("if movi boucle 1 fileopen");
-					}
-					else address++;
+					address = Integer.decode(s.substring(1))-1;
+					continue;
 				}
-				s = fi.getLine();
-			}
-
-
-			// Open the file a second time.
-			//TODO This is not good performance-wise. Do not open the same file twice in a row.
-			fi = new Fich(fi.getPath());
-			s = fi.getLine();
-			while (s != null){
-				if(s.indexOf("@")==0){//aller à l'adresse @XXXX
-					int j=0;
-					s = s.substring(1, s.length());// Address to go to.
-					i = Integer.decode(s);// Integer version of the address
-					s="nop";
-					while(j<i){
-						if(getCase(j,2) == null){
-							setCase(s, j, 2);
-						}
-						++j;
-					}
-				}else{
-					// If there is a comment after the command, remove it.
-					if(s.indexOf("//") > 0) s = s.substring(0, s.indexOf("//"));// Comment after the instruction.
-					if(s.indexOf("#") > 0) s = s.substring(0, s.indexOf("#"));
-					if(s.indexOf("//") == -1  && s.indexOf("#") == -1){// No more comments
-
-						s = s.trim();
-						if(s.length() != 0){
-
-							StringTokenizer st=new StringTokenizer(s);
-							if (st.hasMoreTokens()){
-								String firsttoken = st.nextToken();
-								System.out.println(firsttoken);
-
-								if(firsttoken.charAt(firsttoken.length()-1)==':'){
-									label = firsttoken.substring(0, firsttoken.length()-1);
-									if (st.hasMoreTokens()) opcode=st.nextToken();
-								}
-								else {
-									label="";
-									opcode = firsttoken;
-								}
-								instructionwhitoutlabel=opcode;
-								if (st.hasMoreTokens()) {
-									arg0=st.nextToken(", \t\n\r\f");
-									instructionwhitoutlabel+=" "+arg0;
-								}
-								if (st.hasMoreTokens()) {
-									arg1=st.nextToken(", \t\n\r\f");
-									instructionwhitoutlabel+=", "+arg1;
-								}
-								if (st.hasMoreTokens()) {
-									arg2=st.nextToken(", \t\n\r\f");
-									instructionwhitoutlabel+=", "+arg2;
-								}
-								if (st.hasMoreTokens()) {
-									arg3=st.nextToken(", \t\n\r\f");
-									instructionwhitoutlabel+=", "+arg3;
-								}
-								if(opcode.toLowerCase().indexOf("movi") != -1) {//si l'instruction est un movi
-									movi(instructionwhitoutlabel.trim(),i);
-									++i;
-								}else{//si ce n'est pas un movi
-									setCase(instructionwhitoutlabel.trim(), i, 2);
-								}
-							}
-							// If the current address is an orphan label, do not increment the address and free the orphan.
-							if(orphanLabels.contains(i)) {
-								orphanLabels.remove(i);
-							}
-							else {
-								i++;
-							}
-						}
-//						else {
-//							System.out.println("Empty line!");
-//						}
-					}
-				}
-				s = fi.getLine();
+				setCase(s.replaceAll("\\s+", " "), address, 2);
+				++address;
 			}
 			fi.openclose(); // ferme le stream
 		}
