@@ -396,11 +396,11 @@ public void setActive(){color=colorIdle;state=0;isActive=true;}
 public void receive(){
   if (isAddrActive()) {//ram et rom
       this.addressValue = address.getData(busidadd);//pour la rom adress = b00
-      if (addressValue >= addressMax) { addressValue=-1; }
-      if(!ROM)//system.out.println("MEM DATA> \treceiving address =   " + addressValue)
-    	  ;
-      if(ROM)//system.out.println("MEM PROG> \treceiving address =   " + addressValue)
-    	  ;
+      if (addressValue >= addressMax) {
+        addressValue=-1;
+      }
+      //if(!ROM) system.out.println("MEM DATA> \treceiving address =   " + addressValue);
+      //if(ROM) system.out.println("MEM PROG> \treceiving address =   " + addressValue);
   }
   if (!ROM)//=ram
         if (WE && isInActive()) {

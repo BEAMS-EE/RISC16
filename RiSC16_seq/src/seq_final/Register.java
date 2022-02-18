@@ -58,8 +58,8 @@ public class Register extends Chip{
 	 super.act();
  }
 
-public void  receive(){
-	if(read.getData()==1);
+public void receive(){
+	if(read.getData()==1)
 		super.receive();
 }
 public void latch(){

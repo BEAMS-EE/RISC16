@@ -10,7 +10,6 @@ extends AbstractTableModel {
 	private String[] columnNames;
 	private Object[][] data;
 	private int disp=0;
-	private Class[] types;
 	private boolean[] canEdit;
 
 	/**
@@ -28,7 +27,6 @@ extends AbstractTableModel {
 			data[i][3] = false;
 			data[i][4] = Integer.toString(i);
 		}
-		types = new Class[]{String.class, String.class, String.class, Boolean.class, Boolean.class};
 		canEdit = new boolean[]{
 				false, false, true, true, false };
 	}
@@ -50,7 +48,6 @@ extends AbstractTableModel {
 			else 			data[i][0] = Integer.toString(i);
 			data[i][1] = Integer.toString(0);
 		}
-		types = new Class[]{String.class, String.class};
 		canEdit = new boolean[]{
 				false, true};
 	}
@@ -69,19 +66,26 @@ extends AbstractTableModel {
 
 
 	}
-	public Class getColumnClass(int c) {
-		return types[c];
-	}
 
 	public Object getValueAt(int l, int c) {
 		if (columnNames[c] == "Data"){
-			try{if (disp==0 || disp==3)return getHexaValueAt(l,c);
-			//else if(disp==3) return getBinValueAt(l,c);
-			//else if (disp==2) if (display==2 && nombre>=32768) nombre = nombre-65536;;
-			else return (disp==2 && Integer.decode((String) data[l][c])>=32768) ? getDecSignValueAt(l,c) : getDecValueAt(l,c);
-			} catch(NumberFormatException e){return ( (Object) data[l][c]);}
+			try{
+				if (disp==0 || disp==3)
+					return getHexaValueAt(l,c);
+				//else if(disp==3) return getBinValueAt(l,c);
+				//else if (disp==2) if (display==2 && nombre>=32768) nombre = nombre-65536;;
+				else {
+					if (disp==2 && Integer.decode((String) data[l][c])>=32768)
+						return getDecSignValueAt(l,c);
+					else 
+						return getDecValueAt(l,c);
+				}
+			} catch(NumberFormatException e) {
+				return data[l][c];
+			}
 		}
-		else return ( (Object) data[l][c]);
+		else
+			return (data[l][c]);
 	}
 
 	public Object getHexaValueAt(int l,int c){
@@ -91,10 +95,10 @@ extends AbstractTableModel {
 
 	}
 	public Object getDecValueAt(int l,int c){
-		return (Integer.decode((String) data[l][c]).toString());
+		return Integer.decode((String) data[l][c]).toString();
 	}
 	public Object getDecSignValueAt(int l,int c){
-		return ((new Integer(Integer.decode((String) data[l][c])-65536))).toString();
+		return Integer.toString(Integer.decode((String) data[l][c])-65536);
 	}
 	public Object getBinValueAt(int l,int c){
 		String temp=Integer.toBinaryString(Integer.decode((String) data[l][c])).toUpperCase();
@@ -104,11 +108,20 @@ extends AbstractTableModel {
 
 	public void setValueAt(Object valeur, int l, int c) {
 		if (l<taille){
-			if (columnNames[c] == "Data"){
+			if (columnNames[c] == "Data") {
 				try{
-					valeur=(Integer.decode((String) valeur)<0 && Integer.decode((String) valeur)>=-32768) ? new Integer(Integer.decode((String) valeur)+65536).toString(): valeur;
-					valeur=(Integer.decode((String) valeur)>65535 || Integer.decode((String) valeur)<-32768) ? "error : number is out of range": valeur;
-				}catch(NumberFormatException e){	valeur = "error : not a decimal or hexadecimal number";}
+					Integer tmp = Integer.decode((String) valeur);
+					if (tmp < -32768 || tmp > 65535) {
+						valeur = "error : number is out of range";
+					} else if (tmp < 0) {
+						tmp += 65536;
+						valeur = tmp.toString();
+					} else {
+						valeur = tmp.toString();
+					}
+				} catch(NumberFormatException e){
+					valeur = "error : not a decimal or hexadecimal number";
+				}
 			}
 
 			data[l][c] = valeur;

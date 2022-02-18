@@ -35,7 +35,7 @@ public class CtlSignal extends Bus{
 public void paint(Graphics2D g){
    if(super.getShow() && isActive() && readData()>=0){
       setColor(Color.red);
-      super.paint((Graphics2D)g);
+      super.paint(g);
       if(name!=null){
            g.setColor(Color.black);
            g.drawString(name+" = "+readData(), posX, posY);
