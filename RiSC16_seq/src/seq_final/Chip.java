@@ -174,33 +174,16 @@ public int readInput(int i){// i=> cas d'un composant à plusieurs entrées
 }*/
 /////////////////////////////////////////////////////////////////
 public int add(int op1,int op2){ // addition bit à bit  (+carry)
-  int nbit=16;
-  String out=new String();
-  boolean carry=false;
-  String s1=new String(Integer.toBinaryString(op1));
-  String s2=new String(Integer.toBinaryString(op2));
-  while(s1.length()<nbit)  s1="0"+s1;
-  while(s2.length()<nbit)  s2="0"+s2;
-  for (int i=nbit-1; i>=0;i--)
-  {
-      if (s1.charAt(i) == '1' && s2.charAt(i) == '1'){  // 1+1=0 +carry
-          if (carry) { out="1"+out; carry=true;}
-          else       { out="0"+out; carry=true;}
-      }else{
-          if (s1.charAt(i)=='1' || s2.charAt(i)=='1'){   // 1+0=1 +carry
-               if (carry) { out="0"+out; carry=true;}
-               else       { out="1"+out; carry=false; }
-          }else{
-               if (carry) { out="1"+out; carry=false;} // 0+0 = 0 +carry
-               else       { out="0"+out; carry=false;}
-          }
-      }
-  }
-  System.out.println("ADD > S1= "+s1 + "        "+op1);
-  System.out.println("ADD > S2= "+s2 + "        "+op2);
-  System.out.println("ADD > XX= "+out+ "        "+Integer.parseInt(out,2));
-  return   Integer.parseInt(out,2);
+  int out = (short)(op1 + op2);
+  String s1 = String.format("%16s", Integer.toBinaryString(op1)).replace(' ', '0');
+  String s2 = String.format("%16s", Integer.toBinaryString(op2)).replace(' ', '0');
+  String sout = String.format("%16s", Integer.toBinaryString(out)).replace(' ', '0');
+  System.out.format("ADD > S1=%s\t%d\n", s1, op1);
+  System.out.format("ADD > S2=%s\t%d\n", s2, op2);
+  System.out.format("ADD > XX=%s\t%d\n", sout, out);
+  return out;
 }
+
 /*
  	public int add(int a,int b){
  		System.out.println("ALU ADD > \t  op1 = "+a+"   op2="+b);
